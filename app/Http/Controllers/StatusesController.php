@@ -16,16 +16,7 @@ class StatusesController extends Controller
     public function index()
     {
         $statuses = Status::all();
-
         return view('statuses.index',compact('statuses'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('statuses.create');
     }
 
     /**
@@ -38,10 +29,11 @@ class StatusesController extends Controller
         // ]);
 
         $user = Auth::user();
+        $user_id = $user->id;
         $status = new Status();
         $status->name = $request['name'];
         $status->slug = Str::slug($request['name']);
-        $status->user_id = $user->id;
+        $status->user_id = $user_id;
 
         $status->save();
         return redirect(route('statuses.index'));

@@ -43,13 +43,9 @@
                                         </ul>
                                     </li>
 
-                                    <li class=""><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"  data-bs-toggle="collapse" data-bs-target="#advanceui"><i class="fas fa-file-alt fa-lg me-3"></i> Advanced UI <i class="fas fa-angle-left mores"></i></a>
+                                    <li class=""><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"  data-bs-toggle="collapse" data-bs-target="#advanceui"><i class="fas fa-users fa-lg me-3"></i> Students <i class="fas fa-angle-left mores"></i></a>
                                         <ul id="advanceui" class="collapse ps-2">
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Clipboard </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Slider </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Carousel </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Loaders </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Tree View </a></li>
+                                            <li><a href="{{route('students.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> All Students </a></li>
                                         </ul>
                                     </li>
 
@@ -64,10 +60,10 @@
                                         </ul>
                                     </li>
 
-                                    <li class="nav-item nav-categories">Editor</li>
+                                    <li class="nav-item nav-categories">Manage</li>
 
-                                    <li class=""><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>Text Editors</a></li>
-                                    <li class=""><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>Code Editors</a></li>
+                                    <li class=""><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>Roles</a></li>
+                                    <li class=""><a href="{{route('statuses.index')}}" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>Status</a></li>
                                     <li class="nav-item nav-categories">Date Representation</li>
 
                                     <li class=""><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#chartelement"><i class="fas fa-file-alt fa-lg me-3"></i> Chart <i class="fas fa-angle-left mores"></i></a>

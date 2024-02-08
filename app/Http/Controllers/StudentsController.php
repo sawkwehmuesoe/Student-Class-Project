@@ -64,7 +64,25 @@ class StudentsController extends Controller
 
       public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request,[
+            'regnumber'=>'required|unique:students,regnumber,'.$id,
+            'firstname'=>'required',
+            'lastname'=>'required',
+            'remark'=>'max:1000'
+        ]);
+
+        $user = Auth::user();
+        $user_id = $user['id'];
+        $student = Student::findOrFail($id);
+        $student->regnumber = $request['regnumber'];
+        $student->firstname = $request['firstname'];
+        $student->lastname = $request['lastname'];
+        $student->slug = Str::slug($request['firstname']);
+        $student->remark = $request['remark'];
+        $student->user_id = $user_id;
+
+        $student->save();
+        return redirect(route('students.index'));
     }
 
 

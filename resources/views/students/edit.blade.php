@@ -11,8 +11,8 @@
 
             <form action="/students/{{$student->id}}" method="POST">
 
-                @csrf
-                @method('PUT')
+                    @csrf
+                    @method('PUT')
 
                     <div class="row">
                          <div class="col-md-4 mb-3">
@@ -39,7 +39,7 @@
                      <div class='col-md-12 mt-3'>
 
                          <div class="d-flex justify-content-end">
-                             <a href="{{route('students.update')}}" class="btn btn-secondary btn-sm rounded-0 ">Cancle</a>
+                             <a href="{{route('students.index')}}" class="btn btn-secondary btn-sm rounded-0 ">Cancle</a>
                              <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Update</button>
                          </div>
 
