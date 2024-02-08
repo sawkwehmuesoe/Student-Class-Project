@@ -1,0 +1,115 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap'); */
+/* 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+
+/* Start Navbar  */
+.sidebars{
+    min-height: 100vh;
+    background-color: #000;
+}
+
+.nav-item.nav-categories{
+    color: #fff;
+    margin: 10px 0;
+}
+
+.sidebarlinks,.sidebarlinks .fas{
+    color: #fff;
+    opacity: .6;
+    transition: all .3s;
+}
+
+.sidebarlinks:hover,.sidebarlinks .fas:hover{
+    color: #fff;
+    opacity: 1;
+    background-color: #666;
+}
+
+.sidebarlinks{
+    position: relative;
+}
+
+.mores{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+
+    transform: translateY(-50%);
+}
+
+.currents{
+    background-color: #8888;
+}
+
+
+/* End Navbar  */
+
+/* Start Top Side Bar  */
+
+/* Start notify & userlogout  */
+.dropdowns{
+    position: relative;
+}
+
+.dropbtn{
+    text-decoration: none;
+}
+
+.dropdown-contents{
+    min-width: 250px;
+    background-color: #f6f6f6;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    z-index: 10;
+
+    display: none;
+}
+
+.dropdown-contents a{
+    color: #000;
+    text-decoration: none;
+    padding: 10px;
+
+    display: block;
+}
+
+.dropdown-contents a:hover{
+    background-color: #ddd;
+}
+
+.show{
+    display: block;
+}
+/* End notify & userlogout  */
+
+/* End Top Side Bar  */
+
+
+/* Start Shortcut Area */
+.border-left-primarys{
+    border-left-width: 3px;
+    border-left-color: steelblue;
+}
+
+.border-left-successes{
+    border-left-width: 3px;
+    border-left-color: green;
+}
+
+.border-left-infos{
+    border-left-width: 3px;
+    border-left-color: skyblue;
+}
+
+.border-left-warnings{
+    border-left-width: 3px;
+    border-left-color: yellow;
+}
+/* End Shortcut Area */
