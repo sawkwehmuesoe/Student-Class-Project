@@ -130,9 +130,7 @@
         $(document).ready(function(){
             // start delete item
             $('.delete-btns').click(function(){
-                // console.log("hey");
                 var getidx = $(this).data('idx');
-                // console.log(getidx);
 
                 if(confirm(`Are you sure !!! you want to Delete ${getidx}`)){
                     $('#formdelete-'+getidx).submit();
