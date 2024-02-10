@@ -44,9 +44,9 @@ class StatusesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         // $this->validate($request,[
-        //     'name'=>'required|unique:statuses,name'
-        // ]);
+        $this->validate($request,[
+            'name'=>'required|unique:statuses,name'
+        ]);
 
         $user = Auth::user();
         $user_id = $user->id;
