@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\DashboardsController;
+use App\Http\Controllers\GendersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StatusesController;
@@ -36,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('cities',CitiesController::class);
+    Route::resource('countries',CountriesController::class);
+    Route::resource('genders',GendersController::class);
     Route::resource('roles',RolesController::class);
     Route::resource('statuses',StatusesController::class);
     Route::resource('students',StudentsController::class);
