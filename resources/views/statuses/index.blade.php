@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="{{route('statuses.store')}}" method="POST">
+                        <form id="formaction" action="" method="POST">
 
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
@@ -103,7 +103,6 @@
 
                                     <div class='col-md-4 mt-3'>
                                         <button type="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
-
                                     </div>
 
                              </div>
@@ -130,9 +129,7 @@
         $(document).ready(function(){
             // start delete item
             $('.delete-btns').click(function(){
-                // console.log("hey");
                 var getidx = $(this).data('idx');
-                // console.log(getidx);
 
                 if(confirm(`Are you sure !!! you want to Delete ${getidx}`)){
                     $('#formdelete-'+getidx).submit();
@@ -153,6 +150,9 @@
                 // console.log($(this).attr('data-id'),$(this).attr('data-name'));
 
                 $('#editname').val($(this).data('name'));
+
+                const getid = $(this).attr('data-id');
+                $('#formaction').attr('action',`/statuses/${getid}`);
 
                 e.preventDefault();
 

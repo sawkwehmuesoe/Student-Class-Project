@@ -24,9 +24,9 @@ class StatusesController extends Controller
      */
     public function store(StatusCreateRequest $request)
     {
-        // $this->validate($request,[
-        //     'name'=>'required|unique:statuses,name'
-        // ]);
+        $this->validate($request,[
+            'name'=>'required|unique:statuses,name'
+        ]);
 
         $user = Auth::user();
         $user_id = $user->id;
@@ -40,27 +40,23 @@ class StatusesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request,[
+            'name'=>'required|unique:statuses,name'
+        ]);
+
+        $user = Auth::user();
+        $user_id = $user->id;
+        $status = Status::findOrFail($id);
+        $status->name = $request['name'];
+        $status->slug = Str::slug($request['name']);
+        $status->user_id = $user_id;
+
+        $status->save();
+        return redirect(route('statuses.index'));
     }
 
     /**
