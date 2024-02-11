@@ -18,11 +18,11 @@
                 <div class="col-md-4">
                     <div class="card rouned-0">
                         <div class="card-body">
-                            <h5 class="card-title">{{$role->regnumber}} | <span class="text-muted">{{$role->status["name"]}}</span></h5>
+                            <h5 class="card-title">{{$role->name}} | <span class="text-muted">{{$role->status["name"]}}</span></h5>
                         </div>
 
                         <ul class="list-group text-center">
-                            <li class="list-group-item fw-bold"><h6>{{$role->firstname}} {{$role->lastname}}</h6></li>
+                            <li class="list-group-item fw-bold"><img src="{{asset($role->image)}}" class="" alt="{{$role->name}}" width="200" height="200"></li>
                         </ul>
 
                         <div class="card-body">
@@ -57,7 +57,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{$role->remark}}</td>
+                                    <td>Nothing to show</td>
                                 </tr>
                             </tbody>
                         </table>
