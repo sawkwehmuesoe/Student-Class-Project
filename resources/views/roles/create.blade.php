@@ -9,7 +9,7 @@
 
         <div class="col-md-12">
 
-            <form action="/students" method="POST" enctype="multipart/form-data">
+            <form action="/roles" method="POST" enctype="multipart/form-data">
 
                 @csrf
                     <div class="row">
@@ -28,13 +28,13 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="image">Image</label>
-                                    <input type="file" name="image"  id="image" class="form-control form-control-sm rounded-0" value="{{old('image')}}"  />
+                                    <input type="file" name="image"  id="image" class="form-control form-control-sm rounded-0"   />
                                 </div>
 
 
                                  <div class="col-md-6 mb-3">
                                     <label for="name">Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="name"  id="firstnanameme" class="form-control form-control-sm rounded-0" placeholder="Enter Role Name" value="{{old('name')}}" />
+                                    <input type="text" name="name"  id="name" class="form-control form-control-sm rounded-0" placeholder="Enter Role Name" value="{{old('name')}}" />
                                 </div>
 
                                 <div class="col-md-6">

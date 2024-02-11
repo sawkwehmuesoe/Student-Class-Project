@@ -9,7 +9,7 @@
                             <div class="col-lg-6 text-center">
                                 <ul class="list-inline">
                                     <li class="list-inline-item me-2">
-                                        <a href="#" class="text-dark">Data Land</a>
+                                        {{-- <a href="#" class="text-dark">Data Land</a> --}}
                                     </li>
                                     <li class="list-inline-item me-2">
                                         <a href="#" class="text-dark">About</a>
