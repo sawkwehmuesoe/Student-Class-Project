@@ -1,5 +1,5 @@
 @extends('layouts.adminindex')
-@section('caption','Create Roles')
+@section('caption','Edit Roles')
 
 @section('content')
 
@@ -9,17 +9,25 @@
 
         <div class="col-md-12">
 
-            <form action="/roles" method="POST" enctype="multipart/form-data">
+            <form action="{{route('roles.update',$role->id)}}" method="POST" enctype="multipart/form-data">
 
                 @csrf
+                @method('PUT')
                     <div class="row">
 
                         <div class="col-md-4">
 
+                            <div class="row">
 
-                            <label for="image" class="gallery">
-                                <span>Chooose Image</span>
-                            </label>
+                                <div class="col-md-6 text-sm-center">
+                                    <img src="{{asset($role->image)}}" class="" alt="{{$role->name}}" width="200" height="200">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="image" class="gallery"><span>Choose Image</span></label>
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -28,27 +36,30 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="image">Image</label>
-                                    <input type="file" name="image"  id="image" class="form-control form-control-sm rounded-0"   />
+                                    <input type="file" name="image"  id="image" class="form-control form-control-sm rounded-0" value="{{$role->image}}"  />
                                 </div>
-
 
                                  <div class="col-md-6 mb-3">
                                     <label for="name">Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="name"  id="name" class="form-control form-control-sm rounded-0" placeholder="Enter Role Name" value="{{old('name')}}" />
+                                    <input type="text" name="name"  id="name" class="form-control form-control-sm rounded-0" placeholder="Enter Role Name" value="{{$role->name}}" />
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="status_id">Status <span class="text-danger">*</span></label>
                                     <select type="text" name="status_id"  id="status_id" class="form-control form-control-sm rounded-0" placeholder="Enter Role Name" value="{{old('name')}}">
                                        @foreach($statuses as $status)
-                                        <option value="{{$status->id}}">{{$status->name}}</option>
+                                        <option value="{{$status->id}}"
+                                            @if ($status['id'] === $role['status_id'])
+                                                selected
+                                            @endif
+                                            >{{$status->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class='col-md-6 d-flex justify-content-end align-items-end'>
                                     <div>
-                                        <a href="{{route('students.index')}}" class="btn btn-secondary btn-sm rounded-0 ">Cancle</a>
+                                        <a href="{{route('roles.index')}}" class="btn btn-secondary btn-sm rounded-0 ">Cancle</a>
                                         <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
                                     </div>
                                 </div>

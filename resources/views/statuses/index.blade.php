@@ -28,7 +28,7 @@
 
                  </div>
 
-             </form>
+            </form>
 
         </div>
 
@@ -97,7 +97,7 @@
 
                                 <div class="row align-items-end">
                                     <div class="col-md-8">
-                                        <label for="editname">First Name <span class="text-danger">*</span></label>
+                                        <label for="editname">Name <span class="text-danger">*</span></label>
                                         <input type="text" name="name"  id="editname" class="form-control form-control-sm rounded-0" placeholder="Enter Name" value="{{old('name')}}" />
                                     </div>
 
