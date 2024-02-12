@@ -11,7 +11,7 @@
                                 <ul class="navbar-nav flex-column mt-4">
                                     <li class="nav-item nav-categories">Main</li>
                                     <li class="nav-item nav-categories"><a href="javascript:void(0);" class="nav-link text-white p-3 mb-2 sidebarlinks"><i class="fas fa-tachometer fa-lg me-3"></i>Boss</a></li>
-                                    <li class="nav-item nav-categories"><a href="javascript:void(0);" class="nav-link text-white p-3 mb-2 sidebarlinks"><i class="fas fa-tachometer fa-lg me-3"></i>Dashboard</a></li>
+                                    <li class="nav-item nav-categories"><a href="{{route('dashboard.index')}}" class="nav-link text-white p-3 mb-2 sidebarlinks"><i class="fas fa-tachometer fa-lg me-3"></i>Dashboard</a></li>
                                     <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#pagelayout"><i class="fas fa-file-alt fa-lg me-3"></i>Page Layout <i class="fas fa-angle-left mores"></i></a>
 
                                         <ul id="pagelayout" class="collapse ps-2">
@@ -60,29 +60,23 @@
                                         </ul>
                                     </li>
 
-                                    <li class="nav-item nav-categories">Manage</li>
-
-                                    <li class="nav-item"><a href="{{route('cities.index')}}" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>City</a></li>
-                                    <li class="nav-item"><a href="{{route('countries.index')}}" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>Country</a></li>
-                                    <li class="nav-item"><a href="{{route('genders.index')}}" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>Gender</a></li>
-                                    <li class="nav-item"><a href="{{route('roles.index')}}" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>Roles</a></li>
-                                    <li class="nav-item"><a href="{{route('statuses.index')}}" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i>Status</a></li>
                                     <li class="nav-item nav-categories">Date Representation</li>
 
-                                    <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#chartelement"><i class="fas fa-file-alt fa-lg me-3"></i> Chart <i class="fas fa-angle-left mores"></i></a>
+                                    <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#chartelement"><i class="fas fa-file-alt fa-lg me-3"></i> Fixed Analysis <i class="fas fa-angle-left mores"></i></a>
                                         <ul id="chartelement" class="collapse ps-2">
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Pie Chart </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Map Chart </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Line Chart </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> ChartJs  </a></li>
+                                            <li><a href="{{route('categories.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Categories</a></li>
+                                            <li><a href="{{route('statuses.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Status </a></li>
+                                            <li><a href="{{route('tags.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Tags </a></li>
+                                            <li><a href="{{route('types.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Types  </a></li>
                                         </ul>
                                     </li>
 
-                                    <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"  data-bs-toggle="collapse" data-bs-target="#tableelement"><i class="fas fa-file-alt fa-lg me-3"></i> Tables <i class="fas fa-angle-left mores"></i></a>
+                                    <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"  data-bs-toggle="collapse" data-bs-target="#tableelement"><i class="fas fa-file-alt fa-lg me-3"></i> Addon <i class="fas fa-angle-left mores"></i></a>
                                         <ul id="tableelement" class="collapse ps-2">
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Basic Table </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Data Table </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Sortable table </a></li>
+                                            <li><a href="{{route('cities.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> City </a></li>
+                                            <li><a href="{{route('countries.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Country </a></li>
+                                            <li><a href="{{route('genders.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Gender </a></li>
+                                            <li><a href="{{route('roles.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Roles </a></li>
                                         </ul>
                                     </li>
 
