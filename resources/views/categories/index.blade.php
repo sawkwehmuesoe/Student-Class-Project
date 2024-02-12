@@ -63,7 +63,11 @@
                         <tr>
                             <td>{{ ++$idx }}</td>
                             <td>{{ $category->name }}</td>
-                            <td>{{ $category->status->name }}</td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" {{ $category->status_id === 3 ? 'checked' : ''}} />
+                                </div>
+                            </td>
                             <td>{{ $category['user']['name'] }}</td>
                             <td>{{ $category->created_at->format('d M Y') }}</td>
                             <td>{{ $category->updated_at->format('d M Y') }}</td>

@@ -21,25 +21,18 @@
 
                                     </li>
 
-                                    <li class="nav-item nav-categories"><a href="javascript:void(0);"  class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#sidebarlayout"><i class="fas fa-file-alt fa-lg me-3" ></i> Sidebar Layout <i class="fas fa-angle-left mores"></i></a>
+                                    <li class="nav-item nav-categories"><a href="javascript:void(0);"  class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#sidebarlayout"><i class="fas fa-file-alt fa-lg me-3" ></i> Form <i class="fas fa-angle-left mores"></i></a>
                                         <ul id="sidebarlayout" class="collapse ps-2">
-                                            <li class="nav-item"><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Compact Menu </a></li>
-                                            <li class="nav-item"><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Icon Menu </a></li>
-                                            <li class="nav-item"><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Sidebar Hidden </a></li>
-                                            <li class="nav-item"><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Sidebar Overlay </a></li>
-                                            <li class="nav-item"><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Sidebar Fixed </a></li>
+                                            <li class="nav-item"><a href="{{route('attendances.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Att Form </a></li>
                                         </ul>
                                     </li>
                                     <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-lg me-3"></i> Widgets</a></li>
 
                                     <li class="nav-item nav-categories">UI Features</li>
-                                    <li class=""><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"  data-bs-toggle="collapse" data-bs-target="#basicui"><i class="fas fa-file-alt fa-lg me-3"></i> Basic UI Element <i class="fas fa-angle-left mores"></i></a>
+                                    <li class=""><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"  data-bs-toggle="collapse" data-bs-target="#basicui"><i class="fas fa-file-alt fa-lg me-3"></i> Articles <i class="fas fa-angle-left mores"></i></a>
                                         <ul id="basicui" class="collapse ps-2">
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Accordions </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Buttons </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Badges </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Breadcrumbs </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Dropdowns </a></li>
+                                            <li><a href="{{route('posts.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Post </a></li>
+                                            <li><a href="javascript:void(0);" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Announcement </a></li>
                                         </ul>
                                     </li>
 
