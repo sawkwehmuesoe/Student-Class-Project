@@ -18,7 +18,7 @@ class Post extends Model
         'content',
         'fee',
         'startdate',
-        'endate',
+        'enddate',
         'starttime',
         'endtime',
         'type_id',
@@ -27,6 +27,13 @@ class Post extends Model
         'status_id',
         'user_id'
     ];
+
+    public function attstatus(){
+                                    // related foreignKey
+        // return $this->belongsTo(Status::class,'attshow');
+                                    // related foreignKey , ownerkey
+        return $this->belongsTo(Status::class,'attshow','id');
+    }
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -41,6 +48,11 @@ class Post extends Model
     }
 
     public function type(){
-        return $this->belongsTo(Type::class);
+                                // related
+        // return $this->belongsTo(Type::class);
+                                // related foreignKey
+        // return $this->belongsTo(Type::class,'type_id');
+                                //related foreignKey ownerKey
+        return $this->belongsTo(Type::class,'type_id','id');
     }
 }

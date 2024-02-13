@@ -19,7 +19,7 @@ return new class extends Migration
             $table->longText('content');
             $table->decimal('fee',8,2)->default(0);
             $table->date('startdate')->nullable();
-            $table->date('endate')->nullable();
+            $table->date('enddate')->nullable();
             $table->time('starttime')->nullable();
             $table->time('endtime')->nullable();
             $table->unsignedBigInteger('type_id');
