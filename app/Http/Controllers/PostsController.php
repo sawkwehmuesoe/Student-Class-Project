@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Status;
 use App\Models\Tag;
@@ -83,7 +84,9 @@ class PostsController extends Controller
     public function show(string $id)
     {
         $post = Post::findOrfail($id);
-        return view('posts.show',["post"=>$post]);
+        // $comments = Comment::where('commentable_id',$post->id)->where('commentable_type','App\Models\Post')->orderBy('created_at','desc')->get();
+        $comments = $post->comments()->orderBy('created_at','desc')->get();
+        return view('posts.show',["post"=>$post,'comments'=>$comments]);
     }
 
 

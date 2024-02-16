@@ -39,6 +39,10 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function comments(){
+        return $this->morphMany(Comment::class,'commentable');
+    }
+
     public function status(){
         return $this->belongsTo(Status::class);
     }
@@ -46,6 +50,8 @@ class Post extends Model
     public function tag(){
         return $this->belongsTo(Tag::class);
     }
+
+
 
     public function type(){
                                 // related
