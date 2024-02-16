@@ -7,44 +7,12 @@
 
     <div class="container-fluid">
 
-        <div class="col-md-12">
 
-            <form action="{{ route('categories.store') }}" method="POST">
-
-                {{ csrf_field() }}
-
-                <div class="row align-items-end">
-                    <div class="col-md-4">
-                        <label for="name">Name <span class="text-danger">*</span></label>
-                        <input category="text" name="name" id="name" class="form-control form-control-sm rounded-0"
-                            placeholder="Enter category Name" value="{{ old('name') }}" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="status_id">Status</label>
-                        <select name="status_id" id="status_id" class="form-control form-control-sm rounded-0">
-                            @foreach ($statuses as $status)
-                                <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class='col-md-4 mt-3'>
-
-                        <button category="reset" class="btn btn-secondary btn-sm rounded-0">Cancel</button>
-                        <button category="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
-
-                    </div>
-
-                </div>
-
-            </form>
-
-        </div>
-
-        <hr />
+        <a href="#createmodal" class="btn btn-primary btn-sm rounded-0" data-bs-toggle="modal">Create</a>
 
         <div class="col-md-12">
+
+            <hr />
 
             <table class="table table-sm table-hover border">
                 <thead>
@@ -92,6 +60,57 @@
     <!-- End Page Content Area -->
 
     {{-- Start Model Area  --}}
+
+        {{-- start create model --}}
+        <div id="createmodal" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content rounded-0">
+
+                    <div class="modal-header">
+                        <h6 class="modal-title">Create Form</h6>
+                        <button category="category" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="{{route('categories.store')}}" method="POST"> {{--- id="{{route('categories.store')}}"  --}}
+
+                            {{ csrf_field() }}
+
+                            <div class="row align-items-end">
+                                <div class="col-md-7">
+                                    <label for="name">Name <span class="text-danger">*</span></label>
+                                    <input category="text" name="name" id="name"
+                                        class="form-control form-control-sm rounded-0" placeholder="Enter Name"
+                                        value="{{ old('name') }}" />
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="status_id">Status</label>
+                                    <select name="status_id" id="status_id" class="form-control form-control-sm rounded-0">
+                                        @foreach ($statuses as $status)
+                                            <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class='col-md-2 mt-3'>
+                                    <button category="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{-- end edit model --}}
+
     {{-- start edit model --}}
     <div id="editmodal" class="modal fade">
         <div class="modal-dialog modal-dialog-centered ">

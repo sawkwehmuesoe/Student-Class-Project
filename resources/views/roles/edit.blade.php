@@ -46,7 +46,7 @@
 
                                 <div class="col-md-6">
                                     <label for="status_id">Status <span class="text-danger">*</span></label>
-                                    <select type="text" name="status_id"  id="status_id" class="form-control form-control-sm rounded-0" placeholder="Enter Role Name" value="{{old('name')}}">
+                                    <select name="status_id"  id="status_id" class="form-control form-control-sm rounded-0" placeholder="Enter Role Name" value="{{old('name')}}">
                                        @foreach($statuses as $status)
                                         <option value="{{$status->id}}"
                                             @if ($status['id'] === $role['status_id'])

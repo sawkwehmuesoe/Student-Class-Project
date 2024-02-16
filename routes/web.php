@@ -3,8 +3,10 @@
 use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\DashboardsController;
+use App\Http\Controllers\DaysController;
 use App\Http\Controllers\GendersController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
@@ -45,7 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('attendances',AttendancesController::class);
     Route::resource('categories',CategoriesController::class);
     Route::resource('cities',CitiesController::class);
+    Route::resource('comments',CommentsController::class);
     Route::resource('countries',CountriesController::class);
+    Route::resource('days',DaysController::class);
     Route::resource('genders',GendersController::class);
     Route::resource('posts',PostsController::class);
     Route::resource('roles',RolesController::class);
