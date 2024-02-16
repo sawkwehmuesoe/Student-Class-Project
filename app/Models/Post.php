@@ -18,7 +18,7 @@ class Post extends Model
         'content',
         'fee',
         'startdate',
-        'endate',
+        'enddate',
         'starttime',
         'endtime',
         'type_id',
@@ -28,8 +28,19 @@ class Post extends Model
         'user_id'
     ];
 
+    public function attstatus(){
+                                    // related foreignKey
+        // return $this->belongsTo(Status::class,'attshow');
+                                    // related foreignKey , ownerkey
+        return $this->belongsTo(Status::class,'attshow','id');
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function comments(){
+        return $this->morphMany(Comment::class,'commentable');
     }
 
     public function status(){
@@ -40,7 +51,14 @@ class Post extends Model
         return $this->belongsTo(Tag::class);
     }
 
+
+
     public function type(){
-        return $this->belongsTo(Type::class);
+                                // related
+        // return $this->belongsTo(Type::class);
+                                // related foreignKey
+        // return $this->belongsTo(Type::class,'type_id');
+                                //related foreignKey ownerKey
+        return $this->belongsTo(Type::class,'type_id','id');
     }
 }
