@@ -10,6 +10,7 @@
         <div class="col-md-12">
 
             <a href="{{route('posts.index')}}" class="btn btn-secondary btn-sm rounded-0">Close</a>
+            <a href="#" class="btn btn-primary btn-sm rounded-0">Enroll</a>
 
             <hr/>
 
@@ -37,9 +38,19 @@
                                 <div class="col-md-6">
                                     <i class="fas fa-file fa-sm"></i> <span>{{$post['attstatus']['name']}}</span>
                                     <br/>
-                                    <i class="fas fa-calendar-alt fa-sm"></i> <span>{{date('d M Y',strtotime($post->updated_at))}} | {{date('h:i:s A',strtotime($post->updated_at))}}</span>
+                                    <i class="fas fa-calendar-alt fa-sm"></i> <span>{{date('d M Y',strtotime($post->created_at))}} | {{date('h:i:s A',strtotime($post->updated_at))}}</span>
                                     <br/>
                                     <i class="fas fa-edit fa-sm"></i> <span>{{date('d M Y h:i:s A',strtotime($post->updated_at))}}</span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <i class="fas fa-calendar fa-sm"></i>
+                                    <span>
+                                        @foreach ($dayables as $dayable)
+                                            {{$dayable['name']}} ,
+                                        @endforeach
+                                    </span>
+
                                 </div>
                             </div>
                         </div>
@@ -119,6 +130,56 @@
     </div>
 
 <!-- End Page Content Area -->
+
+ {{-- start create model --}}
+ <div id="createmodal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content rounded-0">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Enroll Form</h6>
+                <button category="category" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{route('categories.store')}}" method="POST"> {{--- id="{{route('categories.store')}}"  --}}
+
+                    {{ csrf_field() }}
+
+                    <div class="row align-items-end">
+                        <div class="col-md-7">
+                            <label for="name">Name <span class="text-danger">*</span></label>
+                            <input category="text" name="name" id="name"
+                                class="form-control form-control-sm rounded-0" placeholder="Enter Name"
+                                value="{{ old('name') }}" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="status_id">Status</label>
+                            <select name="status_id" id="status_id" class="form-control form-control-sm rounded-0">
+                                @foreach ($statuses as $status)
+                                    <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class='col-md-2 mt-3'>
+                            <button category="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{{-- end create model --}}
 
 @endsection('content')
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Day;
+use App\Models\Dayable;
 use App\Models\Post;
 use App\Models\Status;
 use App\Models\Tag;
@@ -24,10 +26,11 @@ class PostsController extends Controller
     public function create()
     {
         $attshows = Status::whereIn('id',[3,4])->get();
+        $days = Day::where('status_id',3)->get();
         $statuses = Status::whereIn('id',[7,10,11])->get();
         $tags = Tag::where('status_id',3)->get();
         $types = Type::whereIn('id',[1,2])->get();
-        return view('posts.create',compact('attshows','statuses','types','tags'));
+        return view('posts.create',compact('attshows','days','statuses','types','tags'));
     }
 
 
@@ -78,15 +81,55 @@ class PostsController extends Controller
         }
 
         $post->save();
+
+        if($post->id){
+
+            // dd($request['day_id']);
+
+            // creat dayable
+
+            // Method 1
+            if(count($request['day_id']) > 0){
+
+                foreach($request['day_id'] as $key=>$value){
+                    Dayable::create([
+                        // 'day_id'=>$request['day_id'][$key],
+                        'day_id'=>$value,
+                        'dayable_id'=>$post->id,
+                        'dayable_type'=>$request['dayable_type']
+                    ]);
+                }
+
+            }
+
+            // Method 2
+            // if(count($request['day_id']) > 0){
+
+            //     foreach($request['day_id'] as $key=>$value){
+            //         $day=[
+            //             // 'day_id'=>$request['day_id'][$key],
+            //             'day_id'=>$value,
+            //             'dayable_id'=>$post['id'],
+            //             'dayable_type'=>$request['dayable_type']
+            //         ];
+            //     }
+
+            //     Dayable::insert($day);
+
+            // }
+        }
+
+
         return redirect(route('posts.index'));
     }
 
     public function show(string $id)
     {
         $post = Post::findOrfail($id);
+        $dayables = $post->days()->get();
         // $comments = Comment::where('commentable_id',$post->id)->where('commentable_type','App\Models\Post')->orderBy('created_at','desc')->get();
         $comments = $post->comments()->orderBy('created_at','desc')->get();
-        return view('posts.show',["post"=>$post,'comments'=>$comments]);
+        return view('posts.show',["post"=>$post,'dayables'=>$dayables,'comments'=>$comments]);
     }
 
 
@@ -94,10 +137,13 @@ class PostsController extends Controller
     {
         $post = Post::findOrFail($id);
         $attshows = Status::whereIn('id',[3,4])->get();
+        $days = Day::where('status_id',3)->get();
+        $dayables = $post->days()->get();
+        // dd($dayables);
         $statuses = Status::whereIn('id',[7,10,11])->get();
         $tags = Tag::where('status_id',3)->get();
         $types = Type::whereIn('id',[1,2])->get();
-        return view('posts.edit')->with('post',$post)->with('attshows',$attshows)->with('statuses',$statuses)->with('tags',$tags)->with('types',$types);
+        return view('posts.edit')->with('post',$post)->with('attshows',$attshows)->with('days',$days)->with('dayables',$dayables)->with('statuses',$statuses)->with('tags',$tags)->with('types',$types);
     }
 
     public function update(Request $request, string $id)
@@ -154,6 +200,55 @@ class PostsController extends Controller
 
             $post->image = $filepath;
         }
+
+        // if($post->id){
+
+        //     // dd($request['day_id']);
+
+        //     // creat dayable
+
+        //     // Method 1
+        //     if(count($request['day_id']) > 0){
+
+        //         $post->days()->detach();
+
+        //         foreach($request['day_id'] as $key=>$value){
+        //             Dayable::create([
+        //                 // 'day_id'=>$request['day_id'][$key],
+        //                 'day_id'=>$value,
+        //                 'dayable_id'=>$post->id,
+        //                 'dayable_type'=>$request['dayable_type']
+        //             ]);
+        //         }
+
+        //     }
+        // }
+
+        // dd($request['newday_id']);
+
+        if(isset($request['newday_id'])){
+
+            foreach($request['newday_id'] as $key=>$value){
+                $dayable = Dayable::where('dayable_id',$post['id'])->where('dayable_type',$request['dayable_type']);
+                $dayable->delete();
+            }
+
+            // add newday
+            foreach($request['newday_id'] as $key=>$value){
+
+                $renewday = [
+                    'day_id' => $request['newday_id'][$key],
+                    'dayable_id' => $post['id'],
+                    'dayable_type'=>$request['dayable_type']
+                ];
+
+                Dayable::insert($renewday);
+
+            }
+
+        }
+
+        // End Day Action
 
         $post->save();
         return redirect(route('posts.index'));

@@ -51,8 +51,6 @@ class Post extends Model
         return $this->belongsTo(Tag::class);
     }
 
-
-
     public function type(){
                                 // related
         // return $this->belongsTo(Type::class);
@@ -60,5 +58,9 @@ class Post extends Model
         // return $this->belongsTo(Type::class,'type_id');
                                 //related foreignKey ownerKey
         return $this->belongsTo(Type::class,'type_id','id');
+    }
+
+    public function days(){
+        return $this->morphToMany(Day::class,'dayable');
     }
 }
