@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Day extends Model
+class Stage extends Model
 {
     use HasFactory;
 
-    protected $table = "days";
-    protected $pprimaryKey = "id";
-    protected $fillable = [
+    protected $table = "stages";
+    protected $primaryKEy = "id";
+    protected $fillable =[
         'name',
         'slug',
         'status_id',
@@ -24,9 +24,5 @@ class Day extends Model
 
     public function status(){
         return $this->belongsTo(Status::class);
-    }
-
-    public function posts(){
-        return $this->morphedByMany(Post::class,'dayable');
     }
 }

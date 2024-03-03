@@ -10,6 +10,9 @@
         <div class="col-md-12">
 
             <a href="{{route('posts.index')}}" class="btn btn-secondary btn-sm rounded-0">Close</a>
+            @if(!$post->checkenroll($userdata->id))
+            <a href="#createmodal" class="btn btn-primary btn-sm rounded-0" data-bs-toggle="modal">Enroll</a>
+            @endif()
 
             <hr/>
 
@@ -37,9 +40,19 @@
                                 <div class="col-md-6">
                                     <i class="fas fa-file fa-sm"></i> <span>{{$post['attstatus']['name']}}</span>
                                     <br/>
-                                    <i class="fas fa-calendar-alt fa-sm"></i> <span>{{date('d M Y',strtotime($post->updated_at))}} | {{date('h:i:s A',strtotime($post->updated_at))}}</span>
+                                    <i class="fas fa-calendar-alt fa-sm"></i> <span>{{date('d M Y',strtotime($post->created_at))}} | {{date('h:i:s A',strtotime($post->updated_at))}}</span>
                                     <br/>
                                     <i class="fas fa-edit fa-sm"></i> <span>{{date('d M Y h:i:s A',strtotime($post->updated_at))}}</span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <i class="fas fa-calendar fa-sm"></i>
+                                    <span>
+                                        @foreach ($dayables as $dayable)
+                                            {{$dayable['name']}} ,
+                                        @endforeach
+                                    </span>
+
                                 </div>
                             </div>
                         </div>
@@ -120,13 +133,143 @@
 
 <!-- End Page Content Area -->
 
+ {{-- start create model --}}
+ <div id="createmodal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content rounded-0">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Enroll Form</h6>
+                <button category="category" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{route('enrolls.store')}}" method="POST" enctype="multipart/form-data"> {{--- id="{{route('categories.store')}}"  --}}
+
+                    {{ csrf_field() }}
+
+                    <div class="row align-items-end">
+
+                        <div class="col-md-12 mb-3">
+                            <label for="image" class="gallery">
+                                <span>Chooose Image</span>
+                            </label>
+                            <input type="file" name="image"  id="image" class="form-control form-control-sm rounded-0"  hidden />
+                        </div>
+
+                        <div class="col-md-10">
+                            <label for="remark">Remark <span class="text-danger">*</span></label>
+                            <textarea category="remark" name="remark" id="remark"
+                                class="form-control form-control-sm rounded-0" rows="3" placeholder="Enter Remark">{{old('remark')}}</textarea>
+                        </div>
+
+                        <div class='col-md-2 mt-3'>
+                            <button category="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
+                        </div>
+
+                         {{-- Start Hidden Field --}}
+                         <input type="hidden" name="post_id" id="post_id" value="{{$post->id}}" />
+                         {{-- End Hidden Field --}}
+                     </form>
+
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{{-- end create model --}}
+
 @endsection('content')
 
 @section('css')
     <style type="text/css">
+
+        /* Start Comment */
         .chat-boxs{
             height: 200px;
             overflow-y: scroll;
         }
+        /* End Comment */
+
+        /* Start image preview */
+
+        .gallery{
+			width: 100%;
+			background-color: #eee;
+			color: #aaa;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+			text-align: center;
+			padding: 10px;
+
+		}
+
+		.removetxt span{
+			display: none;
+		}
+
+		.gallery img{
+			width: 100px;
+			height: 100px;
+			border: 2px dashed #000;
+		}
+
+        /* End image preview */
     </style>
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        // console.log("hi");
+
+        var previewimages = function(input,output){
+
+            if(input.files){
+
+                var totalfiles = input.files.length;
+                // console.log(totalfiles);
+
+                if(totalfiles > 0){
+                    $(".gallery").addClass('removetxt');
+                }else{
+                    $(".gallery").removeClass('removetxt');
+                }
+
+                for(var i=0; i < totalfiles ; i++){
+                    // console.log(i);
+
+                    var filereader = new FileReader();
+
+                    filereader.onload = function(e){
+                        $(output).html('');
+                        $($.parseHTML('<img>')).attr('src',e.target.result).appendTo(output);
+                    }
+
+                    filereader.readAsDataURL(input.files[i]);
+
+                }
+
+            }
+
+        }
+
+        $("#image").change(function(){
+            previewimages(this,'label.gallery');
+        })
+
+    });
+
+</script>
 @endsection
