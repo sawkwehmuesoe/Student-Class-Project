@@ -1,5 +1,5 @@
 @extends('layouts.adminindex')
-@section('caption', 'Categories List')
+@section('caption', 'Stages List')
 
 @section('content')
 
@@ -27,23 +27,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $idx => $category)
+                    @foreach ($stages as $idx => $stage)
                         <tr>
                             <td>{{ ++$idx }}</td>
-                            <td>{{ $category->name }}</td>
+                            <td>{{ $stage->name }}</td>
                             <td>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" {{ $category->status_id === 3 ? 'checked' : ''}} />
+                                    <input type="checkbox" class="form-check-input" {{ $stage->status_id === 3 ? 'checked' : ''}} />
                                 </div>
                             </td>
-                            <td>{{ $category['user']['name'] }}</td>
-                            <td>{{ $category->created_at->format('d M Y') }}</td>
-                            <td>{{ $category->updated_at->format('d M Y') }}</td>
+                            <td>{{ $stage['user']['name'] }}</td>
+                            <td>{{ $stage->created_at->format('d M Y') }}</td>
+                            <td>{{ $stage->updated_at->format('d M Y') }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $category->id }}" data-name="{{ $category->name }}" data-status="{{ $category->status_id }}"><i class="fas fa-pen"></i></a>
+                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $stage->id }}" data-name="{{ $stage->name }}" data-status="{{ $stage->status_id }}"><i class="fas fa-pen"></i></a>
                                 <a href="#" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a>
                             </td>
-                            <form id="formdelete-{{ $idx }}" action="{{ route('categories.destroy', $category->id) }}"
+                            <form id="formdelete-{{ $idx }}" action="{{ route('stages.destroy', $stage->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -68,18 +68,18 @@
 
                     <div class="modal-header">
                         <h6 class="modal-title">Create Form</h6>
-                        <button category="category" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button stage="stage" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
                     <div class="modal-body">
-                        <form action="{{route('categories.store')}}" method="POST"> {{--- id="{{route('categories.store')}}"  --}}
+                        <form action="{{route('stages.store')}}" method="POST"> {{--- id="{{route('stages.store')}}"  --}}
 
                             {{ csrf_field() }}
 
                             <div class="row align-items-end">
                                 <div class="col-md-7">
                                     <label for="name">Name <span class="text-danger">*</span></label>
-                                    <input category="text" name="name" id="name"
+                                    <input stage="text" name="name" id="name"
                                         class="form-control form-control-sm rounded-0" placeholder="Enter Name"
                                         value="{{ old('name') }}" />
                                 </div>
@@ -94,7 +94,7 @@
                                 </div>
 
                                 <div class='col-md-2 mt-3'>
-                                    <button category="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
+                                    <button stage="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
                                 </div>
 
                             </div>
@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        {{-- end create model --}}
+        {{-- end edit model --}}
 
     {{-- start edit model --}}
     <div id="editmodal" class="modal fade">
@@ -118,7 +118,7 @@
 
                 <div class="modal-header">
                     <h6 class="modal-title">Edit Form</h6>
-                    <button category="category" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button stage="stage" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
@@ -130,7 +130,7 @@
                         <div class="row align-items-end">
                             <div class="col-md-7">
                                 <label for="editname">Name <span class="text-danger">*</span></label>
-                                <input category="text" name="name" id="editname"
+                                <input stage="text" name="name" id="editname"
                                     class="form-control form-control-sm rounded-0" placeholder="Enter Name"
                                     value="{{ old('name') }}" />
                             </div>
@@ -145,7 +145,7 @@
                             </div>
 
                             <div class='col-md-2 mt-3'>
-                                <button category="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
+                                <button stage="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
                             </div>
 
                         </div>
@@ -167,7 +167,7 @@
 @endsection('content')
 
 @section('scripts')
-    <script category="text/javascript">
+    <script stage="text/javascript">
         $(document).ready(function() {
             // Start Edit Form
 
@@ -179,7 +179,7 @@
                 $('#editstatus_id').val($(this).data('status'));
 
                 const getid = $(this).attr('data-id');
-                $('#formaction').attr('action',`/categories/${getid}`);
+                $('#formaction').attr('action',`/stages/${getid}`);
 
                 e.preventDefault();
 

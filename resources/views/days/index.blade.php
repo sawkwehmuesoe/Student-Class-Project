@@ -1,5 +1,5 @@
 @extends('layouts.adminindex')
-@section('caption', 'Categories List')
+@section('caption', 'Days List')
 
 @section('content')
 
@@ -27,7 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $idx => $category)
+                    @foreach ($days as $idx => $category)
                         <tr>
                             <td>{{ ++$idx }}</td>
                             <td>{{ $category->name }}</td>
@@ -43,7 +43,7 @@
                                 <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $category->id }}" data-name="{{ $category->name }}" data-status="{{ $category->status_id }}"><i class="fas fa-pen"></i></a>
                                 <a href="#" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a>
                             </td>
-                            <form id="formdelete-{{ $idx }}" action="{{ route('categories.destroy', $category->id) }}"
+                            <form id="formdelete-{{ $idx }}" action="{{ route('days.destroy', $category->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="{{route('categories.store')}}" method="POST"> {{--- id="{{route('categories.store')}}"  --}}
+                        <form action="{{route('days.store')}}" method="POST"> {{--- id="{{route('days.store')}}"  --}}
 
                             {{ csrf_field() }}
 
@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        {{-- end create model --}}
+        {{-- end edit model --}}
 
     {{-- start edit model --}}
     <div id="editmodal" class="modal fade">
@@ -179,7 +179,7 @@
                 $('#editstatus_id').val($(this).data('status'));
 
                 const getid = $(this).attr('data-id');
-                $('#formaction').attr('action',`/categories/${getid}`);
+                $('#formaction').attr('action',`/days/${getid}`);
 
                 e.preventDefault();
 
