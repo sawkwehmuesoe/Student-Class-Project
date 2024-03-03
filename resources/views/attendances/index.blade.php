@@ -68,7 +68,7 @@
                     @foreach ($attendances as $idx => $attendance)
                         <tr>
                             <td>{{ ++$idx }}</td>
-                            <td></td>
+                            <td>{{ $attendance->student->regnumber}}</td>
                             <td>{{ $attendance->post['title'] }}</td>
                             <td>{{ $attendance->attcode }}</td>
                             <td>{{ $attendance['user']['name'] }}</td>
