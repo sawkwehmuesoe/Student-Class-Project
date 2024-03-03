@@ -126,6 +126,7 @@ class PostsController extends Controller
     public function show(string $id)
     {
         $post = Post::findOrfail($id);
+        // dd($post->checkenroll(1));
         $dayables = $post->days()->get();
         // $comments = Comment::where('commentable_id',$post->id)->where('commentable_type','App\Models\Post')->orderBy('created_at','desc')->get();
         $comments = $post->comments()->orderBy('created_at','desc')->get();

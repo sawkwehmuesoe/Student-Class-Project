@@ -10,7 +10,9 @@
         <div class="col-md-12">
 
             <a href="{{route('posts.index')}}" class="btn btn-secondary btn-sm rounded-0">Close</a>
-            <a href="#" class="btn btn-primary btn-sm rounded-0">Enroll</a>
+            @if(!$post->checkenroll($userdata->id))
+            <a href="#createmodal" class="btn btn-primary btn-sm rounded-0" data-bs-toggle="modal">Enroll</a>
+            @endif()
 
             <hr/>
 
@@ -142,30 +144,33 @@
             </div>
 
             <div class="modal-body">
-                <form action="{{route('categories.store')}}" method="POST"> {{--- id="{{route('categories.store')}}"  --}}
+                <form action="{{route('enrolls.store')}}" method="POST" enctype="multipart/form-data"> {{--- id="{{route('categories.store')}}"  --}}
 
                     {{ csrf_field() }}
 
                     <div class="row align-items-end">
-                        <div class="col-md-7">
-                            <label for="name">Name <span class="text-danger">*</span></label>
-                            <input category="text" name="name" id="name"
-                                class="form-control form-control-sm rounded-0" placeholder="Enter Name"
-                                value="{{ old('name') }}" />
+
+                        <div class="col-md-12 mb-3">
+                            <label for="image" class="gallery">
+                                <span>Chooose Image</span>
+                            </label>
+                            <input type="file" name="image"  id="image" class="form-control form-control-sm rounded-0"  hidden />
                         </div>
 
-                        <div class="col-md-3">
-                            <label for="status_id">Status</label>
-                            <select name="status_id" id="status_id" class="form-control form-control-sm rounded-0">
-                                @foreach ($statuses as $status)
-                                    <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
-                                @endforeach
-                            </select>
+                        <div class="col-md-10">
+                            <label for="remark">Remark <span class="text-danger">*</span></label>
+                            <textarea category="remark" name="remark" id="remark"
+                                class="form-control form-control-sm rounded-0" rows="3" placeholder="Enter Remark">{{old('remark')}}</textarea>
                         </div>
 
                         <div class='col-md-2 mt-3'>
                             <button category="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
                         </div>
+
+                         {{-- Start Hidden Field --}}
+                         <input type="hidden" name="post_id" id="post_id" value="{{$post->id}}" />
+                         {{-- End Hidden Field --}}
+                     </form>
 
                     </div>
 
@@ -185,9 +190,86 @@
 
 @section('css')
     <style type="text/css">
+
+        /* Start Comment */
         .chat-boxs{
             height: 200px;
             overflow-y: scroll;
         }
+        /* End Comment */
+
+        /* Start image preview */
+
+        .gallery{
+			width: 100%;
+			background-color: #eee;
+			color: #aaa;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+			text-align: center;
+			padding: 10px;
+
+		}
+
+		.removetxt span{
+			display: none;
+		}
+
+		.gallery img{
+			width: 100px;
+			height: 100px;
+			border: 2px dashed #000;
+		}
+
+        /* End image preview */
     </style>
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        // console.log("hi");
+
+        var previewimages = function(input,output){
+
+            if(input.files){
+
+                var totalfiles = input.files.length;
+                // console.log(totalfiles);
+
+                if(totalfiles > 0){
+                    $(".gallery").addClass('removetxt');
+                }else{
+                    $(".gallery").removeClass('removetxt');
+                }
+
+                for(var i=0; i < totalfiles ; i++){
+                    // console.log(i);
+
+                    var filereader = new FileReader();
+
+                    filereader.onload = function(e){
+                        $(output).html('');
+                        $($.parseHTML('<img>')).attr('src',e.target.result).appendTo(output);
+                    }
+
+                    filereader.readAsDataURL(input.files[i]);
+
+                }
+
+            }
+
+        }
+
+        $("#image").change(function(){
+            previewimages(this,'label.gallery');
+        })
+
+    });
+
+</script>
 @endsection
