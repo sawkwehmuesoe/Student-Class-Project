@@ -15,7 +15,7 @@
 
             <div class="col-md-12">
 
-                <table class="table table-sm table-hover border">
+                <table id="mytable" class="table table-sm table-hover border">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -76,10 +76,17 @@
 
     <!-- End Page Content Area -->
 
-@endsection('content')
+@endsection
+
+@section('css')
+    <link href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css" />
+@endsection
 
 @section('scripts')
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
+
     <script type="text/javascript">
+
         $(document).ready(function() {
             $('.delete-btns').click(function() {
                 // console.log("hey");
@@ -92,7 +99,12 @@
                 } else {
                     return false;
                 }
-            })
+
+            });
+
+            // for-mytable
+            // let table = new DataTable('#mytable');
+            $('#mytable').DataTable();
         });
     </script>
 @endsection

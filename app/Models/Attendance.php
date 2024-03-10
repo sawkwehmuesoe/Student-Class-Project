@@ -26,8 +26,29 @@ class Attendance extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function student(){
-        return $this->belongsTo(Student::class,'user_id');
+    public function student($userid){
+        // return $this->belongsTo(Student::class,'user_id');
+
+        // Method 1
+        // $students = Student::where('user_id',$userid)->get();
+        // // dd($students);
+        // foreach($students as $student){
+        //     // dd($student);
+        //     // dd($student["regnumber"]);
+        //     return $student["regnumber"];
+        // }
+
+        // Method 2
+        $students = Student::where('user_id',$userid)->get()->pluck('regnumber');
+        //   dd($students);
+        foreach($students as $student){
+            // dd($student);
+            return $student;
+        }
+    }
+
+    public function studenturl(){
+        return Student::where('user_id',$this->user_id)->get(['students.id'])->first();
     }
 
 }
