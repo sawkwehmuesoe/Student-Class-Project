@@ -55,7 +55,6 @@ class AttendancesController extends Controller
         $attendance->name = $request['name'];
         $attendance->slug = Str::slug($request['name']);
         $attendance->status_id = $request['status_id'];
-        $attendance->user_id = $user_id;
 
         $attendance->save();
         return redirect(route('attendances.index'));

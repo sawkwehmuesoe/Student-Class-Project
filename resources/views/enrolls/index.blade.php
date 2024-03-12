@@ -54,8 +54,8 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Class</th>
                         <th>Student Id</th>
+                        <th>Class</th>
                         <th>Stage</th>
                         <th>Created At</th>
                         <th>Update At</th>
@@ -66,9 +66,9 @@
                     @foreach ($enrolls as $idx => $enroll)
                         <tr>
                             <td>{{ ++$idx }}</td>
+                            <td><a href="{{route('students.show',$enroll->studenturl())}}">{{$enroll->student()}}</a></td>
                             <td>{{$enroll->post['title']}}</td>
                             {{-- <td>{{$enroll->student($enroll->user_id)}}</td> --}}
-                            <td>{{$enroll->student()}}</td>
                             <td>{{ $enroll->stage->name }}</td>
                             <td>{{ $enroll->created_at->format('d M Y') }}</td>
                             <td>{{ $enroll->updated_at->format('d M Y') }}</td>
