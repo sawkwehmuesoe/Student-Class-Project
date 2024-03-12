@@ -177,6 +177,9 @@
 
 @section('css')
 
+    {{-- summernote css1 js1 --}}
+    <link href="{{asset('assets/libs/summernote-0.8.18-dist/summernote-lite.min.css')}}" rel="stylesheet" type="text/css" />
+
     <style type="text/css">
         .gallery {
             width: 100%;
@@ -207,6 +210,10 @@
 @endsection
 
 @section('scripts')
+
+    {{-- summer note css1 js1  --}}
+<script src="{{asset('assets/libs/summernote-0.8.18-dist/summernote-lite.min.js')}}" type="text/javascript"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             // console.log("hi");
@@ -276,6 +283,19 @@
             });
             // End Day Action
 
+        });
+
+        $('#content').summernote({
+        placeholder: 'Hello stand alone ui',
+        tabsize: 2,
+        height: 120,
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['insert', ['link']]
+        ]
         });
     </script>
 @endsection

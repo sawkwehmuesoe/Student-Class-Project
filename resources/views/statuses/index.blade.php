@@ -38,7 +38,7 @@
 
             <div class="col-md-12">
 
-                <table class="table table-sm table-hover border">
+                <table id="mytable" class="table table-sm table-hover border">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -120,11 +120,17 @@
     {{-- end edit model --}}
 {{-- End Model Area  --}}
 
-@endsection('content')
+@endsection
+
+@section('css')
+    <link href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css" />
+@endsection
 
 @section('scripts')
-    <script type="text/javascript">
 
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
 
         $(document).ready(function(){
             // start delete item
@@ -159,6 +165,8 @@
             });
 
             // End Edit Form
+
+            $('#mytable').DataTable();
         });
 
 

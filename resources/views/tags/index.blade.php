@@ -46,7 +46,7 @@
 
         <div class="col-md-12">
 
-            <table class="table table-sm table-hover border">
+            <table id="mytable" class="table table-sm table-hover border">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -141,9 +141,16 @@
     {{-- End Model Area  --}}
 
 
-@endsection('content')
+@endsection
+
+@section('css')
+    <link href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css" />
+@endsection
 
 @section('scripts')
+
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
+
     <script tag="text/javascript">
         $(document).ready(function() {
             // Start Edit Form
@@ -180,5 +187,7 @@
 
 
         });
+
+        $('#mytable').DataTable();
     </script>
 @endsection
