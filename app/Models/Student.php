@@ -28,4 +28,8 @@ class Student extends Model
     public function status(){
         return $this->belongsTo(Status::class);
     }
+
+    public function enrolls(){
+        return Enroll::where('user_id',$this['user_id'])->get();
+    }
 }

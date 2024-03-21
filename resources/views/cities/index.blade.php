@@ -38,6 +38,21 @@
         <div class="col-md-12">
 
             <div class="col-md-12">
+                <form action="" method="">
+                    <div class="row justify-content-end">
+                        <div class="col-md-2 col-sm-6 mb-2">
+                            <div class="input-group">
+                                <input type="text" name="filtername" id="filtername"
+                                    class="form-control form-control-sm rounded-0" placeholder="Search...">
+                                <button type="submit" id="btn-search" class="btn btn-secondary btn-sm "><i
+                                        class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-12">
 
                 <table class="table table-sm table-hover border">
                     <thead>
@@ -132,6 +147,24 @@
 @section('scripts')
 
     <script type="text/javascript">
+        // Start Filter
+        const getfilterbtn = document.getElementById('btn-search');
+
+        getfilterbtn.addEventListener('click',function(e){
+
+            const getfiltername = document.getElementById('filtername').value;
+            const getcururl = window.location.href;
+
+            // console.log(getcururl);
+            // console.log(getcururl.split('?')); // ['http://example.test/cities', 'filtername=apple']
+            // console.log(getcururl.split('?')[0]);
+
+            window.location.href = getcururl.split('?')[0] + '?filtername=' + getfiltername;
+            e.preventDefault();
+
+        })
+        // End Filter
+
         $(document).ready(function() {
 
             $('.delete-btns').click(function() {

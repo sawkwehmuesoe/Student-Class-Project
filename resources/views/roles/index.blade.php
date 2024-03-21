@@ -14,8 +14,26 @@
             <hr />
 
             <div class="col-md-12">
+                <form action="" method="">
+                    <div class="row justify-content-end">
+                        <div class="col-md-2 col-sm-6 mb-2">
+                            <div class="form-group">
+                                <select name="filterstatus_id" id="filterstatus_id"
+                                    class="form-control form-control-sm rounded-0">
+                                    {{-- <option value="" selected>Choose Status...</option> --}}
+                                    @foreach ($filterstatuses as $id => $name)
+                                        <option value="{{ $id }}"{{$id == request('filterstauts_id') ? "selected" : ''}}>{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-                <table id="mytable" class="table table-sm table-hover border">
+            <div class="col-md-12">
+
+                <table class="table table-sm table-hover border">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -31,7 +49,9 @@
                         @foreach ($roles as $idx => $role)
                             <tr>
                                 <td>{{ ++$idx }}</td>
-                                <td><img src="{{asset($role->image)}}" class="rounded-circle" alt="{{$role->name}}" width="20" height="20"><a href="{{route('roles.show',$role->id)}}">{{ $role->name }}</a></td>
+                                <td><img src="{{ asset($role->image) }}" class="rounded-circle" alt="{{ $role->name }}"
+                                        width="20" height="20"><a
+                                        href="{{ route('roles.show', $role->id) }}">{{ $role->name }}</a></td>
                                 <td>{{ $role->status->name }}</td>
                                 <td>{{ $role->user->name }}</td>
                                 <td>{{ $role->created_at->format('d M Y') }}</td>
@@ -62,15 +82,31 @@
 
 @endsection('content')
 
-@section('css')
-    <link href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css" />
-@endsection
-
 @section('scripts')
 
     <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        // Start Filter
+        const getfilterstatus = document.getElementById('filterstatus_id');
+
+        getfilterstatus.addEventListener('click', function(e) {
+
+            // const getstatusid = this.value;
+            const getstatusid = this.value || this.options[this.selectedIndex].value;
+            // console.log(getstatusid);
+
+            const getcururl = window.location.href;
+
+            // console.log(getcururl);
+            // console.log(getcururl.split('?')); // ['http://example.test/cities', 'filtername=apple']
+            // console.log(getcururl.split('?')[0]);
+
+            window.location.href = getcururl.split('?')[0] + '?filterstatus_id=' + getstatusid;
+            e.preventDefault();
+
+        })
+        // End Filter
         $(document).ready(function() {
             $('.delete-btns').click(function() {
                 // console.log("hey");
@@ -84,8 +120,6 @@
                     return false;
                 }
             })
-
-            $('#mytable').DataTable();
         });
     </script>
 @endsection
