@@ -26,21 +26,33 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="startdate">Start Date <span class="text-danger">*</span></label>
+                                    @error('startdate')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <input type="date" name="startdate"  id="startdate" class="form-control form-control-sm rounded-0" value="{{old('startdate')}}" />
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="enddate">End Date <span class="text-danger">*</span></label>
+                                    @error('enddate')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <input type="date" name="enddate"  id="enddate" class="form-control form-control-sm rounded-0" value="{{old('enddate')}}" />
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="starttime">Start Time <span class="text-danger">*</span></label>
+                                    @error('starttime')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <input type="time" name="starttime"  id="starttime" class="form-control form-control-sm rounded-0" value="{{old('starttime')}}" />
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="endtime">End Time <span class="text-danger">*</span></label>
+                                    @error('endtime')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <input type="time" name="endtime"  id="endtime" class="form-control form-control-sm rounded-0" value="{{old('endtime')}}" />
                                 </div>
 
@@ -70,11 +82,17 @@
 
                                 <div class="col-md-12 mb-3">
                                     <label for="title">Title <span class="text-danger">*</span></label>
+                                    @error('title')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <input type="text" name="title"  id="title" class="form-control form-control-sm rounded-0" placeholder="Enter Post Title" value="{{old('title')}}" />
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="type_id">Type <span class="text-danger">*</span></label>
+                                    @error('type_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <select name="type_id"  id="type_id" class="form-control form-control-sm rounded-0">
                                        @foreach($types as $type)
                                         <option value="{{$type->id}}">{{$type->name}}</option>
@@ -84,11 +102,17 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="fee">Fee <span class="text-danger">*</span></label>
+                                    @error('fee')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <input type="number" name="fee"  id="fee" class="form-control form-control-sm rounded-0" placeholder="Enter Fee " value="{{old('fee')}}" />
                                 </div>
 
                                 <div class="col-md-12 mb-3">
                                     <label for="content">Content <span class="text-danger">*</span></label>
+                                    @error('content')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <textarea name="content"  id="content" class="form-control form-control-sm rounded-0" rows="5" placeholder="Say Something" >{{old('content')}}</textarea>
                                 </div>
 

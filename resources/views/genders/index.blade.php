@@ -16,8 +16,14 @@
                 <div class="row align-items-end">
                     <div class="col-md-6">
                         <label for="name">First Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" id="name" class="form-control form-control-sm rounded-0"
+                        @error('name')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                        <input type="text" name="name" id="name" class="form-control form-control-sm @error('name') is-invalid @enderror rounded-0"
                             placeholder="Enter Name" value="{{ old('name') }}" />
+                        {{-- @error('name')
+                            <span class="invalid-feedback">{{$message}}</span>
+                        @enderror --}}
                     </div>
 
                     <div class='col-md-6 mt-3'>
@@ -36,6 +42,22 @@
         <hr />
 
         <div class="col-md-12">
+
+
+            <div class="col-md-12">
+                <form action="" method="">
+                    <div class="row justify-content-end">
+                        <div class="col-md-2 col-sm-6 mb-2">
+                            <div class="input-group">
+                                <input type="text" name="filtername" id="filtername"
+                                    class="form-control form-control-sm rounded-0" placeholder="Search...">
+                                <button type="submit" id="btn-search" class="btn btn-secondary btn-sm "><i
+                                        class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
             <div class="col-md-12">
 

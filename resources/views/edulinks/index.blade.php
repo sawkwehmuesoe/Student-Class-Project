@@ -1,5 +1,5 @@
 @extends('layouts.adminindex')
-@section('caption','Enroll List')
+@section('caption','Edulink List')
 @section('content')
 
     <!-- Start Page Content Area -->
@@ -7,28 +7,38 @@
     <div class="container-fluid">
 
         <div class="col-md-12">
-        <form action="{{route('attendances.store')}}" method="POST">
+        <form action="{{route('edulinks.store')}}" method="POST">
             {{ csrf_field() }}
 
             <div class="row align-items-end">
 
                 <div class="col-md-3 form-group">
                     <label for="classdate">Class Date <span class="text-danger">*</span></label>
+                    @error('classdate')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                     <input type="date" name="classdate" id="classdate" class="form-control form-control-sm rounded-0" value="{{old('classdate')}}" />
                 </div>
 
-                <div class="col-md-3 form-group">
+                <div class="col-md-3">
                     <label for="post_id">Class <span class="text-danger">*</span></label>
+                    @error('post_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                     <select name="post_id" id="post_id" class="form-control form-control-sm rounded-0">
-                        @foreach($enrolls as $enroll)
-                            <option value="{{$enroll->id}}">{{$enroll->title}}</option>
+                        <option selected disabled>Choose Class</option>
+                        @foreach ($posts as $id=>$title)
+                            <option value="{{ $id }}">{{ $title }}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="col-md-3 form-group">
-                    <label for="attcode">Attendance Code <span class="text-danger">*</span></label>
-                    <input type="text" name="attcode" id="attcode" class="form-control form-control-sm rounded-0" value="{{old('attcode')}}" />
+                    <label for="url">Url Code <span class="text-danger">*</span></label>
+                    @error('url')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                    <input type="text" name="url" id="url" class="form-control form-control-sm rounded-0" placeholder="Enter url" value="{{old('url')}}" />
                 </div>
 
                 <div class="col-md-3">
@@ -48,28 +58,30 @@
             <table id="mytable" class="table table-sm table-hover border">
             <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Student ID</th>
+                                            <th>ID</th>
                                             <th>Class</th>
-                                            <th>Stage</th>
+                                            <th>URL</th>
+                                            <th>By</th>
+                                            <th>Class Date</th>
                                             <th>Created At</th>
                                             <th>Updated At</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($enrolls as $idx=>$enroll)
+                                        @foreach($edulinks as $idx=>$edulink)
                                         <tr>
                                             <td>{{++$idx}}</td>
 
-                                            {{-- <td>{{$enroll->student($enroll->user_id)}}</td> --}}
-                                            <td><a href="{{route('students.show',$enroll->studenturl())}}">{{$enroll->student()}}</a></td>
-                                            <td><a href="{{route('posts.show',$enroll->post_id)}}">{{$enroll->post['title']}}</a></td>
-                                            <td>{{$enroll->stage->name}}</td>
-                                            <td>{{$enroll->created_at->format('d M Y')}}</td>
-                                            <td>{{$enroll->updated_at->format('d M Y')}}</td>
+                                            {{-- <td>{{$edulink->student($edulink->user_id)}}</td> --}}
+                                            <td><a href="{{route('posts.show',$edulink->post_id)}}">{{$edulink->post['title']}}</a></td>
+                                            <td><a href="#">{{$edulink->url}}</a></td>
+                                            <td>{{$edulink['user']['name']}}</td>
+                                            <td>{{date('d M Y',strtotime($edulink->classdate))}}</td>
+                                            <td>{{$edulink->created_at->format('d M Y h:i A')}}</td>
+                                            <td>{{$edulink->updated_at->format('d M Y')}}</td>
                                             <td>
-                                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{$enroll->id}}" data-attcode="{{$enroll->attcode}}" data-post="{{$enroll->post_id}}"><i class="fas fa-pen"></i></a>
+                                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{$edulink->id}}" data-attcode="{{$edulink->attcode}}" data-post="{{$edulink->post_id}}"><i class="fas fa-pen"></i></a>
                                             </td>
 
                                         </tr>
@@ -110,8 +122,8 @@
                             <div class="col-md-7 form-group">
                                 <label for="editpost_id">Class <span class="text-danger">*</span></label>
                                 <select name="post_id" id="editpost_id" class="form-control form-control-sm rounded-0">
-                                    @foreach($enrolls as $enroll)
-                                        <option value="{{$enroll->id}}">{{$enroll->title}}</option>
+                                    @foreach($edulinks as $edulink)
+                                        <option value="{{$edulink->id}}">{{$edulink->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -167,7 +179,7 @@
                 $('#editpost_id').val($(this).data('post'));
 
                 const getid = $(this).attr('data-id');
-                $('#formaction').attr('action',`/attendances/${getid}`);
+                $('#formaction').attr('action',`/edulinks/${getid}`);
 
                 e.preventDefault();
             });

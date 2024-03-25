@@ -19,9 +19,7 @@ class CountriesController extends Controller
             if($getname = request('filtername')){
                 $query->where('name','LIKE',"%".$getname."%");
             }
-        })->get();
-
-        // dd($countries);
+        })->paginate(5);
         return view('countries.index',compact('countries'));
     }
 
