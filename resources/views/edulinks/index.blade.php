@@ -1,5 +1,5 @@
 @extends('layouts.adminindex')
-@section('caption','Edulink List')
+@section('caption','Edulinks List')
 @section('content')
 
     <!-- Start Page Content Area -->
@@ -7,37 +7,45 @@
     <div class="container-fluid">
 
         <div class="col-md-12">
+
+            {{-- @if($getsuccess = session('success'))
+                <div class="alert alert-success rounded-0">{{$getsuccess}}</div>
+            @endif --}}
+
+            @if(session('success'))
+                <div class="alert alert-success rounded-0">{{session('success')}}</div>
+            @endif
+
         <form action="{{route('edulinks.store')}}" method="POST">
             {{ csrf_field() }}
 
             <div class="row align-items-end">
-
                 <div class="col-md-3 form-group">
                     <label for="classdate">Class Date <span class="text-danger">*</span></label>
-                    @error('classdate')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                        @error('classdate')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     <input type="date" name="classdate" id="classdate" class="form-control form-control-sm rounded-0" value="{{old('classdate')}}" />
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 form-group">
                     <label for="post_id">Class <span class="text-danger">*</span></label>
-                    @error('post_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                        @error('post_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     <select name="post_id" id="post_id" class="form-control form-control-sm rounded-0">
-                        <option selected disabled>Choose Class</option>
-                        @foreach ($posts as $id=>$title)
-                            <option value="{{ $id }}">{{ $title }}</option>
+                        <option selected disabled>Choose class</option>
+                        @foreach($posts as $id=>$title)
+                            <option value="{{$id}}">{{$title}}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="col-md-3 form-group">
                     <label for="url">Url Code <span class="text-danger">*</span></label>
-                    @error('url')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                        @error('url')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     <input type="text" name="url" id="url" class="form-control form-control-sm rounded-0" placeholder="Enter url" value="{{old('url')}}" />
                 </div>
 
@@ -52,6 +60,31 @@
         </div>
 
         <hr/>
+
+        {{-- <div class="col-md-12">
+            <form action="" method="">
+                <div class="row justify-content-end">
+
+                    <div class="col-md-2 col-sm-6 mb-2">
+                        <div class="form-group">
+                            <select name="filter" id="filter" class="form-control form-control-sm rounded-0" >
+                                @foreach($filterposts as $id=>$name)
+                                    <option value="{{$id}}" {{$id == request('filter') ? 'selected':''}}>{{$name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 col-sm-6 mb-2">
+                        <div class="input-group">
+                            <input type="text" name="search" id="search" class="form-control form-control-sm rounded-0" placeholder="Search..." value="{{request('search')}}" />
+                            <button type="button" id="btn-clear" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i></button>
+                            <button type="submit" id="btn-search" class="btn btn-secondary btn-sm"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div> --}}
 
         <div class="col-md-12">
 
@@ -71,24 +104,29 @@
                                     <tbody>
                                         @foreach($edulinks as $idx=>$edulink)
                                         <tr>
-                                            <td>{{++$idx}}</td>
-
-                                            {{-- <td>{{$edulink->student($edulink->user_id)}}</td> --}}
+                                            <td>{{$id   x+$edulinks->firstItem()}}</td>
                                             <td><a href="{{route('posts.show',$edulink->post_id)}}">{{$edulink->post['title']}}</a></td>
-                                            <td><a href="#">{{$edulink->url}}</a></td>
-                                            <td>{{$edulink['user']['name']}}</td>
+                                            <td><a href="javascript:void(0);" class="link-btns" data-url="{{$edulink->url}}" title="Copy Link">{{Str::limit($edulink->url,30)}}</a></td>
+                                            <td>{{$edulink["user"]['name']}}</td>
                                             <td>{{date('d M Y',strtotime($edulink->classdate))}}</td>
                                             <td>{{$edulink->created_at->format('d M Y h:i A')}}</td>
                                             <td>{{$edulink->updated_at->format('d M Y')}}</td>
                                             <td>
-                                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{$edulink->id}}" data-attcode="{{$edulink->attcode}}" data-post="{{$edulink->post_id}}"><i class="fas fa-pen"></i></a>
+                                                <a href="{{$edulink->url}}" class="text-primary" target="_blank" download><i class="fas fa-download"></i></a>
+                                                <a href="javascript:void(0);" class="text-info ms-2 editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{$edulink->id}}" data-classdate="{{$edulink->classdate}}" data-post={{$edulink->post_id}} data-url="{{$edulink->url}}"><i class="fas fa-pen"></i></a>
+                                                {{-- <a href="#" class="text-danger ms-2 delete-btns" data-idx="{{$idx + $edulinks->firstItem()}}"><i class="fas fa-trash-alt"></i></a> --}}
                                             </td>
-
+                                                {{-- <form id="formdelete-{{$idx + $edulinks->firstItem()}}" action="{{route('edulinks.destroy',$edulink->id)}}" method="POST">
+                                                    @csrf
+                                                    @method("DELETE")
+                                                </form> --}}
                                         </tr>
                                         @endforeach
                                     </tbody>
             </table>
 
+            {{$edulinks->links('pagination::bootstrap-4')}}
+            {{-- {{$edulinks->appends(request()->only('filter'))->links('pagination::bootstrap-4')}} --}}
 
 
         </div>
@@ -119,21 +157,26 @@
 
                         <div class="row align-items-end">
 
-                            <div class="col-md-7 form-group">
+                            <div class="col-md-6 form-group">
+                                <label for="editclassdate">Class Date <span class="text-danger">*</span></label>
+                                <input type="date" name="editclassdate" id="editclassdate" class="form-control form-control-sm rounded-0" />
+                            </div>
+
+                            <div class="col-md-6 form-group">
                                 <label for="editpost_id">Class <span class="text-danger">*</span></label>
-                                <select name="post_id" id="editpost_id" class="form-control form-control-sm rounded-0">
-                                    @foreach($edulinks as $edulink)
-                                        <option value="{{$edulink->id}}">{{$edulink->title}}</option>
+                                <select name="editpost_id" id="editpost_id" class="form-control form-control-sm rounded-0">
+                                    @foreach($posts as $id=>$title)
+                                        <option value="{{$id}}">{{$title}}</option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="col-md-3 form-group">
-                                <label for="editattcode">Class Date <span class="text-danger">*</span></label>
-                                <input type="text" name="attcode" id="editattcode" class="form-control form-control-sm rounded-0" />
+                            <div class="col-md-12 form-group">
+                                <label for="editurl">Url <span class="text-danger">*</span></label>
+                                <input type="text" name="editurl" id="editurl" class="form-control form-control-sm rounded-0" />
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-12 d-flex justify-content-end mt-2">
                                 <button type="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
                             </div>
 
@@ -157,39 +200,114 @@
 @endsection
 
 @section('css')
-    <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+
+        // Start Filter
+        // document.getElementById('filter').addEventListener('click',function(){
+        //     let getfilterid = this.value || this.options[this.selectedIndex].value;
+        //     window.location.href = window.location.href.split('?')[0]+'?filter='+getfilterid;
+        // });
+        // End Filter
+
+
+        // Start Btn Clear
+        // document.getElementById('btn-clear').addEventListener('click',function(){
+        //     const getfilter = document.getElementById('filter');
+        //     const getsearch = document.getElementById('search');
+
+        //     getfilter.selectedIndex = 0;
+        //     getsearch.value = "";
+
+        //     window.location.href = window.location.href.split("?")[0];
+
+        // });
+        // End Btn Clear
+
+        // Start Autoshow Btn Clear
+        // const autoshowbtn = function(){
+        //     let getbtclear = document.getElementById('btn-clear');
+        //     let geturlquery = window.location.search;  //?filter=6&search=9
+        //     // console.log(geturlquery);
+        //     let pattern = /[?&]search=/;
+
+        //     if(pattern.test(geturlquery)){
+        //         getbtclear.style.display = "block";
+        //     }else{
+        //         getbtclear.style.display = "none";
+        //     }
+        // };
+
+        // autoshowbtn();
+        // Start Autoshow Btn Clear
+
+        // Start Delete Item
+        // document.querySelectorAll('.delete-btns').forEach(function(deletebtn){
+        //     deletebtn.addEventListener('click',function(){
+        //         var getidx = this.getAttribute('data-idx');
+        //         // console.log(getidx);
+
+        //         if(confirm(`Are you sure !!! you want to Delete ${getidx} ?`)){
+        //             $('#formdelete-'+getidx).submit();
+        //             return true;
+        //         }else{
+        //             return fales;
+        //         }
+
+        //     });
+        // });
+        // End Delete Item
+
         $(document).ready(function(){
 
-            console.log('hi');
-
             // Start Edit Form
-            $(document).on('click','.editform',function(e){
+            // $(document).on('click','.editform',function(e){
 
-                console.log('hay');
+            //     $('#editclassdate').val($(this).data('classdate'));
+            //     $('#editpost_id').val($(this).data('post'));
+            //     $('#editurl').val($(this).data('url'));
 
-                console.log($(this).attr('data-attcode'),$(this).data('post'));
+            //     const getid = $(this).attr('data-id');
+            //     $('#formaction').attr('action',`/edulinks/${getid}`);
 
-                $('#editattcode').val($(this).attr('data-attcode'));
-                $('#editpost_id').val($(this).data('post'));
-
-                const getid = $(this).attr('data-id');
-                $('#formaction').attr('action',`/edulinks/${getid}`);
-
-                e.preventDefault();
-            });
+            //     e.preventDefault();
+            // });
 
             // End Edit Form
 
-            // for mytable
-            $('#mytable').DataTable();
+
+            // Start Delete Item
+            // $('.delete-btns').click(function(){
+
+            //     var getidx = $(this).data('idx');
+            //     // console.log(getidx);
+
+            //     if(confirm(`Are you sure !!! you want to Delete ${getidx} ?`)){
+            //         $('#formdelete-'+getidx).submit();
+            //         return true;
+            //     }else{
+            //         return fales;
+            //     }
+
+            // });
+            // End Delete Item
+
+
+
+            // Start link btn
+            $('.link-btns').click(function(){
+                var geturl = $(this).data('url');
+                // console.log(geturl);
+                navigator.clipboard.writeText(geturl);
+            });
+            // End link btn
 
         });
 
             </script>
 @endsection
+
+

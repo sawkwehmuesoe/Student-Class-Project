@@ -13,7 +13,7 @@ class EdulinksController extends Controller
 {
     public function index()
     {
-        $data['edulinks'] = Edulink::orderBy('updated_at','desc')->get();
+        $data['edulinks'] = Edulink::orderBy('updated_at','desc')->paginate(5);
         $data['posts'] = \DB::table('posts')->where('attshow',3)->orderBy('title','asc')->pluck('title','id'); //beware $post->['id'] :: must be call by object in view file
         return view('edulinks.index',$data);
     }
