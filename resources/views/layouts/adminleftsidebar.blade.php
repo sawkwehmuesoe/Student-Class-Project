@@ -45,12 +45,10 @@
 
                                     <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"><i class="fas fa-file-alt fa-md me-3"></i>Popups</a></li>
 
-                                    <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#icon"><i class="fas fa-file-alt fa-md me-3" ></i> Icons <i class="fas fa-angle-left mores"></i></a>
+                                    <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#icon"><i class="fas fa-share-alt-square fa-md me-3" ></i> Apps <i class="fas fa-angle-left mores"></i></a>
                                         <ul id="icon" class="collapse ps-2">
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Material </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Flag icons </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Font Awesome </a></li>
-                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Simple Line Icons </a></li>
+                                            <li><a href="{{route('contacts.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Contacts </a></li>
+                                            <li><a href="javascript:void(0)" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Todo </a></li>
                                         </ul>
                                     </li>
 
@@ -72,6 +70,7 @@
                                             <li><a href="{{route('cities.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> City </a></li>
                                             <li><a href="{{route('countries.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Country </a></li>
                                             <li><a href="{{route('genders.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Gender </a></li>
+                                            <li><a href="{{route('relatives.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Relative </a></li>
                                             <li><a href="{{route('roles.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Roles </a></li>
                                         </ul>
                                     </li>

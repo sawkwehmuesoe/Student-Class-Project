@@ -25,4 +25,68 @@ class Edulink extends Model
     public function post(){
         return $this->belongsTo(Post::class);
     }
+
+    //Define Local Scope
+
+    // public function scope[name]($query){
+    //     return $query->[method];
+    // }
+
+    public function scopezaclassdate($query){
+        return $query->orderBy('updated_at','desc');
+    }
+
+    // public function scopefilter($query){
+    //     // search by class date
+    //     if($getfilter = request('filter')){
+    //         $query->where('post_id',$getfilter);
+    //     }
+
+    //     // search by class date / created at / updated at
+    //     if($getsearch = request('search')){
+    //         // $query->where('classdate','LIKE',"%".$getsearch."%");
+    //         // $query->where('classdate','LIKE',"%${getsearch}%")
+    //         //     ->orWhere('created_at','LIKE',"%${getsearch}%")
+    //         //     ->orWhere('updated_at','LIKE',"%${getsearch}%");
+
+    //         // search by class date / created at / updated at
+    //         // $query->where('classdate','LIKE',"%${getsearch}%");
+    //         // $query->orWhere('created_at','LIKE',"%${getsearch}%");
+    //         // $query->orWhere ('updated_at','LIKE',"%${getsearch}%");
+
+    //         // $query->where('classdate','LIKE',"%".$getsearch."%");
+    //         $query->where('classdate','LIKE',"%${getsearch}%")
+    //             ->orWhere('created_at','LIKE',"%${getsearch}%")
+    //             ->orWhere('updated_at','LIKE',"%${getsearch}%")
+    //             ->orWhereHas('post',function($query) use($getsearch){
+    //                 $query->where('title','LIKE',"%${getsearch}%");
+    //             });
+    //     }
+
+    //     return $query;
+    // }
+
+    public function scopefilteronly($query){
+        // search by class date
+        if($getfilter = request('filter')){
+            $query->where('post_id',$getfilter);
+        }
+
+        return $query;
+    }
+
+    public function scopesearchonly($query){
+
+        // search by class date / created at / updated at
+        if($getsearch = request('search')){
+            $query->where('classdate','LIKE',"%$getsearch%")
+                ->orWhere('created_at','LIKE',"%$getsearch%")
+                ->orWhere('updated_at','LIKE',"%$getsearch%")
+                ->orWhereHas('post',function($query) use($getsearch){
+                    $query->where('title','LIKE',"%$getsearch%");
+                });
+        }
+
+        return $query;
+    }
 }

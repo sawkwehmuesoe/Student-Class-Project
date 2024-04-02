@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Edulink;
+use App\Models\Post;
 use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,31 @@ class EdulinksController extends Controller
 {
     public function index()
     {
-        $data['edulinks'] = Edulink::orderBy('updated_at','desc')->paginate(5);
-        $data['posts'] = \DB::table('posts')->where('attshow',3)->orderBy('title','asc')->pluck('title','id'); //beware $post->['id'] :: must be call by object in view file
+        // $data['edulinks'] = Edulink::orderBy('updated_at','desc')->paginate(5);
+
+        // $data['edulinks'] = Edulink::where(function($query){
+
+        //     if($getfilter = request('filter')){
+        //         $query->where('post_id',$getfilter);
+        //     }
+
+        //     if($getsearch = request('search')){
+        //         // $query->where('classdate','LIKE',"%".$getsearch."%");
+        //         $query->where('classdate','LIKE',"%${getsearch}%");
+        //     }
+
+        // })->zaclassdate()->paginate(5);
+
+        // Method 2 by local Scope
+
+        // \DB::enableQueryLog();
+        $data['edulinks'] = Edulink::filteronly()->searchonly()->zaclassdate()->paginate(3);
+        // dd(\DB::getQueryLog());
+
+        // \DB::enableQueryLog();
+        $data['posts'] = DB::table('posts')->where('attshow',3)->orderBy('title','asc')->pluck('title','id'); //beware $post->['id'] :: must be call by object in view file
+        // dd(\DB::getQueryLog());
+        $data['filterposts'] = Post::whereIn('attshow',[3])->orderBy('title','asc')->pluck('title','id')->prepend('Choose Class','');
         return view('edulinks.index',$data);
     }
 
@@ -45,6 +69,9 @@ class EdulinksController extends Controller
         $edulink->user_id = $user_id;
 
         $edulink->save();
+        // return redirect(route('edulinks.index'))->with('success','New Link Created');
+
+        session()->flash('success','New Link Created');
         return redirect(route('edulinks.index'));
     }
 
@@ -65,22 +92,22 @@ class EdulinksController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request,[
-            'name'=>['required','max:50','unique:edulinks,name,'.$id],
-            'image'=>['image','mimes:png,jpg,jpeg','max:1024'],
-            'status_id'=>['required','in:3,4']
+            'editclassdate' => 'required|date',
+            'editpost_id'=>'required',
+            'editurl'=>'required'
         ]);
 
         $user = Auth::user();
         $user_id = $user->id;
 
         $edulink = Edulink::findOrFail($id);
-        $edulink->name = $request['name'];
-        $edulink->slug = Str::slug($request['name']);
-        $edulink->status_id = $request['status_id'];
+        $edulink->classdate = $request['editclassdate'];
+        $edulink->post_id = Str::slug($request['editpost_id']);
+        $edulink->url = $request['editurl'];
         $edulink->user_id = $user_id;
 
         $edulink->save();
-        return redirect(route('edulinks.index'));
+        return redirect(route('edulinks.index'))->with('success','Update Successfully');
     }
 
 
@@ -89,6 +116,8 @@ class EdulinksController extends Controller
         $edulink = edulink::findOrFail($id);
 
         $edulink->delete();
+
+        session()->flash('success','Delete Successfully');
         return redirect()->back();
     }
 }
