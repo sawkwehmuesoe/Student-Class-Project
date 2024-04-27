@@ -72,6 +72,29 @@
         <!-- Chart Js 1 -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+        <!-- toastr css1 js1 -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            toastr.options = {
+                "progressBar":true,
+                'closeButton':true
+            }
+        </script>
+
+        @if(Session::has('success'))
+            <script>toastr.success('{{session()->get('success')}}', 'Successfully');</script>
+        @endif
+
+        @if(session()->has('info'))
+            <script>toastr.info('{{session()->get('info')}}', 'Imformation');</script>
+        @endif
+
+        @if($errors)
+            @foreach($errors->all() as $error)
+                <script>toastr.error('{{$error}}','Warning',{timeOut:3000})</script>
+            @endforeach
+        @endif
+
         <!--custom js 1-->
         <script src="{{asset('assets/dist/js/app.js')}}" type="text/javascript"></script>
 

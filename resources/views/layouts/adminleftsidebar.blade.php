@@ -24,6 +24,7 @@
                                     <li class="nav-item nav-categories"><a href="javascript:void(0);"  class="nav-link p-3 text-white sidebarlinks" data-bs-toggle="collapse" data-bs-target="#sidebarlayout"><i class="fas fa-file-alt fa-md me-3" ></i> Form <i class="fas fa-angle-left mores"></i></a>
                                         <ul id="sidebarlayout" class="collapse ps-2">
                                             <li class="nav-item"><a href="{{route('attendances.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Att Form </a></li>
+                                            <li class="nav-item"><a href="{{route('leaves.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Leaves </a></li>
                                             <li class="nav-item"><a href="{{route('enrolls.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Enrolls </a></li>
                                         </ul>
                                     </li>

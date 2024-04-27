@@ -1,5 +1,5 @@
 @extends('layouts.adminindex')
-@section('caption', 'Days List')
+@section('caption', 'relatives List')
 
 @section('content')
 
@@ -27,23 +27,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($days as $idx => $day)
+                    @foreach ($relatives as $idx => $relative)
                         <tr>
                             <td>{{ ++$idx }}</td>
-                            <td>{{ $day->name }}</td>
+                            <td>{{ $relative->name }}</td>
                             <td>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" {{ $day->status_id === 3 ? 'checked' : ''}} />
+                                    <input type="checkbox" class="form-check-input" {{ $relative->status_id === 3 ? 'checked' : ''}} />
                                 </div>
                             </td>
-                            <td>{{ $day['user']['name'] }}</td>
-                            <td>{{ $day->created_at->format('d M Y') }}</td>
-                            <td>{{ $day->updated_at->format('d M Y') }}</td>
+                            <td>{{ $relative['user']['name'] }}</td>
+                            <td>{{ $relative->created_at->format('d M Y') }}</td>
+                            <td>{{ $relative->updated_at->format('d M Y') }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $day->id }}" data-name="{{ $day->name }}" data-status="{{ $day->status_id }}"><i class="fas fa-pen"></i></a>
+                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $relative->id }}" data-name="{{ $relative->name }}" data-status="{{ $relative->status_id }}"><i class="fas fa-pen"></i></a>
                                 <a href="#" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a>
                             </td>
-                            <form id="formdelete-{{ $idx }}" action="{{ route('days.destroy', $day->id) }}"
+                            <form id="formdelete-{{ $idx }}" action="{{ route('relatives.destroy', $relative->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="{{route('days.store')}}" method="POST"> {{--- id="{{route('days.store')}}"  --}}
+                        <form action="{{route('relatives.store')}}" method="POST"> {{--- id="{{route('relatives.store')}}"  --}}
 
                             {{ csrf_field() }}
 
@@ -179,7 +179,7 @@
                 $('#editstatus_id').val($(this).data('status'));
 
                 const getid = $(this).attr('data-id');
-                $('#formaction').attr('action',`/days/${getid}`);
+                $('#formaction').attr('action',`/relatives/${getid}`);
 
                 e.preventDefault();
 

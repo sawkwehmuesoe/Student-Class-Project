@@ -11,6 +11,7 @@ use App\Http\Controllers\DaysController;
 use App\Http\Controllers\EdulinksController;
 use App\Http\Controllers\EnrollsController;
 use App\Http\Controllers\GendersController;
+use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RelativesCotroller;
@@ -60,6 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('edulinks',EdulinksController::class);
     Route::resource('enrolls',EnrollsController::class);
     Route::resource('genders',GendersController::class);
+    Route::resource('leaves',LeavesController::class);
     Route::resource('posts',PostsController::class);
     Route::resource('relatives',RelativesCotroller::class);
     Route::resource('roles',RolesController::class);

@@ -91,10 +91,9 @@
                 <div class="row justify-content-end">
                     <div class="col-md-2 col-sm-6 mb-2">
                         <div class="form-group">
-                            <select name="filter" id="filter" class="form-control form-control-sm rounded-0">
-                                {{-- <option value="" selected>Choose Status...</option> --}}
-                                @foreach ($filterposts as $id => $name)
-                                    <option value="{{ $id }}"{{$id == request('filterstauts_id') ? "selected" : ''}}>{{ $name }}</option>
+                            <select name="filter" id="filter" class="form-control form-control-sm rounded-0" >
+                                @foreach($filterposts as $id=>$name)
+                                    <option value="{{$id}}" {{$id == request('filter') ? 'selected':''}}>{{$name}}</option>
                                 @endforeach
                             </select>
                         </div>
