@@ -10,12 +10,15 @@ use App\Models\Status;
 use App\Models\Tag;
 use App\Models\Type;
 use App\Models\User;
+use App\Notifications\LeaveNotify;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class LeavesController extends Controller
 {
@@ -35,7 +38,8 @@ class LeavesController extends Controller
         $days = Day::where('status_id',3)->get();
         $statuses = Status::whereIn('id',[7,10,11])->get();
         $data['tags'] = User::orderBy('name','asc')->get()->pluck('name','id');
-        return view('leaves.create',compact('days','statuses'),$data);
+        $data['gettoday'] = Carbon::today()->format('Y-m-d');
+        return view('leaves.create',$data);
     }
 
 
@@ -79,17 +83,19 @@ class LeavesController extends Controller
         $leave->save();
 
         session()->flash('success','New Leave Created');
+
+        // $user = User::all();
+        $tagperson = $leave->tagperson()->get();
+        // dd($tagperson);
+        $studentid = $leave->student($user_id);
+        Notification::send($tagperson,new LeaveNotify($leave->id,$leave->title,$studentid));
         return redirect(route('leaves.index'));
     }
 
     public function show(string $id)
     {
         $leave = Leave::findOrfail($id);
-        // dd($leave->checkenroll(1));
-        $dayables = $leave->days()->get();
-        // $comments = Comment::where('commentable_id',$leave->id)->where('commentable_type','App\Models\leave')->orderBy('created_at','desc')->get();
-        $comments = $leave->comments()->orderBy('created_at','desc')->get();
-        return view('leaves.show',["leave"=>$leave,'dayables'=>$dayables,'comments'=>$comments]);
+        return view('leaves.show',["leave"=>$leave]);
     }
 
 
@@ -116,7 +122,6 @@ class LeavesController extends Controller
         // ]);
 
         $user = Auth::user();
-        $user_id = $user['id'];
 
         $leave = Leave::findOrFail($id);
         $leave->post_id = $request['post_id'];
@@ -148,7 +153,7 @@ class LeavesController extends Controller
 
 
         $leave->save();
-        session()->flash('success','Leave Updated');
+        session()->flash('success','Update Successfully');
         return redirect(route('leaves.index'));
     }
 
@@ -170,3 +175,5 @@ class LeavesController extends Controller
     }
 
 }
+
+// 31 jan

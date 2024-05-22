@@ -1,5 +1,5 @@
 @extends('layouts.adminindex')
-@section('caption', 'Edit Post')
+@section('caption', 'Edit Leave')
 
 @section('content')
 
@@ -18,25 +18,40 @@
                     <div class="col-md-4">
 
                         <div class="row">
+                            <div class="col-md-12 mb-3">
 
-                            <div class="col-md-12 form-group mb-3">
-                                <label for="image" class="gallery"><span>Choose Images</span></label>
-                                <input type="file" name="image" id="image" class="form-control form-control-sm rounded-0"value="{{old('image')}}" hidden />
+                                <div class="row">
+                                    <div class="col-md-6 text-sm-center">
+                                        <img src="{{ asset($leave->image) }}" width=200 alt="{{ $leave->title }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="image" class="gallery">
+                                            <span>Chooose Image</span>
+                                        </label>
+                                        <input type="file" name="image" id="image"
+                                            class="form-control form-control-sm rounded-0" value="{{ $leave->image }}"
+                                            hidden />
+                                    </div>
+                                </div>
+
+
                             </div>
 
-                            <div class="col-md-6 form-group mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="startdate">Start Date <span class="text-danger">*</span></label>
-                                <input type="date" name="startdate" id="startdate" class="form-control form-control-sm rounded-0"  value="{{old('startdate',$leave->startdate)}}" />
+                                <input type="date" name="startdate" id="startdate"
+                                    class="form-control form-control-sm rounded-0" value="{{ $leave->startdate }}" />
                             </div>
 
-                            <div class="col-md-6 form-group mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="enddate">End Date <span class="text-danger">*</span></label>
-                                <input type="date" name="enddate" id="enddate" class="form-control form-control-sm rounded-0"  value="{{old('enddate',$leave->enddate)}}" />
-
+                                <input type="date" name="enddate" id="enddate"
+                                    class="form-control form-control-sm rounded-0" value="{{ $leave->enddate }}" />
                             </div>
 
 
                         </div>
+
                     </div>
 
                     <div class="col-md-8">
@@ -44,50 +59,49 @@
                         <div class="row">
 
 
-                            <div class="col-md-12 form-group mb-3">
+
+                            <div class="col-md-12 mb-3">
                                 <label for="title">Title <span class="text-danger">*</span></label>
-                                <input type="text" name="title" id="title" class="form-control form-control-sm rounded-0" placeholder="Enter Post Title"  value="{{old('title',$leave->title)}}" />
+                                <input type="text" name="title" id="title"
+                                    class="form-control form-control-sm rounded-0" placeholder="Enter Leave Title"
+                                    value="{{ $leave->title }}" />
                             </div>
 
-                            <div class="col-md-6 form-group mb-3">
+                            <div class="col-md-6">
                                 <label for="post_id">Class <span class="text-danger">*</span></label>
                                 <select name="post_id" id="post_id" class="form-control form-control-sm rounded-0">
-                                    @foreach($posts as $id=>$title)
-                                        <option value="{{$id}}"
-                                            @if($id === $leave['post_id'])
-                                                selected
-                                            @endif
-                                        >{{$title}}</option>
+                                    @foreach ($posts as $id=>$title)
+                                        <option value="{{ $id }}"
+                                            @if ($id === $leave['post_id']) selected @endif>{{ $title }}</option>
                                     @endforeach
-
                                 </select>
                             </div>
 
-                            <div class="col-md-6 form-group mb-3">
+                            <div class="col-md-6">
                                 <label for="tag">Tag <span class="text-danger">*</span></label>
                                 <select name="tag" id="tag" class="form-control form-control-sm rounded-0">
-                                    @foreach($tags as $id=>$name)
-                                        <option value="{{$id}}"
-                                            @if($id === $leave['tag'])
-                                                selected
-                                            @endif
-                                        >{{$name}}</option>
+                                    @foreach ($tags as $id=>$name)
+                                        <option value="{{ $id }}"
+                                            @if ($id === $leave['tag']) selected @endif>{{ $name }}</option>
                                     @endforeach
-
                                 </select>
                             </div>
 
-                            <div class="col-md-12 form-group mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="content">Content <span class="text-danger">*</span></label>
-                                <textarea name="content" id="content" class="form-control form-control-sm rounded-0" rows="5" placeholder="Say Something...">{{old('content',$leave->content)}}</textarea>
+                                <textarea name="content" id="content" class="form-control form-control-sm rounded-0" rows="5"
+                                    placeholder="Say Something">{{ $leave->content }}</textarea>
                             </div>
 
 
-                            <div class="col-md-12 d-flex justify-content-end align-items-end">
-                                <a href="{{route('leaves.index')}}" class="btn btn-secondary btn-sm rounded-0">Cancel</a>
-                                <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Update</button>
-                            </div>
 
+                            <div class='col-md-12 d-flex justify-content-end align-items-end'>
+
+                                <a href="{{ route('leaves.index') }}"
+                                    class="btn btn-secondary btn-sm rounded-0 ">Cancle</a>
+                                <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
+
+                            </div>
                         </div>
 
                     </div>

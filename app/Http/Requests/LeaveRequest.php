@@ -11,6 +11,7 @@ class LeaveRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // dd($this->method()); POST PUT
         return true; //if false = 403 THIS ACTION IS UNAUTHORIZED.
     }
 
@@ -21,15 +22,30 @@ class LeaveRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'post_id'=>'required',
-            'startdate'=>'required',
-            'enddate'=>'required',
-            'tag'=>'required',
-            'title'=>'required|max:50',
-            'content'=>'required',
-            'image'=>'nullable|image|mimes:png,jpg,jpeg|max:1024'
-        ];
+
+        if($this->method() == "POST"){
+            return [
+                'post_id'=>'required',
+                'startdate'=>'required',
+                'enddate'=>'required',
+                'tag'=>'required',
+                'title'=>'required|max:50',
+                'content'=>'required',
+                'image'=>'nullable|image|mimes:png,jpg,jpeg|max:1024'
+            ];
+        }else{
+            return [
+                'post_id'=>'required',
+                'startdate'=>'required',
+                'enddate'=>'required',
+                'tag'=>'required',
+                'title'=>'required|max:50',
+                'content'=>'required',
+                'image'=>'nullable|image|mimes:png,jpg,jpeg|max:1024'
+            ];
+        }
+
+
     }
 
     public function attributes()

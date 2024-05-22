@@ -65,11 +65,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('posts',PostsController::class);
     Route::resource('relatives',RelativesCotroller::class);
     Route::resource('roles',RolesController::class);
+
     Route::resource('stages',StagesController::class);
+    Route::get('stagesstatus',[StagesController::class,'typestatus']);
+
     Route::resource('statuses',StatusesController::class);
     Route::resource('students',StudentsController::class);
     Route::resource('tags',TagsController::class);
+
     Route::resource('types',TypesController::class);
+    Route::get('typesstatus',[TypesController::class,'typestatus']);
+
 });
 
 require __DIR__.'/auth.php';

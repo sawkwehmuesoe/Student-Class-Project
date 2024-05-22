@@ -36,7 +36,20 @@ class Leave extends Model
         return $this->belongsTo(Stage::class);
     }
 
-    public function scopezaclassdate($query){
-        return $query->orderBy('updated_at','desc');
+    public function student($userid){
+
+        $students = Student::where('user_id',$userid)->get()->pluck('regnumber');
+        foreach($students as $student){
+            return $student;
+        }
+
+    }
+
+    public function studenturl(){
+        return Student::where('user_id',$this->user_id)->get(['students.id'])->first();
+    }
+
+    public function tagperson(){
+        return $this->belongsTo(User::class,'tag');
     }
 }

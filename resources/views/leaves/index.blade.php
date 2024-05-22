@@ -57,17 +57,19 @@
                         @foreach ($leaves as $idx => $leave)
                             <tr>
                                 <td>{{ ++$idx }}</td>
-                                <td>{{ $leave->post['title'] }}</td>
-                                <td>{{ $leave->post['title'] }}</td>
+                                <td><a href="{{route('students.show',$leave->studenturl())}}">{{$leave->student($leave->user_id)}}</a></td>
+                                <td><a href="{{route('posts.show',$leave->post_id)}}">{{$leave->post['title']}}</a></td>
                                 <td>{{ $leave->startdate }}</td>
                                 <td>{{ $leave->enddate }}</td>
-                                <td>{{ $leave->enddate }}</td>
+                                <td>{{ $leave->tagperson['name'] }}</td>
                                 <td>{{ $leave->stage['name']}}</td>
                                 <td>{{ $leave['user']['name'] }}</td>
                                 <td>{{ $leave->created_at->format('d M Y') }}</td>
                                 <td>{{ $leave->updated_at->format('d M Y') }}</td>
                                 <td>
-                                    <a href="{{ route('leaves.edit', $leave->id) }}" class="text-info"><i
+                                    <a href="{{ route('leaves.show', $leave->id) }}" class="text-primary"><i
+                                        class="fas fa-book-reader"></i></a>
+                                    <a href="{{ route('leaves.edit', $leave->id) }}" class="text-info ms-2"><i
                                             class="fas fa-pen"></i></a>
                                     <a href="#" class="text-danger delete-btns ms-2"
                                         data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a>

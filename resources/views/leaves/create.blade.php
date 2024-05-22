@@ -19,17 +19,17 @@
 
                                 <div class="col-md-12 form-group mb-3">
                                     <label for="image" class="gallery"><span>Choose Images</span></label>
-                                    <input type="file" name="image" id="image" class="form-control form-control-sm rounded-0"value="{{old('image')}}" hidden />
+                                    <input type="file" name="image" id="image" class="form-control form-control-sm rounded-0" value="{{old('image')}}" hidden />
                                 </div>
 
                                 <div class="col-md-6 form-group mb-3">
                                     <label for="startdate">Start Date <span class="text-danger">*</span></label>
-                                    <input type="date" name="startdate" id="startdate" class="form-control form-control-sm rounded-0" />
+                                    <input type="date" name="startdate" id="startdate" class="form-control form-control-sm rounded-0" value="{{old('startdate',$gettoday)}}" />
                                 </div>
 
                                 <div class="col-md-6 form-group mb-3">
                                     <label for="enddate">End Date <span class="text-danger">*</span></label>
-                                    <input type="date" name="enddate" id="enddate" class="form-control form-control-sm rounded-0" />
+                                    <input type="date" name="enddate" id="enddate" class="form-control form-control-sm rounded-0"  value="{{old('enddate',$gettoday)}}" />
 
                                 </div>
 
