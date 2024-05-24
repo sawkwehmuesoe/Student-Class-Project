@@ -11,7 +11,7 @@ class Enroll extends Model
     use HasFactory;
 
     protected $table = "enrolls";
-    protected $pprimaryKey = "id";
+    protected $primaryKey = "id";
     protected $fillable = [
         'image',
         'post_id',
@@ -33,6 +33,8 @@ class Enroll extends Model
     }
 
     public function student(){
+
+        // dd($this->id);
         // return $this->belongsTo(Student::class,'user_id');
 
         // Method 1

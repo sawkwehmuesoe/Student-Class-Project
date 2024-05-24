@@ -16,6 +16,9 @@
                 <div class="row align-items-end">
                     <div class="col-md-4">
                         <label for="name">Name <span class="text-danger">*</span></label>
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <input tag="text" name="name" id="name" class="form-control form-control-sm rounded-0"
                             placeholder="Enter tag Name" value="{{ old('name') }}" />
                     </div>
@@ -46,7 +49,7 @@
 
         <div class="col-md-12">
 
-            <table id="mytable" class="table table-sm table-hover border">
+            <table class="table table-sm table-hover border">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -61,7 +64,9 @@
                 <tbody>
                     @foreach ($tags as $idx => $tag)
                         <tr>
-                            <td>{{ ++$idx }}</td>
+                            {{-- <td>{{ ++$idx }}</td> --}}
+                            {{-- <td>{{ $idx+1 }}</td> --}}
+                            <td>{{ $idx+ $tags->firstItem() }}</td>
                             <td>{{ $tag->name }}</td>
                             <td>{{ $tag->status->name }}</td>
                             <td>{{ $tag['user']['name'] }}</td>
@@ -80,6 +85,8 @@
                     @endforeach
                 </tbody>
             </table>
+
+            {{$tags->links('pagination::bootstrap-4')}}
 
         </div>
 
@@ -143,10 +150,6 @@
 
 @endsection
 
-@section('css')
-    <link href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css" />
-@endsection
-
 @section('scripts')
 
     <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
@@ -188,6 +191,5 @@
 
         });
 
-        $('#mytable').DataTable();
     </script>
 @endsection

@@ -16,6 +16,9 @@
                 <div class="row align-items-end">
                     <div class="col-md-4">
                         <label for="name">Name <span class="text-danger">*</span></label>
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <input type="text" name="name" id="name" class="form-control form-control-sm rounded-0"
                             placeholder="Enter Type Name" value="{{ old('name') }}" />
                     </div>
@@ -63,7 +66,11 @@
                         <tr>
                             <td>{{ ++$idx }}</td>
                             <td>{{ $type->name }}</td>
-                            <td>{{ $type->status->name }}</td>
+                            <td>
+                                <div class="form-checkbox form-switch">
+                                    <input type="checkbox" class="form-check-input change-btn" {{$type->status_id === 3 ? 'checked' : ''}} data-id="{{$type->id}}" />
+                                </div>
+                            </td>
                             <td>{{ $type['user']['name'] }}</td>
                             <td>{{ $type->created_at->format('d M Y') }}</td>
                             <td>{{ $type->updated_at->format('d M Y') }}</td>
@@ -186,6 +193,29 @@
             // End Delete Item
 
             $('#mytable').DataTable();
+
+            // Start chage-btn
+            $('.change-btn').change(function(){
+
+                var getid = $(this).data('id');
+                // console.log(getid);
+                var setstatus = $(this).prop('checked') === true ? 3 : 4;
+                // console.log(setstatus);
+
+                $.ajax({
+                    url:"typesstatus",
+                    type:"GET",
+                    dataType:"json",
+                    data:{"id":getid,"status_id":setstatus},
+                    success:function(response){
+                        // console.log(response);
+
+                        console.log(response.success);
+                    }
+            })
+
+            });
+            // End chage-btn
         });
     </script>
 @endsection

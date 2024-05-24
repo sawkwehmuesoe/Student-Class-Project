@@ -16,6 +16,9 @@
                 <div class="row align-items-end">
                     <div class="col-md-6">
                         <label for="name">First Name <span class="text-danger">*</span></label>
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <input type="text" name="name" id="name" class="form-control form-control-sm rounded-0"
                             placeholder="Enter Name" value="{{ old('name') }}" />
                     </div>
@@ -36,10 +39,23 @@
         <hr />
 
         <div class="col-md-12">
+            <form action="" method="">
+                <div class="row justify-content-end">
+                    <div class="col-md-2 col-sm-6 mb-2">
+                        <div class="input-group">
+                            <input type="text" name="filtername" id="filtername" class="form-control form-control-sm rounded-0" placeholder="Search...">
+                            <button type="submit" id="search" class="btn btn-secondary btn-sm "><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12">
 
             <div class="col-md-12">
 
-                <table class="table table-sm table-hover border">
+                <table id="mytable" class="table table-sm table-hover border">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -74,7 +90,7 @@
                         @endforeach
                     </tbody>
                 </table>
-
+                {{ $countries->links('pagination::bootstrap-4') }}
             </div>
 
         </div>
@@ -127,7 +143,7 @@
     {{-- end edit model --}}
     {{-- End Model Area  --}}
 
-@endsection('content')
+@endsection
 
 @section('scripts')
 

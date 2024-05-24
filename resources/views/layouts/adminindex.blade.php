@@ -18,7 +18,19 @@
                     <div class="col-lg-10 col-md-9 pt-md-5 mt-md-3 ms-auto">
                         {{-- Start Inner Content Area  --}}
                         <div class="row">
-                            <h5>@yield('caption')</h5>
+                            {{-- <h6>@yield('caption')</h6> --}}
+                            {{-- <h6>{{ucfirst(\Request::path())}}</h6> --}}
+
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{\Request::root()}}"><i class="fas fa-home"></i></a></li>
+                                    <li class="breadcrumb-item"><a href="{{url()->previous()}}">{{Str::title(preg_replace('/[[:punct:]]+[[:alnum:]]+/','',str_replace(\Request::root().'/','',url()->previous())))}}</a></li>
+                                    <li class="breadcrumb-item active">{{ucfirst(\Request::path())}}</li>
+                                </ol>
+                            </nav>
+
+
+
                             @yield('content')
                         </div>
                         {{-- End Inner Content Area  --}}
@@ -31,3 +43,22 @@
 
 
 @include('layouts.adminfooter')
+
+
+{{-- <p>{{\Request::root()}}</p> http://example.test --}}
+{{-- <p>{{\Request::fullUrl()}}</p> http://example.test/edulinks?filter=2 --}}
+{{-- <p>{{\Request::url()}}</p> http://example.test/edulinks (no query ? / not inc behind ?) --}}
+{{-- <p>{{\Request::getRequestUri()}}</p> /edulinks?filter=2 inc all the address behind ? --}}
+{{-- <p>{{\Request::getPathInfo()}}</p> /edulinks --}}
+{{-- <p>{{\Request::path()}}</p> posts/1/edit --}}
+
+{{-- <p>{{request()->root()}}</p> http://example.test --}}
+{{-- <p>{{request()->fullUrl()}}</p> http://example.test/edulinks?filter=2 --}}
+{{-- <p>{{request()->url()}}</p> http://example.test/edulinks (no query ? / not inc behind ?) --}}
+{{-- <p>{{request()->getRequestUri()}}</p> /edulinks?filter=2 inc all the address behind ? --}}
+{{-- <p>{{request()->getPathInfo()}}</p> /edulinks --}}
+{{-- <p>{{request()->path()}}</p> posts/1/edit --}}
+
+{{-- <p>{{url()->full()}}</p> http://example.test/edulinks?filter=2 --}}
+{{-- <p>{{url()->current()}}</p> http://example.test/edulinks --}}
+{{-- <p>{{url()->previous()}}</p> recent link --}}
