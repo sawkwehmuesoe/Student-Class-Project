@@ -94,7 +94,14 @@ class LeavesController extends Controller
 
     public function show(string $id)
     {
+        $user = Auth::user();
+        $user_id = $user->id;
+        $type = "App\Notifications\AnnouncementNotify";
         $leave = Leave::findOrfail($id);
+
+        $getnoti = \DB::table('notifications')->where('notifiable_id',$user_id,$id)->where('type',$type)->where('data->id',$id)->pluck('id');
+        // dd($getnoti);
+        \DB::table('notifications')->where('id',$getnoti)->update(['read_at'=>now()]);
         return view('leaves.show',["leave"=>$leave]);
     }
 

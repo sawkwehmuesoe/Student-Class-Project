@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
@@ -51,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::resource('announcements',AnnouncementsController::class);
     Route::resource('attendances',AttendancesController::class);
     Route::resource('categories',CategoriesController::class);
     Route::resource('contacts',ContactsController::class);
