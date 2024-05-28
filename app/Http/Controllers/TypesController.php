@@ -64,4 +64,13 @@ class TypesController extends Controller
         $type->delete();
         return redirect()->back();
     }
+
+    public function typestatus(Request $request)
+    {
+        $type = Type::findOrFail($request['id']);
+        $type->status_id = $request['status_id'];
+        $type->save();
+
+        return response()->json(["success"=>"Status Change Successfully"]);
+    }
 }

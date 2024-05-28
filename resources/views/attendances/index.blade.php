@@ -16,12 +16,19 @@
                 <div class="row align-items-end">
                     <div class="col-md-3">
                         <label for="classdate">Class Date <span class="text-danger">*</span></label>
+                        @error('classdate')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <input type="date" name="classdate" id="classdate" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" value="{{ old('classdate') }}" />
                     </div>
 
                     <div class="col-md-3">
                         <label for="post_id">Class <span class="text-danger">*</span></label>
+                        @error('post_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <select name="post_id" id="post_id" class="form-control form-control-sm rounded-0">
+                            <option selected disabled>Choose Class</option>
                             @foreach ($posts as $post)
                                 <option value="{{ $post->id }}">{{ $post->title }}</option>
                             @endforeach
@@ -30,6 +37,9 @@
 
                     <div class="col-md-3">
                         <label for="attcode">Attendance Code <span class="text-danger">*</span></label>
+                        @error('attcode')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <input type="text" name="attcode" id="attcode" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" value="{{ old('classdate') }}" />
                     </div>
 
@@ -68,8 +78,8 @@
                     @foreach ($attendances as $idx => $attendance)
                         <tr>
                             <td>{{ ++$idx }}</td>
-                            <td></td>
-                            <td>{{ $attendance->post['title'] }}</td>
+                            <td><a href="{{route('students.show',$attendance->studenturl())}}">{{$attendance->student($attendance->user_id)}}</a></td>
+                            <td><a href="{{route('posts.show',$attendance->post_id)}}">{{$attendance->post['title']}}</a></td>
                             <td>{{ $attendance->attcode }}</td>
                             <td>{{ $attendance['user']['name'] }}</td>
                             <td>{{ $attendance->classdate}}</td>

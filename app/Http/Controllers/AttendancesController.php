@@ -13,7 +13,7 @@ class AttendancesController extends Controller
 {
     public function index()
     {
-        $attendances = Attendance::all();
+        $attendances = Attendance::orderBy('updated_at','desc')->get();
         // $posts = Post::where('attshow',3)->get();
         $posts = DB::table('posts')->where('attshow',3)->orderBy('title','asc')->get(); //beware $post->['id'] :: must be call by object in view file
         return view('attendances.index',compact('attendances','posts'));
@@ -55,7 +55,6 @@ class AttendancesController extends Controller
         $attendance->name = $request['name'];
         $attendance->slug = Str::slug($request['name']);
         $attendance->status_id = $request['status_id'];
-        $attendance->user_id = $user_id;
 
         $attendance->save();
         return redirect(route('attendances.index'));

@@ -16,6 +16,9 @@
                 <div class="row align-items-end">
                     <div class="col-md-4">
                         <label for="name">Name <span class="text-danger">*</span></label>
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <input tag="text" name="name" id="name" class="form-control form-control-sm rounded-0"
                             placeholder="Enter tag Name" value="{{ old('name') }}" />
                     </div>
@@ -61,7 +64,9 @@
                 <tbody>
                     @foreach ($tags as $idx => $tag)
                         <tr>
-                            <td>{{ ++$idx }}</td>
+                            {{-- <td>{{ ++$idx }}</td> --}}
+                            {{-- <td>{{ $idx+1 }}</td> --}}
+                            <td>{{ $idx+ $tags->firstItem() }}</td>
                             <td>{{ $tag->name }}</td>
                             <td>{{ $tag->status->name }}</td>
                             <td>{{ $tag['user']['name'] }}</td>
@@ -80,6 +85,8 @@
                     @endforeach
                 </tbody>
             </table>
+
+            {{$tags->links('pagination::bootstrap-4')}}
 
         </div>
 
@@ -141,9 +148,12 @@
     {{-- End Model Area  --}}
 
 
-@endsection('content')
+@endsection
 
 @section('scripts')
+
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
+
     <script tag="text/javascript">
         $(document).ready(function() {
             // Start Edit Form
@@ -180,5 +190,6 @@
 
 
         });
+
     </script>
 @endsection

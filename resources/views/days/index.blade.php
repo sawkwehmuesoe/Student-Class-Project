@@ -27,23 +27,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($days as $idx => $category)
+                    @foreach ($days as $idx => $day)
                         <tr>
                             <td>{{ ++$idx }}</td>
-                            <td>{{ $category->name }}</td>
+                            <td>{{ $day->name }}</td>
                             <td>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" {{ $category->status_id === 3 ? 'checked' : ''}} />
+                                    <input type="checkbox" class="form-check-input" {{ $day->status_id === 3 ? 'checked' : ''}} />
                                 </div>
                             </td>
-                            <td>{{ $category['user']['name'] }}</td>
-                            <td>{{ $category->created_at->format('d M Y') }}</td>
-                            <td>{{ $category->updated_at->format('d M Y') }}</td>
+                            <td>{{ $day['user']['name'] }}</td>
+                            <td>{{ $day->created_at->format('d M Y') }}</td>
+                            <td>{{ $day->updated_at->format('d M Y') }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $category->id }}" data-name="{{ $category->name }}" data-status="{{ $category->status_id }}"><i class="fas fa-pen"></i></a>
+                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $day->id }}" data-name="{{ $day->name }}" data-status="{{ $day->status_id }}"><i class="fas fa-pen"></i></a>
                                 <a href="#" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a>
                             </td>
-                            <form id="formdelete-{{ $idx }}" action="{{ route('days.destroy', $category->id) }}"
+                            <form id="formdelete-{{ $idx }}" action="{{ route('days.destroy', $day->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -68,7 +68,7 @@
 
                     <div class="modal-header">
                         <h6 class="modal-title">Create Form</h6>
-                        <button category="category" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
                     <div class="modal-body">
@@ -79,7 +79,7 @@
                             <div class="row align-items-end">
                                 <div class="col-md-7">
                                     <label for="name">Name <span class="text-danger">*</span></label>
-                                    <input category="text" name="name" id="name"
+                                    <input type="text" name="name" id="name"
                                         class="form-control form-control-sm rounded-0" placeholder="Enter Name"
                                         value="{{ old('name') }}" />
                                 </div>
@@ -94,7 +94,7 @@
                                 </div>
 
                                 <div class='col-md-2 mt-3'>
-                                    <button category="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
                                 </div>
 
                             </div>
@@ -118,7 +118,7 @@
 
                 <div class="modal-header">
                     <h6 class="modal-title">Edit Form</h6>
-                    <button category="category" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
@@ -130,7 +130,7 @@
                         <div class="row align-items-end">
                             <div class="col-md-7">
                                 <label for="editname">Name <span class="text-danger">*</span></label>
-                                <input category="text" name="name" id="editname"
+                                <input type="text" name="name" id="editname"
                                     class="form-control form-control-sm rounded-0" placeholder="Enter Name"
                                     value="{{ old('name') }}" />
                             </div>
@@ -145,7 +145,7 @@
                             </div>
 
                             <div class='col-md-2 mt-3'>
-                                <button category="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
+                                <button type="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
                             </div>
 
                         </div>
@@ -167,7 +167,7 @@
 @endsection('content')
 
 @section('scripts')
-    <script category="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function() {
             // Start Edit Form
 
