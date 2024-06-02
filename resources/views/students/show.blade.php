@@ -181,7 +181,7 @@
                                 <div class="acctitle">Email</div>
                                 <div class="acccontent">
                                     <div class="col-md-12 py-3">
-                                        <form action="" method="">
+                                        <form action="{{route('students.mailbox')}}" method="POST">
                                             @csrf
                                             <div class="row">
 
@@ -190,7 +190,7 @@
                                                 </div>
 
                                                 <div class="col-md-6 form-group mb-3">
-                                                    <input type="email" name="cmpsubject" id="cmpsubject" class="form-control form-control-sm border-0 rounded-0" placeholder="Subject:" />
+                                                    <input type="text" name="cmpsubject" id="cmpsubject" class="form-control form-control-sm border-0 rounded-0" placeholder="Subject:" />
                                                 </div>
 
                                                 <div class="col-md-12 form-group mb-3">

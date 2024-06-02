@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('statuses',StatusesController::class);
     Route::resource('students',StudentsController::class);
+    Route::post('compose/mailbox',[StudentsController::class,'mailbox'])->name('students.mailbox');
+
     Route::resource('tags',TagsController::class);
 
     Route::resource('types',TypesController::class);
