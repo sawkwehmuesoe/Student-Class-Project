@@ -31,8 +31,7 @@
 
                             <div class="w-100 d-flex flex-row justify-content-between mb-3">
                                 <button type="button" class="w-100 btn btn-primary btn-sm rounded-0 me-2">Like</button>
-                                <button type="button"
-                                    class="w-100 btn btn-outline-primary btn-sm rounded-0">Follow</button>
+                                <button type="button" class="w-100 btn btn-outline-primary btn-sm rounded-0">Follow</button>
                             </div>
 
                             <div class="mb-5">

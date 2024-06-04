@@ -14,6 +14,7 @@ use App\Http\Controllers\EnrollsController;
 use App\Http\Controllers\GendersController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\PostsLikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RelativesCotroller;
 use App\Http\Controllers\RolesController;
@@ -64,7 +65,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('enrolls',EnrollsController::class);
     Route::resource('genders',GendersController::class);
     Route::resource('leaves',LeavesController::class);
+
     Route::resource('posts',PostsController::class);
+    Route::post('posts/{post}/like',[PostsLikeController::class,'like'])->name('posts.like');
+    Route::post('posts/{post}/unlike',[PostsLikeController::class,'unlike'])->name('posts.unlike');
+
     Route::resource('relatives',RelativesCotroller::class);
     Route::resource('roles',RolesController::class);
 

@@ -36,8 +36,7 @@
                                 <a href="#createmodal" class="w-100 btn btn-primary btn-sm rounded-0 me-2" data-bs-toggle="modal">Follow</a>
                             @endif
 
-
-                            {{-- @if($userdata->checkpostlike($post->id))
+                            @if($userdata->checkpostlike($post->id))
                                 <form class="w-100" action="{{route('posts.unlike',$post->id)}}" method="POST">
                                     @csrf
                                     <button type="submit" class="w-100 btn btn-outline-primary btn-sm rounded-0">Unlike</button>
@@ -47,7 +46,7 @@
                                     @csrf
                                     <button type="submit" class="w-100 btn btn-outline-primary btn-sm rounded-0">Like</button>
                                 </form>
-                            @endif --}}
+                            @endif
 
 
                         </div>
@@ -157,7 +156,7 @@
                                 <div class="col-auto me-2">
                                     <i class="fas fa-thumbs-up"></i>
                                 </div>
-                                {{-- <div class="col">{{$post->likes()->count()}}</div> --}}
+                                <div class="col">{{$post->likes()->count()}}</div>
                             </div>
 
                             <div class="row g-0 mb-2">
