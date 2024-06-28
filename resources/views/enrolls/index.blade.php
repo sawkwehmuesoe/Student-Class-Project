@@ -69,7 +69,8 @@
                                             <td>{{$enroll->created_at->format('d M Y')}}</td>
                                             <td>{{$enroll->updated_at->format('d M Y')}}</td>
                                             <td>
-                                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{$enroll->id}}" data-attcode="{{$enroll->attcode}}" data-post="{{$enroll->post_id}}"><i class="fas fa-pen"></i></a>
+                                                <a href="javascript:void(0);" class="text-primary me-2 quickform" data-bs-toggle="modal" data-bs-target="#quickmodal" data-id="{{$enroll->id}}" data-post="{{$enroll->stage_id}}" data-remark="{{$enroll->remark}}"><i class="fas fa-user-check"></i></a>
+                                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{$enroll->id}}" data-post="{{$enroll->stage_id}}"><i class="fas fa-pen"></i></a>
                                             </td>
 
                                         </tr>
@@ -90,35 +91,34 @@
     <!-- START MODAL AREA  -->
 
         <!-- start edit modal  -->
-        <div id="editmodal" class="modal fade ">
+        <div id="quickmodal" class="modal fade ">
                 <div class="modal-dialog modal-dialog-centered ">
                     <div class="modal-content rounded-0">
 
                     <div class="modal-header">
-                        <h6 class="modal-title">Edit Form</h6>
+                        <h6 class="modal-title">Quick Form</h6>
                         <button type="type" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
                     <div class="modal-body">
 
-                    <form id="formaction" action="" method="POST">
-                        {{ csrf_field() }}
-                        {{ method_field('PUT') }}
+                    <form id="quickformaction" action="" method="">
+
 
                         <div class="row align-items-end">
 
-                            <div class="col-md-7 form-group">
-                                <label for="editpost_id">Class <span class="text-danger">*</span></label>
-                                <select name="post_id" id="editpost_id" class="form-control form-control-sm rounded-0">
-                                    @foreach($enrolls as $enroll)
-                                        <option value="{{$enroll->id}}">{{$enroll->title}}</option>
+                            <div class="col-md-3 form-group">
+                                <label for="editstage_id">Class <span class="text-danger">*</span></label>
+                                <select name="editstage_id" id="editstage_id" class="form-control form-control-sm rounded-0">
+                                    @foreach($stages as $stage)
+                                        <option value="{{$stage->id}}">{{$stage->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="col-md-3 form-group">
-                                <label for="editattcode">Class Date <span class="text-danger">*</span></label>
-                                <input type="text" name="attcode" id="editattcode" class="form-control form-control-sm rounded-0" />
+                            <div class="col-md-7 form-group">
+                                <label for="editremark">Remark</label>
+                                <input type="text" name="editremark" id="editremark" class="form-control form-control-sm rounded-0" />
                             </div>
 
                             <div class="col-md-2">
@@ -152,25 +152,48 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        $.ajaxSetup({
+            headers:{
+                'X_CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
         $(document).ready(function(){
 
-            console.log('hi');
 
             // Start Edit Form
-            $(document).on('click','.editform',function(e){
+            $(document).on('click','.quickform',function(e){
+                console.log("jay");
+                $('#editstage_id').val($(this).attr('data-stage'));
+                $('#editremark').val($(this).attr('data-remark'));
 
-                console.log('hay');
+                const getid = $(this).data('id');
+                // console.log(getid);
 
-                console.log($(this).attr('data-attcode'),$(this).data('post'));
+                $('#quickformaction').attr('data-id',getid);
 
-                $('#editattcode').val($(this).attr('data-attcode'));
-                $('#editpost_id').val($(this).data('post'));
+            });
+
+            $("#quickformaction").submit(function(e){
+                e.preventDefault();
 
                 const getid = $(this).attr('data-id');
-                $('#formaction').attr('action',`/attendances/${getid}`);
 
-                e.preventDefault();
-            });
+                $.ajax({
+                    url:`enrolls/${getid}`,
+                    type:"PUT",
+                    dataType:'json',
+                    data:$(this).serialize(),
+                    success:function(response){
+                        if(response && response.status === 'success'){
+                            console.log(response);
+                            console.log(this.data);
+                            $("#quickmodal").modal('hide');
+                        }
+                    }
+                })
+
+            })
 
             // End Edit Form
 

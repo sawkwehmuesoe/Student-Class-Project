@@ -33,10 +33,12 @@ class AttendancesController extends Controller
         $attendance = new Attendance();
         $attendance->classdate = $request['classdate'];
         $attendance->post_id = $request['post_id'];
-        $attendance->attcode = $request['attcode'];
+        $attendance->attcode = Str::upper($request['attcode']);
         $attendance->user_id = $user_id;
 
         $attendance->save();
+
+        session()->flash('success','Att Created');
         return redirect(route('attendances.index'));
     }
 
