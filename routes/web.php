@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('countries',CountriesController::class);
 
     Route::resource('days',DaysController::class);
+    Route::get('/daysstatus',[DaysController::class,'typestatus']);
 
     Route::resource('edulinks',EdulinksController::class);
     Route::resource('enrolls',EnrollsController::class);

@@ -40,7 +40,7 @@
 
                                     <li class="nav-item"><a href="javascript:void(0);" class="nav-link p-3 text-white sidebarlinks"  data-bs-toggle="collapse" data-bs-target="#advanceui"><i class="fas fa-users fa-md me-3"></i> Students <i class="fas fa-angle-left mores"></i></a>
                                         <ul id="advanceui" class="collapse ps-2">
-                                            <li><a href="{{route('students.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Att Generators </a></li>
+                                            <li><a href="{{route('attcodegenerators.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> Att Generators </a></li>
                                             <li><a href="{{route('students.index')}}" class="nav-link text-white sidebarlinks"><i class="fas fa-long-arrow-alt-right me-4"></i> All Students </a></li>
                                         </ul>
                                     </li>

@@ -1,5 +1,4 @@
 @extends('layouts.adminindex')
-@section('caption', 'Attendance List')
 
 @section('content')
 
@@ -9,20 +8,20 @@
 
         <div class="col-md-12">
 
-            <form action="{{ route('attendances.store') }}" method="POST">
+            <form action="{{ route('attcodegenerators.store') }}" method="POST">
 
                 {{ csrf_field() }}
 
                 <div class="row align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                         <label for="classdate">Class Date <span class="text-danger">*</span></label>
                         @error('classdate')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
-                        <input type="date" name="classdate" id="classdate" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" value="{{ old('classdate') }}" />
+                        <input type="date" name="classdate" id="classdate" class="form-control form-control-sm rounded-0" placeholder="Enter AttcodeGenerator Name" value="{{ $gettoday }}" />
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                         <label for="post_id">Class <span class="text-danger">*</span></label>
                         @error('post_id')
                             <span class="text-danger">{{ $message }}</span>
@@ -35,7 +34,16 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 form-group mb-3">
+                        <label for="status_id">Status</label>
+                        <select name="status_id" id="status_id" class="form-control form-control-sm rounded-0">
+                            @foreach ($statuses as $status)
+                                <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
                         <label for="attcode">Attendance Code <span class="text-danger">*</span></label>
                         @error('attcode')
                             <span class="text-danger">{{ $message }}</span>
@@ -43,10 +51,9 @@
                         <input type="text" name="attcode" id="attcode" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" value="{{ old('classdate') }}" />
                     </div>
 
-                    <div class='col-md-3 mt-3'>
-
-                        <button attendance="reset" class="btn btn-secondary btn-sm rounded-0">Cancel</button>
-                        <button attendance="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
+                    <div class='col-md-12 text-end'>
+                        <button type="reset" class="btn btn-secondary btn-sm rounded-0">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
 
                     </div>
 
@@ -64,29 +71,27 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Student Id</th>
                         <th>Class</th>
+                        <th>Class Date</th>
                         <th>Att Code</th>
                         <th>By</th>
-                        <th>Class Date</th>
                         <th>Created At</th>
-                        <th>Update At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($attendances as $idx => $attendance)
+                    @foreach ($attcodegenerators as $idx => $attcodegenerator)
                         <tr>
                             <td>{{ ++$idx }}</td>
-                            <td><a href="{{route('students.show',$attendance->studenturl())}}">{{$attendance->student($attendance->user_id)}}</a></td>
-                            <td><a href="{{route('posts.show',$attendance->post_id)}}">{{$attendance->post['title']}}</a></td>
-                            <td>{{ $attendance->attcode }}</td>
-                            <td>{{ $attendance['user']['name'] }}</td>
-                            <td>{{ $attendance->classdate}}</td>
-                            <td>{{ $attendance->created_at->format('d M Y') }}</td>
-                            <td>{{ $attendance->updated_at->format('d M Y') }}</td>
+                            <td>{{ $attcodegenerator->post['title'] }}</td>
+                            <td>{{ $attcodegenerator->classdate}}</td>
+                            <td>{{ $attcodegenerator->attcode }}</td>
+                            <td>{{ $attcodegenerator['user']['name'] }}</td>
+                            <td>{{ $attcodegenerator->created_at->format('d M Y') }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $attendance->id }}" data-name="{{ $attendance->name }}" data-post="{{ $attendance->post_id }}"><i class="fas fa-pen"></i></a>
+                                <div class="form-checkbox form-switch">
+                                    <input type="checkbox" class="form-check-input change-btn" {{$attcodegenerator->status_id === 3 ? 'checked' : ''}} data-id="{{$attcodegenerator->id}}" />
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -100,94 +105,46 @@
     <!-- End Page Content Area -->
 
     {{-- Start Model Area  --}}
-    {{-- start edit model --}}
-    <div id="editmodal" class="modal fade">
-        <div class="modal-dialog modal-dialog-centered ">
-            <div class="modal-content rounded-0">
 
-                <div class="modal-header">
-                    <h6 class="modal-title">Edit Form</h6>
-                    <button attendance="attendance" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form id="formaction" action="" method="POST">
-
-                        {{ csrf_field() }}
-                        {{ method_field('PUT') }}
-
-                        <div class="row align-items-end">
-
-                            <div class="col-md-7">
-                                <label for="editpost_id">Class</label>
-                                <select name="post_id" id="editpost_id" class="form-control form-control-sm rounded-0">
-                                    @foreach ($posts as $post)
-                                        <option value="{{ $post->id }}">{{ $post->title }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="editattcode">Class Date <span class="text-danger">*</span></label>
-                                <input type="text" name="attcode" id="editattcode" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" value="" />
-                            </div>
-
-                            <div class='col-md-2 mt-3'>
-                                <button attendance="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
-                            </div>
-
-                        </div>
-
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-    {{-- end edit model --}}
     {{-- End Model Area  --}}
 
 
 @endsection('content')
 
 @section('scripts')
-    <script attendance="text/javascript">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript">
         $(document).ready(function() {
-            // Start Edit Form
 
-            $(document).on('click','.editform',function(e){
 
-                // console.log($(this).attr('data-id'),$(this).attr('data-name'));
+            // Start chage-btn
+            $('.change-btn').change(function(){
 
-                $('#editname').val($(this).attr('data-name'));
-                $('#editpost_id').val($(this).data('post'));
+            var getid = $(this).data('id');
+            // console.log(getid);
+            var setstatus = $(this).prop('checked') === true ? 3 : 4;
+            // console.log(setstatus);
 
-                const getid = $(this).attr('data-id');
-                $('#formaction').attr('action',`/attendances/${getid}`);
+            $.ajax({
+                url:"attcodegeneratorsstatus",
+                method:"GET",
+                dataType:"json",
+                data:{"id":getid,"status_id":setstatus},
+                success:function(response){
+                    // console.log(response);
 
-                e.preventDefault();
+                    // console.log(response.success);
 
-            });
-
-            // End Edit Form
-            // Start Delete Item
-            $('.delete-btns').click(function() {
-                // console.log("hey");
-                var getidx = $(this).data('idx');
-                // console.log(getidx);
-
-                if (confirm(`Are you sure !!! you want to Delete ${getidx}`)) {
-                    $('#formdelete-' + getidx).submit();
-                    return true;
-                } else {
-                    return false;
+                    Swal.fire({
+                        title:"Updated!",
+                        text:"Updated Successfully!",
+                        icon:"success"
+                    })
                 }
             })
-            // End Delete Item
+
+            });
+            // End chage-btn
 
 
         });

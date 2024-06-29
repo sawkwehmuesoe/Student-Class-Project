@@ -19,7 +19,7 @@
                         @error('classdate')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
-                        <input type="date" name="classdate" id="classdate" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" value="{{ old('classdate') }}" />
+                        <input type="date" name="classdate" id="classdate" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" value="{{ $gettoday }}" />
                     </div>
 
                     <div class="col-md-3">
@@ -40,7 +40,7 @@
                         @error('attcode')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
-                        <input type="text" name="attcode" id="attcode" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" value="{{ old('classdate') }}" />
+                        <input type="text" name="attcode" id="attcode" class="form-control form-control-sm rounded-0" placeholder="Enter attendance Name" />
                     </div>
 
                     <div class='col-md-3 mt-3'>
@@ -70,7 +70,6 @@
                         <th>By</th>
                         <th>Class Date</th>
                         <th>Created At</th>
-                        <th>Update At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -84,7 +83,6 @@
                             <td>{{ $attendance['user']['name'] }}</td>
                             <td>{{ $attendance->classdate}}</td>
                             <td>{{ $attendance->created_at->format('d M Y') }}</td>
-                            <td>{{ $attendance->updated_at->format('d M Y') }}</td>
                             <td>
                                 <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $attendance->id }}" data-name="{{ $attendance->name }}" data-post="{{ $attendance->post_id }}"><i class="fas fa-pen"></i></a>
                             </td>

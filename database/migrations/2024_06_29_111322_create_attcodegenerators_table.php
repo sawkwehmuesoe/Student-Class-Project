@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendcodegenerators', function (Blueprint $table) {
+        Schema::create('attcodegenerators', function (Blueprint $table) {
             $table->id();
             $table->date('classdate');
             $table->foreignId('post_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendcodegenerators');
+        Schema::dropIfExists('attcodegenerators');
     }
 };

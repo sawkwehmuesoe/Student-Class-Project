@@ -149,8 +149,8 @@
 @endsection
 
 @section('scripts')
-
     <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript">
 
@@ -306,13 +306,19 @@
 
                 $.ajax({
                     url:"paymentmethodsstatus",
-                    paymentmethod:"GET",
-                    datapaymentmethod:"json",
+                    method:"GET",
+                    dataType:"json",
                     data:{"id":getid,"status_id":setstatus},
                     success:function(response){
                         // console.log(response);
 
-                        console.log(response.success);
+                        // console.log(response.success);
+
+                        Swal.fire({
+                            title:"Updated!",
+                            text:"Updated Successfully!",
+                            icon:"success"
+                        })
                     }
             })
 
