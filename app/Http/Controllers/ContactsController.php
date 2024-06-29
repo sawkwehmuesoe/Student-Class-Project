@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Models\Relative;
 use App\Models\Status;
+use App\Notifications\ContactEmailNotify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
 class ContactsController extends Controller
@@ -39,6 +41,16 @@ class ContactsController extends Controller
         $contact->user_id = $user_id;
 
         $contact->save();
+
+        $contactdata = [
+            "firstname" => $contact->firstname,
+            "lastname" => $contact->lastname,
+            "birthday" => $contact->birthday,
+            "relative" => $contact->relative["name"],
+            "url"=>url('/')
+        ];
+
+        Notification::send($user,new ContactEmailNotify($contactdata));
 
         session()->flash('success','New Contact Created');
         return redirect(route('contacts.index'));

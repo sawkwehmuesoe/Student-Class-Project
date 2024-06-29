@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Leave extends Model
 {
     use HasFactory;
+    use Notifiable;
 
     protected $table = "leaves";
     protected $pprimaryKey = "id";
@@ -46,6 +48,9 @@ class Leave extends Model
     }
 
     public function studenturl(){
+        // $can = Student::where('user_id',$this->user_id)->get(['students.id'])->first();
+        // dd($can);
+
         return Student::where('user_id',$this->user_id)->get(['students.id'])->first();
     }
 

@@ -76,13 +76,14 @@
                             <td>{{ $type->updated_at->format('d M Y') }}</td>
                             <td>
                                 <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $type->id }}" data-name="{{ $type->name }}" data-status="{{ $type->status_id }}"><i class="fas fa-pen"></i></a>
-                                <a href="#" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a>
+                                {{-- <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a> --}}
+                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{$idx}}" data-id="{{ $type->id }}"><i class="fas fa-trash-alt"></i></a>
                             </td>
-                            <form id="formdelete-{{ $idx }}" action="{{ route('types.destroy', $type->id) }}"
+                            {{-- <form id="formdelete-{{ $idx }}" action="{{ route('types.destroy', $type->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')
-                            </form>
+                            </form> --}}
                         </tr>
                     @endforeach
                 </tbody>
@@ -178,18 +179,49 @@
 
             // End Edit Form
             // Start Delete Item
-            $('.delete-btns').click(function() {
-                // console.log("hey");
-                var getidx = $(this).data('idx');
-                // console.log(getidx);
+            // $('.delete-btns').click(function() {
+            //     // console.log("hey");
+            //     var getidx = $(this).data('idx');
+            //     // console.log(getidx);
+
+            //     if (confirm(`Are you sure !!! you want to Delete ${getidx}`)) {
+            //         $('#formdelete-' + getidx).submit();
+            //         return true;
+            //     } else {
+            //         return false;
+            //     }
+            // });
+
+                // By Ajax
+            $('.delete-btns').click(function(){
+                const getidx = $(this).attr('data-idx');
+                var getid = $(this).data('id');
+                // console.log(getid);
 
                 if (confirm(`Are you sure !!! you want to Delete ${getidx}`)) {
-                    $('#formdelete-' + getidx).submit();
-                    return true;
+
+                    // ui remove
+                    $(this).parent().parent().remove();
+
+                    // data remove
+
+                    $.ajax({
+                        url:"typesdelete",
+                        type:"GET",
+                        dataType:"json",
+                        data:{"id":getid},
+                        success:function(response){
+                            window.alert(response.success);
+                        }
+                    });
                 } else {
                     return false;
                 }
-            })
+
+
+            });
+
+
             // End Delete Item
 
             $('#mytable').DataTable();
@@ -216,6 +248,8 @@
 
             });
             // End chage-btn
+
+
         });
     </script>
 @endsection
