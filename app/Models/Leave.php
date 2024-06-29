@@ -48,6 +48,9 @@ class Leave extends Model
     }
 
     public function studenturl(){
+        // $can = Student::where('user_id',$this->user_id)->get(['students.id'])->first();
+        // dd($can);
+
         return Student::where('user_id',$this->user_id)->get(['students.id'])->first();
     }
 

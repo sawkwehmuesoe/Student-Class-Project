@@ -146,7 +146,7 @@
                                 <div class='col-md-3 d-flex justify-content-end align-items-end'>
 
                                         <a href="{{route('posts.index')}}" class="btn btn-secondary btn-sm rounded-0 ">Cancle</a>
-                                        <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Khin Thet Pan Htoo</button>
+                                        <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
 
                                 </div>
                             </div>

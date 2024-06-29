@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ContactEmailNotify extends Notification
+class ContactEmailNotify extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -62,3 +62,12 @@ class ContactEmailNotify extends Notification
 // =>Gmail Integrate
 
 // Gmail > Setting Icon > See all setting > Forwarding and POP/IMAP >
+
+// php artisan queue:table
+// php artisan migrate
+// .env > QUEUE_CONNECTON=database (if sync that is not work for queue)
+// Note: class ContactEmailNotify extend Notification implements ShouldQueue
+// implements ShouldQueue (use Illuminate\Contracts\Queue\ShouldQueue;)
+// php artisan queue:work       //must run after queue
+// (or)
+// php artisan queue:listen     //must run after queue

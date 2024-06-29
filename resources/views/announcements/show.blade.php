@@ -187,6 +187,7 @@
                 <div class="card border-0 rounded-0 shadow mb-4">
                         <ul class="nav">
                             <li class="nav-item">
+                                <a href="#createmodal" class="w-100 btn btn-primary btn-sm rounded-0 me-2" data-bs-toggle="modal">Enroll</a>
                                 <button type="button" id="autoclick" class="tablinks active" onclick="gettab(event,'content')">Follower</button>
                             </li>
                         </ul>

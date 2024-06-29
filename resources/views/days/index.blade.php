@@ -33,7 +33,7 @@
                             <td>{{ $day->name }}</td>
                             <td>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" {{ $day->status_id === 3 ? 'checked' : ''}} />
+                                    <input type="checkbox" class="form-check-input change-btn" {{ $day->status_id === 3 ? 'checked' : ''}} data-id="{{$day->id}}" />
                                 </div>
                             </td>
                             <td>{{ $day['user']['name'] }}</td>
@@ -167,6 +167,7 @@
 @endsection('content')
 
 @section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             // Start Edit Form
@@ -200,6 +201,39 @@
                 }
             })
             // End Delete Item
+
+            // Start chage-btn
+
+            $('.change-btn').change(function(){
+
+                var getid = $(this).data('id');
+                // console.log(getid);
+
+                var setstatus = $(this).prop('checked') === true ? 3 : 4;
+                // console.log(setstatus);
+
+                $.ajax({
+                    url:"daysstatus",
+                    method:"GET",
+                    dataType:"json",
+                    data:{"id":getid,"status_id":setstatus},
+                    success:function(response){
+
+                        // console.log(response.success);
+
+                        Swal.fire({
+                            title:"Updated!",
+                            text:"Updated Successfully!",
+                            icon:"success"
+                        })
+
+                    }
+
+                })
+
+            })
+
+            // End chage-btn
 
 
         });

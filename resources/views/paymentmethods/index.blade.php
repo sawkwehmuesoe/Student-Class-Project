@@ -1,6 +1,4 @@
 @extends('layouts.adminindex')
-@section('caption', 'Type List')
-
 @section('content')
 
     <!-- Start Page Content Area -->
@@ -9,9 +7,7 @@
 
         <div class="col-md-12">
 
-            <form action="{{ route('types.store') }}" method="POST">
-
-                {{ csrf_field() }}
+            <form id="createform" action="{{ route('paymentmethods.store') }}">
 
                 <div class="row align-items-end">
                     <div class="col-md-4">
@@ -20,7 +16,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                         <input type="text" name="name" id="name" class="form-control form-control-sm rounded-0"
-                            placeholder="Enter Type Name" value="{{ old('name') }}" />
+                            placeholder="Enter Paymentmethod Name" value="{{ old('name') }}" />
                     </div>
 
                     <div class="col-md-4">
@@ -35,7 +31,7 @@
                     <div class='col-md-4 mt-3'>
 
                         <button type="reset" class="btn btn-secondary btn-sm rounded-0">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
+                        <button type="submit" id="create-btn" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
 
                     </div>
 
@@ -62,24 +58,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($types as $idx => $type)
-                        <tr>
+                    @foreach ($paymentmethods as $idx => $paymentmethod)
+                        <tr id="delete_{{$paymentmethod->id}}">
                             <td>{{ ++$idx }}</td>
-                            <td>{{ $type->name }}</td>
+                            <td>{{ $paymentmethod->name }}</td>
                             <td>
                                 <div class="form-checkbox form-switch">
-                                    <input type="checkbox" class="form-check-input change-btn" {{$type->status_id === 3 ? 'checked' : ''}} data-id="{{$type->id}}" />
+                                    <input type="checkbox" class="form-check-input change-btn" {{$paymentmethod->status_id === 3 ? 'checked' : ''}} data-id="{{$paymentmethod->id}}" />
                                 </div>
                             </td>
-                            <td>{{ $type['user']['name'] }}</td>
-                            <td>{{ $type->created_at->format('d M Y') }}</td>
-                            <td>{{ $type->updated_at->format('d M Y') }}</td>
+                            <td>{{ $paymentmethod['user']['name'] }}</td>
+                            <td>{{ $paymentmethod->created_at->format('d M Y') }}</td>
+                            <td>{{ $paymentmethod->updated_at->format('d M Y') }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $type->id }}" data-name="{{ $type->name }}" data-status="{{ $type->status_id }}"><i class="fas fa-pen"></i></a>
+                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $paymentmethod->id }}" data-name="{{ $paymentmethod->name }}" data-status="{{ $paymentmethod->status_id }}"><i class="fas fa-pen"></i></a>
                                 {{-- <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a> --}}
-                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{$idx}}" data-id="{{ $type->id }}"><i class="fas fa-trash-alt"></i></a>
+                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{$idx}}" data-id="{{ $paymentmethod->id }}"><i class="fas fa-trash-alt"></i></a>
                             </td>
-                            {{-- <form id="formdelete-{{ $idx }}" action="{{ route('types.destroy', $type->id) }}"
+                            {{-- <form id="formdelete-{{ $idx }}" action="{{ route('paymentmethods.destroy', $paymentmethod->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -103,14 +99,11 @@
 
                 <div class="modal-header">
                     <h6 class="modal-title">Edit Form</h6>
-                    <button type="type" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="paymentmethod" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
-                    <form id="formaction" action="" method="POST">
-
-                        {{ csrf_field() }}
-                        {{ method_field('PUT') }}
+                    <form id="formaction" action="" method="">
 
                         <div class="row align-items-end">
                             <div class="col-md-7">
@@ -156,14 +149,73 @@
 @endsection
 
 @section('scripts')
-
     <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript">
+
         $(document).ready(function() {
+
+            // Start Passing Header Token
+            $.ajaxSetup({
+                headers:{
+                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                }
+            })
+            // End Passing Header Token
+
+            // Start Create Form
+
+            $('#create-btn').click(function(e){
+
+                e.preventDefault();
+                // console.log("hi");
+
+                $.ajax({
+                    url:"{{route('paymentmethods.store')}}",
+                    type:"POST",
+                    dataType:"json",
+                    // data:$("#createform").serialize(),
+                    data:$("#createform").serializeArray(),
+                    success:function(response){
+                        // console.log(response);
+                        // console.log(response.status);
+
+                        const data = response.data;
+
+                        $('#mytable').prepend(
+                            `
+                            <tr id="${'delete_'+data.id}">
+                                <td>${data.id}</td>
+                                <td>${data.name}</td>
+                                <td>
+                                    <div class="form-checkbox form-switch">
+                                        <input type="checkbox" class="form-check-input change-btn" ${data.status_id === 3 ? 'checked' : ''} data-id="${data.id}" />
+                                    </div>
+                                </td>
+                                <td>${data.user_id}</td>
+                                <td>${data.created_at}</td>
+                                <td>${data.updated_at}</td>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="${data.id}" data-name="${data.name}" data-status="${data.status_id}"><i class="fas fa-pen"></i></a>
+                                    <a href="javascript:void(0);" class="text-danger delete-btns ms-2"  data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                            `
+                        )
+                    },
+                    error:function(response){
+                        console.log("Error : ", response);
+                    }
+                })
+
+            });
+
+            // End Create Form
+
             // Start Edit Form
 
-            $(document).on('click','.editform',function(e){
+            $(document).on('click','.editform',function(){
 
                 // console.log($(this).attr('data-id'),$(this).attr('data-name'));
 
@@ -171,26 +223,41 @@
                 $('#editstatus_id').val($(this).data('status'));
 
                 const getid = $(this).attr('data-id');
-                $('#formaction').attr('action',`/types/${getid}`);
+                // $('#formaction').attr('action',`/paymentmethods/${getid}`);
 
-                e.preventDefault();
+                $('#formaction').attr('data-id',getid);
 
             });
 
+            $('#formaction').submit(function(e){
+
+                e.preventDefault();
+
+                const getid = $(this).attr('data-id');
+                // const getid = 5;
+                console.log(getid);
+
+                $.ajax({
+                    url:`paymentmethods/${getid}`,
+                    type:"PUT",
+                    dataType:"json",
+                    data:$("#formaction").serialize(),  //name=kpay&status_id=4
+                    success:function(response){
+                        // console.log(this.data);  //name=kpay&status_id=4
+                        // console.log(response);
+                        // console.log(response.status);
+                        $('#editmodal').modal('hide');
+
+                        window.location.reload(); //temp reload
+                    }
+                });
+
+                // console.log('hello');
+
+            })
+
             // End Edit Form
             // Start Delete Item
-            // $('.delete-btns').click(function() {
-            //     // console.log("hey");
-            //     var getidx = $(this).data('idx');
-            //     // console.log(getidx);
-
-            //     if (confirm(`Are you sure !!! you want to Delete ${getidx}`)) {
-            //         $('#formdelete-' + getidx).submit();
-            //         return true;
-            //     } else {
-            //         return false;
-            //     }
-            // });
 
                 // By Ajax
             $('.delete-btns').click(function(){
@@ -206,12 +273,15 @@
                     // data remove
 
                     $.ajax({
-                        url:"typesdelete",
-                        type:"GET",
+                        url:`paymentmethods/${getid}`,
+                        type:"DELETE",
                         dataType:"json",
-                        data:{"id":getid},
+                        // data:{_token:"{{csrf_token()}}"},
                         success:function(response){
-                            window.alert(response.success);
+                            if(response && response.status === "success"){
+                                const getdata = response.data;
+                                $(`#delete_${getdata.id}`).remove();
+                            }
                         }
                     });
                 } else {
@@ -235,14 +305,20 @@
                 // console.log(setstatus);
 
                 $.ajax({
-                    url:"typesstatus",
-                    type:"GET",
+                    url:"paymentmethodsstatus",
+                    method:"GET",
                     dataType:"json",
                     data:{"id":getid,"status_id":setstatus},
                     success:function(response){
                         // console.log(response);
 
-                        console.log(response.success);
+                        // console.log(response.success);
+
+                        Swal.fire({
+                            title:"Updated!",
+                            text:"Updated Successfully!",
+                            icon:"success"
+                        })
                     }
             })
 
