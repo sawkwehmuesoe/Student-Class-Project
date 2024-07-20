@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Status;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
@@ -63,5 +65,19 @@ class CategoriesController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
         return redirect()->back();
+    }
+
+    public function bulkdeletes(Request $request)
+    {
+        try{
+
+            $getselectedids = $request->selectedids;
+            Category::whereIn('id',$getselectedids)->delete();
+            return response()->json(['status'=>'success','message'=>"Selected data have been deleted Successfully"]);
+
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()]);
+        }
     }
 }

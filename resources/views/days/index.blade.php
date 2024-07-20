@@ -10,13 +10,25 @@
 
         <a href="#createmodal" class="btn btn-primary btn-sm rounded-0" data-bs-toggle="modal">Create</a>
 
+        <hr />
+
         <div class="col-md-12">
 
-            <hr />
+            <div>
+                <a href="javascript:void(0)" id="bulkdelete-btn" class="btn btn-danger btn-sm rounded-0">Bulk Delete</a>
+            </div>
+
+        </div>
+
+        <div class="col-md-12">
+
 
             <table class="table table-sm table-hover border">
                 <thead>
                     <tr>
+                        <th>
+                            <input type="checkbox" name="selectalls" id="selectalls" class="form-check-input selectalls">
+                        </th>
                         <th>No</th>
                         <th>Name</th>
                         <th>Status</th>
@@ -28,7 +40,10 @@
                 </thead>
                 <tbody>
                     @foreach ($days as $idx => $day)
-                        <tr>
+                        <tr id="delete_{{$day->id}}">
+                            <td>
+                                <input type="checkbox" name="singlechecks" class="form-check-input singlechecks" value="{{$day->id}}" >
+                            </td>
                             <td>{{ ++$idx }}</td>
                             <td>{{ $day->name }}</td>
                             <td>
@@ -234,6 +249,97 @@
             })
 
             // End chage-btn
+
+            // Start Bulk Delete
+            $("#selectalls").click(function(){
+                $(".singlechecks").prop('checked',$(this).prop('checked'));
+            });
+
+
+            $("#bulkdelete-btn").click(function(){
+
+                let getselectedids = [];
+
+                // console.log($("input:checkbox[name=singlechecks]:checked"));
+
+                $("input:checkbox[name=singlechecks]:checked").each(function(){
+                    getselectedids.push($(this).val());
+                });
+
+                // console.log(getselectedids);
+
+                // $.ajax({
+                //     url:'{{route("days.bulkdeletes")}}',
+                //     type:"DELETE",
+                //     dataType:'json',
+                //     data:{
+                //         selectedids:getselectedids,
+                //         _token:'{{csrf_token()}}'
+                //     },
+                //     success:function(response){
+                //         // console.log(response);
+
+                //         if(response){
+                //             $.each(getselectedids,function(key,val){
+                //                 $(`#delete_${val}`).remove();
+                //             });
+                //         }
+
+                //     },
+                //     error:function(response){
+                //         console.log('Error ',response);
+                //     }
+                // })
+
+                Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!"
+                            }).then((result) => {
+
+                            if (result.isConfirmed) {
+
+                                // data remove
+
+                                $.ajax({
+                                    url:'{{route("days.bulkdeletes")}}',
+                                    type:"DELETE",
+                                    dataType:"json",
+                                    data:{
+                                        selectedids:getselectedids,
+                                        _token:'{{csrf_token()}}'
+                                    },
+                                    success:function(response){
+                                        // console.log(response);
+
+                                        if(response){
+
+                                            $.each(getselectedids,function(key,val){
+                                                $(`#delete_${val}`).remove();
+                                            })
+
+                                            Swal.fire({
+                                            title: "Deleted!",
+                                            text: "Your file has been deleted.",
+                                            icon: "success"
+                                            });
+                                        }
+                                    },
+                                    error:function(response){
+                                        console.log("Error : ",response);
+                                    }
+                                });
+                            }
+                        });
+
+
+            });
+
+            // End Bulk Delete
 
 
         });

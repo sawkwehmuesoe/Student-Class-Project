@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Day;
 use App\Models\Status;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DaysController extends Controller
@@ -74,6 +76,22 @@ class DaysController extends Controller
         $days->save();
 
         return response()->json(["success"=>"Status Change Successfully"]);
+
+    }
+
+    public function bulkdeletes(Request $request)
+    {
+
+        try{
+
+            $getselectedids =$request->selectedids;
+            Day::whereIn('id',$getselectedids)->delete();
+            return response()->json(["status"=>"success","message"=>"Selected data have been deleted Successfully"]);
+
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return response()->json(['status'=>"failed",'message'=>$e->getMessage()]);
+        }
 
     }
 }
