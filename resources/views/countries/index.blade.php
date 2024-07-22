@@ -14,16 +14,24 @@
                 {{ csrf_field() }}
 
                 <div class="row align-items-end">
-                    <div class="col-md-6">
+                    <div class="col-md-3 form-group mb-3">
                         <label for="name">First Name <span class="text-danger">*</span></label>
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
-                        <input type="text" name="name" id="name" class="form-control form-control-sm rounded-0"
-                            placeholder="Enter Name" value="{{ old('name') }}" />
+                        <input type="text" name="name" id="name" class="form-control form-control-sm rounded-0" placeholder="Enter Name" value="{{ old('name') }}" />
                     </div>
 
-                    <div class='col-md-6 mt-3'>
+                    <div class="col-md-3 form-group mb-3">
+                        <label for="status_id">Status</label>
+                        <select name="status_id" id="status_id" class="form-control form-control-sm rounded-0">
+                            @foreach ($statuses as $status)
+                                <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class='col-md-6 mb-3 text-sm-end text-start'>
 
                         <button type="reset" class="btn btn-secondary btn-sm rounded-0">Cancel</button>
                         <button type="submit" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
@@ -60,6 +68,7 @@
                         <tr>
                             <th>No</th>
                             <th>Name</th>
+                            <th>Status</th>
                             <th>By</th>
                             <th>Created At</th>
                             <th>Update At</th>
@@ -71,13 +80,18 @@
                             <tr>
                                 <td>{{ ++$idx }}</td>
                                 <td>{{ $country->name }}</td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" class="form-check-input change-btn" {{ $country->status_id === 3 ? 'checked' : ''}} data-id="{{$country->id}}" />
+                                    </div>
+                                </td>
                                 <td>{{ $country->user->name }}</td>
                                 <td>{{ $country->created_at->format('d M Y') }}</td>
                                 <td>{{ $country->updated_at->format('d M Y') }}</td>
                                 <td>
                                     <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal"
                                         data-bs-target="#editmodal" data-id="{{ $country->id }}"
-                                        data-name="{{ $country->name }}"><i class="fas fa-pen"></i></a>
+                                        data-name="{{ $country->name }}" data-status="{{$country->status_id}}" ><i class="fas fa-pen"></i></a>
                                     <a href="#" class="text-danger delete-btns ms-2"
                                         data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a>
                                 </td>
@@ -90,7 +104,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{ $countries->links('pagination::bootstrap-4') }}
+                {{-- {{ $countries->links('pagination::bootstrap-4') }} --}}
             </div>
 
         </div>
@@ -102,7 +116,7 @@
     {{-- Start Model Area  --}}
     {{-- start edit model --}}
     <div id="editmodal" class="modal fade">
-        <div class="modal-dialog modal-sm modal-dialog-centered ">
+        <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -117,14 +131,23 @@
                         {{ method_field('PUT') }}
 
                         <div class="row align-items-end">
-                            <div class="col-md-8">
+                            <div class="col-md-6 form-group mb-3">
                                 <label for="editname">country Name <span class="text-danger">*</span></label>
-                                <input type="text" name="name" id="editname"
+                                <input type="text" name="editname" id="editname"
                                     class="form-control form-control-sm rounded-0" placeholder="Enter Name"
                                     value="{{ old('name') }}" />
                             </div>
 
-                            <div class='col-md-4 mt-3'>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="editstatus_id">Status</label>
+                                <select name="editstatus_id" id="editstatus_id" class="form-control form-control-sm rounded-0">
+                                    @foreach ($statuses as $status)
+                                        <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class='col-md-2 text-sm-end text-start mb-3'>
                                 <button type="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
                             </div>
 
@@ -146,7 +169,7 @@
 @endsection
 
 @section('scripts')
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
         $(document).ready(function() {
 
@@ -171,6 +194,7 @@
                 // console.log($(this).attr('data-id'),$(this).data('name'));
 
                 $("#editname").val($(this).data('name'));
+                $("#editstatus_id").val($(this).attr('data-status'));
 
                 const getid = $(this).data('id');
                 $('#formaction').attr('action', `/countries/${getid}`);
@@ -180,6 +204,39 @@
             });
 
             // End Edit Form
+
+             // Start chage-btn
+
+             $('.change-btn').change(function(){
+
+                var getid = $(this).data('id');
+                console.log(getid);
+
+                var setstatus = $(this).prop('checked') === true ? 3 : 4;
+                console.log(setstatus);
+
+                $.ajax({
+                    url:"/countriesstatus",
+                    method:"GET",
+                    dataType:"json",
+                    data:{"id":getid,"status_id":setstatus},
+                    success:function(response){
+
+                        // console.log(response.success);
+
+                        Swal.fire({
+                            title:"Updated!",
+                            text:"Updated Successfully!",
+                            icon:"success"
+                        })
+
+                    }
+
+                })
+
+                })
+
+                // End chage-btn
 
         });
     </script>
