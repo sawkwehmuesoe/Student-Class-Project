@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\CitiesController;
+use App\Http\Controllers\Api\WarehousesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('cities',CitiesController::class,['as'=>'api']);
+Route::put('/citiesstatus',[CitiesController::class,'typestatus']);
+
+Route::apiResource('warehouses',WarehousesController::class,['as'=>'api']);
+Route::put('/warehousesstatus',[WarehousesController::class,'typestatus']);
+// method get so frontend mhar / get put so put

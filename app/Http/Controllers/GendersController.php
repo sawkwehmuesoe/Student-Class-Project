@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gender;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class GendersController extends Controller
@@ -58,5 +60,17 @@ class GendersController extends Controller
         $gender = Gender::findOrFail($id);
         $gender->delete();
         return redirect(route('genders.index'));
+    }
+
+    public function bulkdeletes(Request $request)
+    {
+        try{
+            $getselectedids = $request->selectedids;
+            Gender::whereIn('id',$getselectedids)->delete();
+            return response()->json(['success'=>'Selected data have been deleted Successfully']);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return response()->json(['status'=>'failed','message'=>$e->getMessage()]);
+        }
     }
 }

@@ -27,8 +27,11 @@ use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\TypesController;
 use App\Http\Controllers\UsersFollowerController;
+use App\Http\Controllers\WarehousesController;
+use App\Models\Day;
 use App\Models\Enroll;
 use App\Models\Status;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,17 +68,28 @@ Route::middleware('auth')->group(function () {
     Route::resource('attendances',AttendancesController::class);
 
     Route::resource('categories',CategoriesController::class);
+    Route::delete('/categoriesbulkdeletes',[CategoriesController::class,'bulkdeletes'])->name('categories.bulkdeletes');
+
     Route::resource('contacts',ContactsController::class);
+
     Route::resource('cities',CitiesController::class);
+    Route::delete('/citiesbulkdeletes',[CitiesController::class,'bulkdeletes'])->name('cities.bulkdeletes');
+
     Route::resource('comments',CommentsController::class);
+
     Route::resource('countries',CountriesController::class);
+    Route::get('/countriesstatus',[CountriesController::class,'typestatus']);
 
     Route::resource('days',DaysController::class);
     Route::get('/daysstatus',[DaysController::class,'typestatus']);
+    Route::delete('/daysbulkdeletes',[DaysController::class,'bulkdeletes'])->name('days.bulkdeletes');
 
     Route::resource('edulinks',EdulinksController::class);
     Route::resource('enrolls',EnrollsController::class);
+
     Route::resource('genders',GendersController::class);
+    Route::delete('/gendersbulkdeletes',[GendersController::class,'bulkdeletes'])->name('genders.bulkdeletes');
+
     Route::resource('leaves',LeavesController::class);
 
     Route::resource('paymentmethods',PaymentmethodsController::class);
@@ -94,6 +108,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('stages',StagesController::class);
     Route::get('stagesstatus',[StagesController::class,'typestatus']);
+    Route::delete('/stagesbulkdeletes',[StagesController::class,'bulkdeletes'])->name('stages.bulkdeletes');
 
     Route::resource('statuses',StatusesController::class);
     Route::resource('students',StudentsController::class);
@@ -108,6 +123,15 @@ Route::middleware('auth')->group(function () {
     Route::post('users/{user}/follow',[UsersFollowerController::class,'follow'])->name('users.follow');
     Route::post('users/{user}/unfollow',[UsersFollowerController::class,'unfollow'])->name('users.unfollow');
 
+    Route::resource('warehouses',WarehousesController::class);
+
+
 });
 
 require __DIR__.'/auth.php';
+
+// php artisan optimize
+// php artisan route:clear
+// php artisan route:cache
+// php artisan config:clear
+// php artisan config:cache

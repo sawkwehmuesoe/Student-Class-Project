@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\Status;
 use COM;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,12 +16,20 @@ class CountriesController extends Controller
     {
         // http://example.test/countries?filtername=thai
         // dd(request('filtername'));
+        // $countries = Country::where(function($query){
+        //     if($getname = request('filtername')){
+        //         $query->where('name','LIKE',"%".$getname."%");
+        //     }
+        // })->paginate(5);
         $countries = Country::where(function($query){
             if($getname = request('filtername')){
                 $query->where('name','LIKE',"%".$getname."%");
             }
-        })->paginate(5);
-        return view('countries.index',compact('countries'));
+        })->get();
+
+        $statuses = Status::whereIn('id',[3,4])->get();
+
+        return view('countries.index',compact('countries','statuses'));
     }
 
     public function store(Request $request)
@@ -34,6 +43,7 @@ class CountriesController extends Controller
         $country = new Country();
         $country->name = $request->name;
         $country->slug = Str::slug($request['name']);
+        $country->status_id = $request['status_id'];
         $country->user_id = $user_id;
 
         $country->save();
@@ -43,14 +53,15 @@ class CountriesController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request,[
-            'name'=>'required|unique:statuses,name'
+            'editname'=>'required|unique:statuses,name'
         ]);
 
         $user = Auth::user();
         $user_id = $user->id;
         $country = Country::findOrFail($id);
-        $country->name = $request->name;
+        $country->name = $request->editname;
         $country->slug = Str::slug($request['name']);
+        $country->status_id = $request['editstatus_id'];
         $country->user_id = $user_id;
 
         $country->save();
@@ -63,5 +74,15 @@ class CountriesController extends Controller
         $country = Country::findOrFail($id);
         $country->delete();
         return redirect(route('countries.index'));
+    }
+
+    public function typestatus(Request $request)
+    {
+        $country = Country::findOrFail($request['id']);
+        $country->status_id = $request['status_id'];
+        $country->save();
+
+        return response()->json(["success"=>"Status Change Successfully"]);
+
     }
 }

@@ -90,7 +90,7 @@
         @endif
 
         @if(session()->has('error'))
-            <script>toastr.error('{{session()->get('error')}}', 'Error');</script>
+            <script>toastr.error('{{session()->get('error')}}', 'Inconceivable');</script>
         @endif
 
         @if($errors)
