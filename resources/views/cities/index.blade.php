@@ -227,56 +227,106 @@
 
             // Start Fetch All Datas
 
-            function fetchalldatas(){
 
-                $.ajax({
 
-                    url:"{{'api/cities'}}",
+            const gettbody = document.querySelector('#mytable tbody');
+            const getloader = document.querySelector('.loader');
+            let page = 1;
 
-                    method:"GET",
-                    type:"JSON",
-                    success:function(response){
-                        // console.log(response);
+            async function fetchalldatasbypaginate(){
 
-                        const datas = response.data;
+                const url = `api/cities?page=${page}`;
 
-                        // console.log(datas);
+                let result;
 
-                        let html;
+                await fetch(url).then(response=>{
+                    console.log(response);
+                    return response.json();
+                }).then(data=>{
+                    console.log(data);
 
-                        datas.forEach(function(data,idx){
-                            // console.log(data);
+                    results = data.data;
+                    // console.log(results);
+                }).catch(err=>{
+                    console.log(err);
+                });
 
-                            html += `
-                                        <tr id="delete_${data.id}">
-                                            <td><input type="checkbox" name="singlechecks" class="form-check-input" value="${data.id}" /></td>
-                                            <td>${++idx}</td>
-                                            <td>${data.name}</td>
-                                            <td>${data.country["name"]}</td>
-                                            <td>
-                                                <div class="form-checkbox form-switch">
-                                                    <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
-                                                </div>
-                                            </td>
-                                            <td>${data.user.name}</td>
-                                            <td>${data.created_at}</td>
-                                            <td>${data.updated_at}</td>
-                                            <td>
-                                                <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
-                                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${idx}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
-                                    `;
-
-                        });
-
-                        $("#mytable tbody").prepend(html);
-                    }
-                })
+                return results;
 
             }
 
-            fetchalldatas();
+            // fetchalldatasbypaginate();
+
+            async function alldatastodom(){
+                const getresults = await fetchalldatasbypaginate();
+                // console.log(getresult);
+
+                getresults.forEach((data)=>{
+
+                    const newtr = document.createElement('tr');
+                    newtr.id = `delete_${data.id}`;
+
+                    // console.log(newtr);
+
+                    newtr.innerHTML = `
+                                        <td><input type="checkbox" name="singlechecks" class="form-check-input" value="${data.id}" /></td>
+                                        <td>${data.id}</td>
+                                        <td>${data.name}</td>
+                                         <td>${data.country["name"]}</td>
+                                        <td>
+                                            <div class="form-checkbox form-switch">
+                                                <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
+                                            </div>
+                                        </td>
+                                        <td>${data.user["name"]}</td>
+                                        <td>${data.created_at}</td>
+                                        <td>${data.updated_at}</td>
+                                        <td>
+                                            <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
+                                            <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${data.id}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+
+                                    `;
+
+
+                                    gettbody.appendChild(newtr);
+                });
+
+
+            }
+
+            alldatastodom();
+
+            document.addEventListener('scroll',()=>{
+                // console.log(document.documentElement.scrollTop);
+                // console.log(document.documentElement.scrollHeight);
+                // console.log(document.documentElement.clientHeight);
+
+                const {scrollTop,scrollHeight,clientHeight} = document.documentElement;
+
+                if(scrollTop + clientHeight >= scrollHeight - 5){
+                    showloader();
+                };
+            });
+
+            // Show loader & fetch more data
+            function showloader(){
+
+                getloader.classList.add('show');
+
+                setTimeout(()=>{
+
+                    getloader.classList.remove('show');
+
+                    setTimeout(()=>{
+                        page++;
+                        alldatastodom();
+                    },300);
+
+                },1000);
+
+            }
+            // Show loader & fetch more data
 
             // End Fetch All Datas
 
@@ -338,6 +388,12 @@
 
                                     $("#mytable tbody").prepend(html);
 
+                                    // clear form
+                                    // $("#createform")[0].reset();
+                                    $("#createform").trigger("reset");
+
+                                    $(this).text("Submit");
+
                                     $("#create-btn").text("Submit");
 
                                     Swal.fire({
@@ -354,11 +410,6 @@
                                 $("#create-btn").text("Try Again");
                             }
                         })
-
-
-
-
-
                 }
 
             })
@@ -508,7 +559,7 @@
                                 // data remove
 
                                 $.ajax({
-                                    url:`api/warehouses/${getid}`,
+                                    url:`api/cities/${getid}`,
                                     type:"DELETE",
                                     dataType:"json",
                                     // data:{_token:"{{csrf_token()}}"},

@@ -47,6 +47,11 @@
         <hr />
 
         <div class="col-md-12">
+
+            <div>
+                <a href="javascript:void(0);" id="bulkdelete-btn" class="btn btn-danger btn-sm rounded-0">Bulk Delete</a>
+            </div>
+
             <form action="" method="">
                 <div class="row justify-content-end">
                     <div class="col-md-2 col-sm-6 mb-2">
@@ -66,6 +71,9 @@
                 <table id="mytable" class="table table-sm table-hover border">
                     <thead>
                         <tr>
+                            <th>
+                                <input type="checkbox" name="selectalls" id="selectalls" class="form-check-input selectalls" >
+                            </th>
                             <th>No</th>
                             <th>Name</th>
                             <th>Status</th>
@@ -78,6 +86,7 @@
                     <tbody>
                         @foreach ($countries as $idx => $country)
                             <tr>
+                                <td><input type="checkbox" name="singlechecks" class="form-check-input" value="{{$country->id}}" /></td>
                                 <td>{{ ++$idx }}</td>
                                 <td>{{ $country->name }}</td>
                                 <td>

@@ -15,6 +15,7 @@ use App\Http\Controllers\EnrollsController;
 use App\Http\Controllers\GendersController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\PaymentmethodsController;
+use App\Http\Controllers\PaymenttypesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostsLikeController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\WarehousesController;
 use App\Models\Day;
 use App\Models\Enroll;
 use App\Models\Status;
+use App\Models\Student;
 use App\Models\Warehouse;
 use Illuminate\Support\Facades\Route;
 
@@ -79,6 +81,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('countries',CountriesController::class);
     Route::get('/countriesstatus',[CountriesController::class,'typestatus']);
+    Route::delete('/countriesbulkdeletes',[CountriesController::class,'bulkdeletes'])->name('countries.bulkdeletes');
 
     Route::resource('days',DaysController::class);
     Route::get('/daysstatus',[DaysController::class,'typestatus']);
@@ -94,6 +97,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('paymentmethods',PaymentmethodsController::class);
     Route::get('/paymentmethodsstatus',[PaymentmethodsController::class,'typestatus']);
+    Route::delete('/paymentmethodsbulkdeletes',[PaymentmethodsController::class,'bulkdeletes'])->name('paymentmethods.bulkdeletes');
+
+    Route::resource('paymenttypes',PaymenttypesController::class);
+    Route::get('/paymenttypesstatus',[PaymenttypesController::class,'typestatus']);
+    Route::delete('/paymenttypesbulkdeletes',[PaymenttypesController::class,'bulkdeletes'])->name('paymenttypes.bulkdeletes');
 
     Route::resource('posts',PostsController::class);
     Route::post('posts/{post}/like',[PostsLikeController::class,'like'])->name('posts.like');
@@ -113,6 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('statuses',StatusesController::class);
     Route::resource('students',StudentsController::class);
     Route::post('compose/mailbox',[StudentsController::class,'mailbox'])->name('students.mailbox');
+    Route::post('/students/quicksearch',[StudentsController::class,'quicksearch'])->name('students.quicksearch');
 
     Route::resource('tags',TagsController::class);
 

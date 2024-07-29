@@ -132,4 +132,16 @@ class StudentsController extends Controller
 
         return redirect()->back();
     }
+
+    public function quicksearch(Request $request){
+
+        $students = "";
+
+        if($request->keyword != ""){
+            $students = Student::where("regnumber",'LIKE','%'.$request->keyword.'%')->get();
+        }
+
+        return response()->json(['datas'=>$students]);
+
+    }
 }

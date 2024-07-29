@@ -9,28 +9,19 @@
 
         <div class="col-md-12">
 
-            <form id="createform" action="{{ route('paymentmethods.store') }}">
+            <form id="createform" action="{{ route('paymenttypes.store') }}">
 
                 <div class="row align-items-end">
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-4">
                         <label for="name">Name <span class="text-danger">*</span></label>
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                         <input type="text" name="name" id="name" class="form-control form-control-sm rounded-0"
-                            placeholder="Enter Paymentmethod Name" value="{{ old('name') }}" />
+                            placeholder="Enter Paymenttype Name" value="{{ old('name') }}" />
                     </div>
 
-                    <div class="col-md-3 form-group">
-                        <label for="paymenttype_id">Payment Type</label>
-                        <select name="paymenttype_id" id="paymenttype_id" class="form-control form-control-sm rounded-0">
-                            @foreach ($paymenttypes as $paymenttype)
-                                <option value="{{ $paymenttype['id'] }}">{{ $paymenttype['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-4">
                         <label for="status_id">Status</label>
                         <select name="status_id" id="status_id" class="form-control form-control-sm rounded-0">
                             @foreach ($statuses as $status)
@@ -39,7 +30,7 @@
                         </select>
                     </div>
 
-                    <div class='col-md-3 mt-3'>
+                    <div class='col-md-4 mt-3'>
 
                         <button type="reset" class="btn btn-secondary btn-sm rounded-0">Cancel</button>
                         <button type="submit" id="create-btn" class="btn btn-primary btn-sm rounded-0 ms-3">Submit</button>
@@ -72,7 +63,6 @@
                         </th>
                         <th>No</th>
                         <th>Name</th>
-                        <th>Payment Type</th>
                         <th>Status</th>
                         <th>By</th>
                         <th>Created At</th>
@@ -81,28 +71,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($paymentmethods as $idx => $paymentmethod)
-                        <tr id="delete_{{$paymentmethod->id}}">
+                    @foreach ($paymenttypes as $idx => $paymenttype)
+                        <tr id="delete_{{$paymenttype->id}}">
                             <td>
-                                <input type="checkbox" name="singlechecks" class="form-check-input singlechecks" value="{{$paymentmethod->id}}" >
+                                <input type="checkbox" name="singlechecks" class="form-check-input singlechecks" value="{{$paymenttype->id}}" >
                             </td>
                             <td>{{ ++$idx }}</td>
-                            <td>{{ $paymentmethod->name }}</td>
-                            <td>{{ $paymentmethod->paymenttype['name'] }}</td>
+                            <td>{{ $paymenttype->name }}</td>
                             <td>
                                 <div class="form-checkbox form-switch">
-                                    <input type="checkbox" class="form-check-input change-btn" {{$paymentmethod->status_id === 3 ? 'checked' : ''}} data-id="{{$paymentmethod->id}}" />
+                                    <input type="checkbox" class="form-check-input change-btn" {{$paymenttype->status_id === 3 ? 'checked' : ''}} data-id="{{$paymenttype->id}}" />
                                 </div>
                             </td>
-                            <td>{{ $paymentmethod['user']['name'] }}</td>
-                            <td>{{ $paymentmethod->created_at->format('d M Y') }}</td>
-                            <td>{{ $paymentmethod->updated_at->format('d M Y') }}</td>
+                            <td>{{ $paymenttype['user']['name'] }}</td>
+                            <td>{{ $paymenttype->created_at->format('d M Y') }}</td>
+                            <td>{{ $paymenttype->updated_at->format('d M Y') }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $paymentmethod->id }}" data-name="{{ $paymentmethod->name }}" data-paymenttype="{{$paymentmethod->paymenttype_id}}" data-status="{{ $paymentmethod->status_id }}"><i class="fas fa-pen"></i></a>
+                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $paymenttype->id }}" data-name="{{ $paymenttype->name }}" data-status="{{ $paymenttype->status_id }}"><i class="fas fa-pen"></i></a>
                                 {{-- <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a> --}}
-                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{$idx}}" data-id="{{ $paymentmethod->id }}"><i class="fas fa-trash-alt"></i></a>
+                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{$idx}}" data-id="{{ $paymenttype->id }}"><i class="fas fa-trash-alt"></i></a>
                             </td>
-                            {{-- <form id="formdelete-{{ $idx }}" action="{{ route('paymentmethods.destroy', $paymentmethod->id) }}"
+                            {{-- <form id="formdelete-{{ $idx }}" action="{{ route('paymenttypes.destroy', $paymenttype->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -126,27 +115,18 @@
 
                 <div class="modal-header">
                     <h6 class="modal-title">Edit Form</h6>
-                    <button type="paymentmethod" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="paymenttype" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
                     <form id="formaction" action="" method="">
 
-                        <div class="row align-items-end">
-                            <div class="col-md-3">
+                        <div class="row align-items-end px-3">
+                            <div class="col-md-7">
                                 <label for="editname">Name <span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="editname"
                                     class="form-control form-control-sm rounded-0" placeholder="Enter Name"
                                     value="{{ old('name') }}" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="editpaymenttype_id">Payment Type</label>
-                                <select name="paymenttype_id" id="editpaymenttype_id" class="form-control form-control-sm rounded-0">
-                                    @foreach ($paymenttypes as $paymenttype)
-                                        <option value="{{ $paymenttype['id'] }}">{{ $paymenttype['name'] }}</option>
-                                    @endforeach
-                                </select>
                             </div>
 
                             <div class="col-md-3">
@@ -159,7 +139,7 @@
                             </div>
 
                             <div class='col-md-2 mt-3'>
-                                <button type="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
+                                <button type="submit" id="update-btn" class="btn btn-primary btn-sm rounded-0">Update</button>
                             </div>
 
                         </div>
@@ -199,55 +179,90 @@
             })
             // End Passing Header Token
 
+            // Start Notify Box
+            function notify(stage,title,msg=null){
+                switch(stage){
+                    case "success":
+                        toastr.success(msg,title,{timeOut:1000});
+                        break;
+                    case "warning":
+                        toastr.warning(msg,title,{timeOut:1000});
+                        break;
+                    case "error":
+                        toastr.error(msg,title,{timeOut:1000});
+                        break;
+                }
+            }
+            // End Notify Box
+
             // Start Create Form
 
-            $('#create-btn').click(function(e){
+            async function createhandler(){
 
-                e.preventDefault();
-                // console.log("hi");
+                let result;
 
-                $.ajax({
-                    url:"{{route('paymentmethods.store')}}",
+                try{
+
+                    result = await  $.ajax({
+                    url:"{{route('paymenttypes.store')}}",
                     type:"POST",
                     dataType:"json",
-                    // data:$("#createform").serialize(),
-                    data:$("#createform").serializeArray(),
-                    success:function(response){
-                        // console.log(response);
-                        // console.log(response.status);
-
-                        const data = response.data;
-
-                        $('#mytable').prepend(
-                            `
-                            <tr id="${'delete_'+data.id}">
-                                <td>
-                                    <input type="checkbox" name="singlechecks" class="form-check-input singlechecks" value="${data.id}" >
-                                </td>
-                                <td>${data.id}</td>
-                                <td>${data.name}</td>
-                                <td>
-                                    <div class="form-checkbox form-switch">
-                                        <input type="checkbox" class="form-check-input change-btn" ${data.status_id === 3 ? 'checked' : ''} data-id="${data.id}" />
-                                    </div>
-                                </td>
-                                <td>${data.user_id}</td>
-                                <td>${data.created_at}</td>
-                                <td>${data.updated_at}</td>
-                                <td>
-                                    <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="${data.id}" data-name="${data.name}" data-status="${data.status_id}"><i class="fas fa-pen"></i></a>
-                                    <a href="javascript:void(0);" class="text-danger delete-btns ms-2"  data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
-                            `
-                        )
+                    beforeSend:function(){
+                        $("#create-btn").text("Sending...");
                     },
-                    error:function(response){
-                        console.log("Error : ", response);
-                    }
-                })
+                    data:$("#createform").serializeArray()
+                    });
 
-            });
+                    return result;
+
+                }catch(error){
+                    console.log("Error: ",error);
+                }
+
+            }
+
+            $('#create-btn').click(async function(e){
+
+                e.preventDefault();
+
+                await createhandler().then((response)=>{
+                    const data = response.data;
+
+                    $('#mytable').prepend(
+                        `
+                        <tr id="${'delete_'+data.id}">
+                            <td>
+                                <input type="checkbox" name="singlechecks" class="form-check-input singlechecks" value="${data.id}" >
+                            </td>
+                            <td>${data.id}</td>
+                            <td>${data.name}</td>
+                            <td>
+                                <div class="form-checkbox form-switch">
+                                    <input type="checkbox" class="form-check-input change-btn" ${data.status_id === 3 ? 'checked' : ''} data-id="${data.id}" />
+                                </div>
+                            </td>
+                            <td>${data.user_id}</td>
+                            <td>${data.created_at}</td>
+                            <td>${data.updated_at}</td>
+                            <td>
+                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="${data.id}" data-name="${data.name}" data-status="${data.status_id}"><i class="fas fa-pen"></i></a>
+                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2"  data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        `
+                    );
+
+                    // clear form
+                    // $("#createform")[0].reset();
+                    $("#createform").trigger("reset");
+
+                    $(this).text("Submit");
+
+                    notify('success',"Create Successfully");
+                });
+
+                });
+
 
             // End Create Form
 
@@ -258,19 +273,16 @@
                 // console.log($(this).attr('data-id'),$(this).attr('data-name'));
 
                 $('#editname').val($(this).attr('data-name'));
-                $('#editpaymenttype_id').val($(this).data('paymenttype'));
                 $('#editstatus_id').val($(this).data('status'));
 
-
-
                 const getid = $(this).attr('data-id');
-                // $('#formaction').attr('action',`/paymentmethods/${getid}`);
+                // $('#formaction').attr('action',`/paymenttypes/${getid}`);
 
                 $('#formaction').attr('data-id',getid);
 
             });
 
-            $('#formaction').submit(function(e){
+            $('#formaction').submit(async function(e){
 
                 e.preventDefault();
 
@@ -278,18 +290,24 @@
                 // const getid = 5;
                 console.log(getid);
 
-                $.ajax({
-                    url:`paymentmethods/${getid}`,
+                await $.ajax({
+                    url:`paymenttypes/${getid}`,
                     type:"PUT",
                     dataType:"json",
                     data:$("#formaction").serialize(),  //name=kpay&status_id=4
+                    beforeSend:function(){
+                        $("#update-btn").text("Sending...");
+                    },
                     success:function(response){
                         // console.log(this.data);  //name=kpay&status_id=4
                         // console.log(response);
                         // console.log(response.status);
                         $('#editmodal').modal('hide');
+                        $("#update-btn").text("Update");
 
-                        window.location.reload(); //temp reload
+                        notify('success',"Update Successfully");
+
+                        // window.location.reload(); //temp reload
                     }
                 });
 
@@ -301,7 +319,7 @@
             // Start Delete Item
 
                 // By Ajax
-            $('.delete-btns').click(function(){
+            $('.delete-btns').click(async function(){
                 const getidx = $(this).attr('data-idx');
                 var getid = $(this).data('id');
                 // console.log(getid);
@@ -313,8 +331,8 @@
 
                     // data remove
 
-                    $.ajax({
-                        url:`paymentmethods/${getid}`,
+                    await $.ajax({
+                        url:`paymenttypes/${getid}`,
                         type:"DELETE",
                         dataType:"json",
                         // data:{_token:"{{csrf_token()}}"},
@@ -322,6 +340,8 @@
                             if(response && response.status === "success"){
                                 const getdata = response.data;
                                 $(`#delete_${getdata.id}`).remove();
+
+                                notify('error',"Delete Successfully");
                             }
                         }
                     });
@@ -337,15 +357,15 @@
 
 
             // Start chage-btn
-            $('.change-btn').change(function(){
+            $('.change-btn').change(async function(){
 
                 var getid = $(this).data('id');
                 // console.log(getid);
                 var setstatus = $(this).prop('checked') === true ? 3 : 4;
                 // console.log(setstatus);
 
-                $.ajax({
-                    url:"paymentmethodsstatus",
+                await $.ajax({
+                    url:"paymenttypesstatus",
                     method:"GET",
                     dataType:"json",
                     data:{"id":getid,"status_id":setstatus},
@@ -381,31 +401,6 @@
                     getselectedids.push($(this).val());
                 });
 
-                // console.log(getselectedids);
-
-                // $.ajax({
-                //     url:'{{route("days.bulkdeletes")}}',
-                //     type:"DELETE",
-                //     dataType:'json',
-                //     data:{
-                //         selectedids:getselectedids,
-                //         _token:'{{csrf_token()}}'
-                //     },
-                //     success:function(response){
-                //         // console.log(response);
-
-                //         if(response){
-                //             $.each(getselectedids,function(key,val){
-                //                 $(`#delete_${val}`).remove();
-                //             });
-                //         }
-
-                //     },
-                //     error:function(response){
-                //         console.log('Error ',response);
-                //     }
-                // })
-
                 Swal.fire({
                             title: "Are you sure?",
                             text: "You won't be able to revert this!",
@@ -421,7 +416,7 @@
                                 // data remove
 
                                 $.ajax({
-                                    url:'{{route("paymentmethods.bulkdeletes")}}',
+                                    url:'{{route("paymenttypes.bulkdeletes")}}',
                                     type:"DELETE",
                                     dataType:"json",
                                     data:{

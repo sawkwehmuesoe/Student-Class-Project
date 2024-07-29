@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Paymentmethod;
 use App\Models\Paymenttype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,21 +10,19 @@ use App\Models\Status;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class PaymentmethodsController extends Controller
+class PaymenttypesController extends Controller
 {
     public function index()
     {
-        $paymentmethods = Paymentmethod::all();
-        $paymenttypes = Paymenttype::where('status_id',3)->get();
+        $paymenttypes = Paymenttype::all();
         $statuses = Status::whereIn('id',[3,4])->get();
-        return view('paymentmethods.index',compact('paymentmethods','paymenttypes','statuses'));
+        return view('paymenttypes.index',compact('paymenttypes','statuses'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name'=>'required|max:50|unique:paymentmethods',
-            'paymenttype_id'=>'required',
+            'name'=>'required|max:50|unique:paymenttypes',
             'status_id'=>'required|in:3,4'
         ]);
 
@@ -34,17 +31,16 @@ class PaymentmethodsController extends Controller
 
         try{
 
-            $paymentmethod = new Paymentmethod();
-            $paymentmethod->name = $request['name'];
-            $paymentmethod->slug = Str::slug($request['name']);
-            $paymentmethod->paymenttype_id =$request['paymenttype_id'];
-            $paymentmethod->status_id = $request['status_id'];
-            $paymentmethod->user_id = $user_id;
+            $paymenttype = new Paymenttype();
+            $paymenttype->name = $request['name'];
+            $paymenttype->slug = Str::slug($request['name']);
+            $paymenttype->status_id = $request['status_id'];
+            $paymenttype->user_id = $user_id;
 
-            $paymentmethod->save();
+            $paymenttype->save();
 
-            if($paymentmethod){
-                return response()->json(['status'=>'success','data'=>$paymentmethod]);
+            if($paymenttype){
+                return response()->json(['status'=>'success','data'=>$paymenttype]);
             }
 
         }catch(Exception $e){
@@ -59,8 +55,7 @@ class PaymentmethodsController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request,[
-            'name'=>['required','max:50','unique:paymentmethods,name,'.$id],
-            'paymenttype_id'=>'required',
+            'name'=>['required','max:50','unique:paymenttypes,name,'.$id],
             'status_id'=>['required','in:3,4']
         ]);
 
@@ -69,17 +64,16 @@ class PaymentmethodsController extends Controller
 
 
         try{
-            $paymentmethod = Paymentmethod::findOrFail($id);
-            $paymentmethod->name = $request['name'];
-            $paymentmethod->slug = Str::slug($request['name']);
-            $paymentmethod->paymenttype_id =$request['paymenttype_id'];
-            $paymentmethod->status_id = $request['status_id'];
-            $paymentmethod->user_id = $user_id;
+            $paymenttype = Paymenttype::findOrFail($id);
+            $paymenttype->name = $request['name'];
+            $paymenttype->slug = Str::slug($request['name']);
+            $paymenttype->status_id = $request['status_id'];
+            $paymenttype->user_id = $user_id;
 
-            $paymentmethod->save();
+            $paymenttype->save();
 
-            if($paymentmethod){
-                return response()->json(['status'=>'success','data'=>$paymentmethod]);
+            if($paymenttype){
+                return response()->json(['status'=>'success','data'=>$paymenttype]);
             }
 
             return response()->json(['status'=>'failed','message'=>'Failed to update Payment Method']);
@@ -94,21 +88,21 @@ class PaymentmethodsController extends Controller
 
     // public function destroy(string $id)
     // {
-    //     $paymentmethod = Paymentmethod::findOrFail($id);
-    //     $paymentmethod->delete();
+    //     $paymenttype = paymenttype::findOrFail($id);
+    //     $paymenttype->delete();
 
     //     session()->flash('info','Delete Successfully');
     //     return redirect()->back();
     // }
 
-    public function destroy(Paymentmethod $paymentmethod)
+    public function destroy(Paymenttype $paymenttype)
     {
 
         try{
 
-            if($paymentmethod){
-                $paymentmethod->delete();
-                return response()->json(["status"=>"success","data"=>$paymentmethod,"message"=>"Delete Successfully"]);
+            if($paymenttype){
+                $paymenttype->delete();
+                return response()->json(["status"=>"success","data"=>$paymenttype,"message"=>"Delete Successfully"]);
             }
 
             return response()->json(["status"=>"failed","message"=>"No Data Found"]);
@@ -122,9 +116,9 @@ class PaymentmethodsController extends Controller
 
     public function typestatus(Request $request)
     {
-        $paymentmethod = Paymentmethod::findOrFail($request['id']);
-        $paymentmethod->status_id = $request['status_id'];
-        $paymentmethod->save();
+        $paymenttype = Paymenttype::findOrFail($request['id']);
+        $paymenttype->status_id = $request['status_id'];
+        $paymenttype->save();
 
         return response()->json(["success"=>"Status Change Successfully"]);
     }
@@ -135,7 +129,7 @@ class PaymentmethodsController extends Controller
         try{
 
             $getselectedids =$request->selectedids;
-            Paymentmethod::whereIn('id',$getselectedids)->delete();
+            Paymenttype::whereIn('id',$getselectedids)->delete();
             return response()->json(["status"=>"success","message"=>"Selected data have been deleted Successfully"]);
 
         }catch(Exception $e){
