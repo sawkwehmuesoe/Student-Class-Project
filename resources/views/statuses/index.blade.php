@@ -170,57 +170,61 @@
 
             // End Passing Header Token
 
-
+            // Start Filter
             async function fetchalldatas(query=""){
 
-            await $.ajax({
+                await $.ajax({
 
-                url:"{{url('api/statusessearch')}}",
-                method:"GET",
-                type:"JSON",
-                data:{"query":query},
-                success:function(response){
-                    // console.log(response);
+                    url:"{{url('api/statusessearch')}}",
+                    method:"GET",
+                    type:"JSON",
+                    data:{"query":query},
+                    success:function(response){
+                        // console.log(response);
 
-                    $("#mytable tbody").empty();
-                    $(".loading").hide();
+                        $("#mytable tbody").empty();
+                        $(".loading").hide();
 
-                    const datas = response.data;
+                        const datas = response.data;
 
-                    // console.log(datas);
+                        // console.log(datas);
 
-                    let html;
+                        let html;
 
-                    datas.forEach(function(data,idx){
-                        // console.log(data);
+                        datas.forEach(function(data,idx){
+                            // console.log(data);
 
-                        html += `
-                                    <tr id="${data.id}">
-                                        <td><input type="checkbox" name="singlechecks" class="form-check-input" value="${data.id}" /></td>
-                                        <td>${++idx}</td>
-                                        <td>${data.name}</td>
+                            html += `
+                                        <tr id="${data.id}">
+                                            <td>
+                                                <input type="checkbox" name="singlechecks" class="form-check-input" value="${data.id}" />
+                                            </td>
+                                            <td>${++idx}</td>
+                                            <td>${data.name}</td>
 
-                                        <!-- <td>${data.user["name"]}</td> -->
-                                        <td>${data.user.name}</td>
-                                        <td>${data.created_at}</td>
-                                        <td>${data.updated_at}</td>
-                                        <td>
-                                            <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
-                                            <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${idx}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
-                                        </td>
-                                    </tr>
-                                `;
+                                            <!-- <td>${data.user["name"]}</td> -->
+                                            <td>${data.user.name}</td>
+                                            <td>${data.created_at}</td>
+                                            <td>${data.updated_at}</td>
+                                            <td>
+                                                <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
+                                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${idx}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                    `;
 
-                    });
+                        });
 
-                    $("#mytable tbody").prepend(html);
-                    // $("#mytable tbody").html(html);
-                }
-            })
+                        $("#mytable tbody").prepend(html);
+                        // $("#mytable tbody").html(html);
+                    }
+                })
 
             }
 
             fetchalldatas();
+
+            // End Filter
 
             // Start Filter by search Query
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\EdulinksController;
 use App\Http\Controllers\EnrollsController;
 use App\Http\Controllers\GendersController;
 use App\Http\Controllers\LeavesController;
+use App\Http\Controllers\OtpsController;
 use App\Http\Controllers\PaymentmethodsController;
 use App\Http\Controllers\PaymenttypesController;
 use App\Http\Controllers\PostsController;
@@ -94,6 +95,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/gendersbulkdeletes',[GendersController::class,'bulkdeletes'])->name('genders.bulkdeletes');
 
     Route::resource('leaves',LeavesController::class);
+
+    Route::post('/generateotps',[OtpsController::class,'generate']);
+    Route::post('/verifyotps',[OtpsController::class,'verify']);
 
     Route::resource('paymentmethods',PaymentmethodsController::class);
     Route::get('/paymentmethodsstatus',[PaymentmethodsController::class,'typestatus']);

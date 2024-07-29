@@ -49,45 +49,51 @@
 
         <div class="col-md-12">
 
-            <table id="mytable" class="table table-sm table-hover border">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>By</th>
-                        <th>Created At</th>
-                        <th>Update At</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($types as $idx => $type)
-                        <tr>
-                            <td>{{ ++$idx }}</td>
-                            <td>{{ $type->name }}</td>
-                            <td>
-                                <div class="form-checkbox form-switch">
-                                    <input type="checkbox" class="form-check-input change-btn" {{$type->status_id === 3 ? 'checked' : ''}} data-id="{{$type->id}}" />
+            <div class="col-md-12 row mb-3">
+
+                <div class="col-3">
+                    <a href="javascript:void(0);" id="bulkdelete-btn" class="btn btn-danger btn-sm rounded-0">Bulk Delete</a>
+                </div>
+
+                <div class="col-9">
+                    <form action="" method="">
+                        <div class="row justify-content-end">
+                            <div class="col-md-2 col-sm-6 mb-2">
+                                <div class="input-group">
+                                    <input type="text" name="filtername" id="filtername"
+                                        class="form-control form-control-sm rounded-0" placeholder="Search...">
+                                    <button type="submit" id="btn-search" class="btn btn-secondary btn-sm "><i
+                                            class="fas fa-search"></i></button>
                                 </div>
-                            </td>
-                            <td>{{ $type['user']['name'] }}</td>
-                            <td>{{ $type->created_at->format('d M Y') }}</td>
-                            <td>{{ $type->updated_at->format('d M Y') }}</td>
-                            <td>
-                                <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $type->id }}" data-name="{{ $type->name }}" data-status="{{ $type->status_id }}"><i class="fas fa-pen"></i></a>
-                                {{-- <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a> --}}
-                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{$idx}}" data-id="{{ $type->id }}"><i class="fas fa-trash-alt"></i></a>
-                            </td>
-                            {{-- <form id="formdelete-{{ $idx }}" action="{{ route('types.destroy', $type->id) }}"
-                                method="POST">
-                                @csrf
-                                @method('DELETE')
-                            </form> --}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+
+                <table id="mytable" class="table table-sm table-hover border">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="selectalls" id="selectalls" class="form-check-input selectalls" >
+                            </th>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>By</th>
+                            <th>Created At</th>
+                            <th>Update At</th>
+                            <th>Action</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
 
         </div>
 
@@ -161,6 +167,90 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+
+            // Start Passing Header Token
+
+            $.ajaxSetup({
+                headers:{
+                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                }
+            })
+
+            // End Passing Header Token
+
+            // Start Fetch All Data
+
+            async function fetchalldatas(query = ""){
+
+                await $.ajax({
+                    url:"{{url('api/typessearch')}}",
+                    method:"GET",
+                    type:"JSON",
+                    data:{"query":query},
+                    success:function(response){
+
+                        // console.log(response);
+
+                        const datas = response.data;
+
+                        let html;
+
+                        datas.forEach(function(data,idx){
+
+                            // console.log(data);
+
+                            html += `
+                                    <tr id="${data.id}">
+                                        <td>
+                                            <input type="checkbox" name="singlechecks" class="form-check-input" value="${data.id}" />
+                                        </td>
+                                        <td>${idx++}</td>
+                                        <td>${data.name}</td>
+                                        <td>
+                                            <div class="form-checkbox form-switch">
+                                                <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}"  />
+                                            </div>
+                                        </td>
+                                        <td>${data.user.name}</td>
+                                        <td>${data.created_at}</td>
+                                        <td>${data.updated_at}</td>
+                                        <td>
+                                            <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
+                                            <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${idx}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                            `;
+
+                        })
+
+                        $("#mytable tbody").html(html);
+
+                    }
+                })
+
+            }
+
+            fetchalldatas();
+
+            // End Fetch All Data
+
+            // Start Filter By Search Query
+
+            $("#btn-search").on('click',function(e){
+
+                e.preventDefault();
+                // console.log("heii");
+
+                const query = $("#filtername").val();
+
+                // console.log(query);
+
+                fetchalldatas(query);
+
+            });
+
+            // End Filter By Search Query
+
             // Start Edit Form
 
             $(document).on('click','.editform',function(e){
@@ -224,7 +314,7 @@
 
             // End Delete Item
 
-            $('#mytable').DataTable();
+            // $('#mytable').DataTable();
 
             // Start chage-btn
             $('.change-btn').change(function(){
@@ -253,3 +343,29 @@
         });
     </script>
 @endsection
+
+{{--
+@foreach ($types as $idx => $type)
+<tr>
+    <td>{{ ++$idx }}</td>
+    <td>{{ $type->name }}</td>
+    <td>
+        <div class="form-checkbox form-switch">
+            <input type="checkbox" class="form-check-input change-btn" {{$type->status_id === 3 ? 'checked' : ''}} data-id="{{$type->id}}" />
+        </div>
+    </td>
+    <td>{{ $type['user']['name'] }}</td>
+    <td>{{ $type->created_at->format('d M Y') }}</td>
+    <td>{{ $type->updated_at->format('d M Y') }}</td>
+    <td>
+        <a href="javascript:void(0);" class="text-info editform" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="{{ $type->id }}" data-name="{{ $type->name }}" data-status="{{ $type->status_id }}"><i class="fas fa-pen"></i></a> --}}
+        {{-- <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{ $idx }}"><i class="fas fa-trash-alt"></i></a> --}}
+        {{-- <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{$idx}}" data-id="{{ $type->id }}"><i class="fas fa-trash-alt"></i></a>
+    </td> --}}
+    {{-- <form id="formdelete-{{ $idx }}" action="{{ route('types.destroy', $type->id) }}"
+        method="POST">
+        @csrf
+        @method('DELETE')
+    </form> --}}
+{{-- </tr>
+@endforeach --}}

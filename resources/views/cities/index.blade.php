@@ -66,6 +66,7 @@
 
                 <div>
                     <a href="javascript:void(0);" id="bulkdelete-btn" class="btn btn-danger btn-sm rounded-0">Bulk Delete</a>
+                    <a href="javascript:void(0);" id="generateotp-btn" class="btn btn-success btn-sm rounded-0 ms-5">Generate OTP</a>
                 </div>
 
                 <div>
@@ -712,6 +713,23 @@
             });
 
             // End Bulk Delete
+
+            // Start OTP
+            $("#generateotp-btn").on('click',function(){
+
+                $.ajax({
+                    url:'/generateotps',
+                    type:'POST',
+                    success:function(response){
+                        console.log(response);
+                    },
+                    error:function(response){
+                        console.error("Error : ",response)
+                    }
+                });
+
+            });
+            // End OTP
 
         });
     </script>

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\CitiesController;
 use App\Http\Controllers\Api\StatusesController;
+use App\Http\Controllers\Api\TagsController;
+use App\Http\Controllers\Api\TypesController;
 use App\Http\Controllers\Api\WarehousesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +28,12 @@ Route::put('/citiesstatus',[CitiesController::class,'typestatus']);
 
 Route::apiResource('statuses',StatusesController::class,['as'=>'api']);
 Route::get('/statusessearch',[StatusesController::class,'search']);
+
+Route::apiResource('tags',TagsController::class,['as'=>'api']);
+Route::get('/tagssearch',[TagsController::class,'search']);
+
+Route::apiResource('types',TypesController::class,['as'=>'api']);
+Route::get('/typessearch',[TypesController::class,'search']);
 
 Route::apiResource('warehouses',WarehousesController::class,['as'=>'api']);
 Route::put('/warehousesstatus',[WarehousesController::class,'typestatus']);
