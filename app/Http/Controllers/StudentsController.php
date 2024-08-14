@@ -31,7 +31,6 @@ class StudentsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'regnumber'=>'required|unique:students,regnumber',
             'firstname'=>'required',
             'lastname'=>'required',
             'remark'=>'max:1000'

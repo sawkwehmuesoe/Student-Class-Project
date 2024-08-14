@@ -120,4 +120,11 @@ class EdulinksController extends Controller
         session()->flash('success','Delete Successfully');
         return redirect()->back();
     }
+
+    public function download($id){
+        $edulink = Edulink::findOrFail($id);
+        $edulink->increment('counter');
+
+        return redirect($edulink->url);
+    }
 }

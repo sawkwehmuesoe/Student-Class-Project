@@ -186,6 +186,40 @@
         </div>
     </div>
     {{-- end edit model --}}
+
+     {{-- start edit model --}}
+     <div id="otpmodal" class="modal fade">
+        <div class="modal-dialog modal-sm modal-dialog-centered ">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <form id="verifyform" action="" method="">
+
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label for="otpcode">OTP Code <span class="text-danger">*</span></label>
+                                <input type="text" name="otpcode" id="otpcode"
+                                    class="form-control form-control-sm rounded-0" placeholder="Enter Your OTP Code"/>
+                            </div>
+
+                            <input type="hidden" name="otpuser_id" id="otpuser_id" value="{{$userdata['id']}}">
+
+                            <div class='col-md-12 text-end mb-3'>
+                                <button type="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
+                            </div>
+
+                        </div>
+
+                        <p id="otpmessage"></p>
+                        <p>Expired in : <span id="otptimer"></span> seconds</p>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {{-- end edit model --}}
     {{-- End Model Area  --}}
 
 @endsection('content')
@@ -517,11 +551,6 @@
                                 $("#edit-btn").text("Try Again");
                             }
                         })
-
-
-
-
-
                 }
 
                 })
@@ -722,10 +751,44 @@
                     type:'POST',
                     success:function(response){
                         console.log(response);
+
+                        $("#otpmessage").text('Your OTP code is ' + response.otp);
+                        $("#otpmodal").modal('show');
+
+                        startotptimer(300);
+
                     },
                     error:function(response){
                         console.error("Error : ",response)
                     }
+                });
+
+                function startotptimer(duration){
+
+                }
+
+                $("#verifyform").on('submit',function(e){
+
+                    e.preventDefault();
+
+                    $.ajax({
+                        url:"/verifyotps",
+                        type:"POST",
+                        data:$(this).serialize(),
+                        success:function(response){
+
+                            if(response.messages){
+                                console.log('Bulk Delete Successfully');
+                            }else{
+                                console.log('Invalid OTP');
+                            }
+
+                        },
+                        error:function(response){
+                            console.log('Error OTP : ', response);
+                        }
+                    })
+
                 });
 
             });

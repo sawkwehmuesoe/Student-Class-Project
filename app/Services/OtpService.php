@@ -10,12 +10,12 @@ class OtpService{
     public function generateotp($userid){
 
         $randomotp = rand(100000,999999);
-        $expiresat = Carbon::now()->addMinute(10);
+        $expireset = Carbon::now()->addMinute(1);
 
         Otp::create([
             'user_id'=>$userid,
             'otp'=>$randomotp,
-            'expires_at'=>$expiresat
+            'expires_at'=>$expireset
         ]);
 
         // Send Otp via to email

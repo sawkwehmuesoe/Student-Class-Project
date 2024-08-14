@@ -13,13 +13,22 @@ $(document).ready(function(){
 
 });
 
-// Start Js Area 
+// Start Js Area
+
+console.log("are you ready");
+
+// Start Site Setting
+const getsitesettings = document.getElementById('sitesettings');
+getsitesettings.addEventListener('click',function(){
+  document.body.classList.toggle('show-nav');
+});
+// End Site Setting
 
 /* Start Top Side Bar  */
 
 /* Start notify & userlogout  */
 
-// Start Dropdown 
+// Start Dropdown
 
 function dropbtn(e){
     // console.log(e.target);
@@ -27,7 +36,7 @@ function dropbtn(e){
     e.target.parentElement.nextElementSibling.classList.toggle("show");
 }
 
-// End Dropdown 
+// End Dropdown
 
 /* End Top Side Bar  */
 
@@ -82,14 +91,14 @@ google.charts.load('current', {'packages':['corechart']});
 
 // End Earning Area
 
-// End Js Area 
+// End Js Area
 
 // let result = Math.min(10,20,5,6,8,2,60,18,7);
 // console.log(result); 2
 // let results = Math.max(10,20,5,6,8,2,60,18,7);
 // console.log(results); 60
 
-// Get Minimum Number 
+// Get Minimum Number
 // var arrnums = [5,10,15,3,7,8,20,6];
 
 // function getminnumber(numbers){
@@ -97,7 +106,7 @@ google.charts.load('current', {'packages':['corechart']});
 //   let minnumber = numbers[0];
 
 //   for(var x =0; x < numbers.length ; x++){
-//     // Get mini number 
+//     // Get mini number
 //     if(numbers[x] < minnumber){
 //       minnumber = numbers[x];
 //     }
@@ -133,7 +142,7 @@ google.charts.load('current', {'packages':['corechart']});
 
 //   for(let x =y; y < numbers.length;y++){
 
-//     // GEt Max Number 
+//     // GEt Max Number
 //     if(numbers[x] > maxnumber){
 //       maxnumber = numbers[x];
 //       curidx = x;
@@ -143,7 +152,7 @@ google.charts.load('current', {'packages':['corechart']});
 
 //   // return [maxnumber,curidx];
 
-//   // swap idx 6 to idx 0 
+//   // swap idx 6 to idx 0
 //   // numbers[curidx] = numbers[0];
 //   // // return [maxnumber,curidx,numbers];
 //   // numbers[0] = maxnumber;
@@ -160,7 +169,7 @@ google.charts.load('current', {'packages':['corechart']});
 
 // ----------------------------------------------------
 
-// 21 6 2023 
+// 21 6 2023
 
 // var arrnums = [5,10,15,3,7,8,20,6];
 
@@ -197,7 +206,7 @@ google.charts.load('current', {'packages':['corechart']});
 
 //     // var maxnumber = numbers[0];
 //     // var curidx;
-  
+
 //     for(var x=y ;x < numbers.length;x++){
 
 //       // Get Max Number
@@ -212,15 +221,15 @@ google.charts.load('current', {'packages':['corechart']});
 //         curidx = x;
 //       }
 
-//       // Get Min Number 
+//       // Get Min Number
 //       // if(numbers[x] < maxnumber){
 //       //   maxnumber = numbers[x];
 //       //   curidx = x;
 //       // }
 //     }
-  
+
 //     // numbers[curidx] = numbers[0];
-  
+
 //     // return [maxnumber,curidx,numbers];
 //     // numbers[0] = maxnumber;
 //     //  return [maxnumber,curidx,numbers];
@@ -228,7 +237,7 @@ google.charts.load('current', {'packages':['corechart']});
 //     numbers[curidx] = numbers[y];
 //     numbers[y] = maxnumber;
 
-    
+
 //   }
 
 //   return numbers;
@@ -291,22 +300,22 @@ function sortmaxtominnum(saledatas){
 
     for(var x=y ;x < saledatas.length;x++){
 
-    
+
        // Get Max Number
       if(saledatas[x].rank > maxnumber.rank){
         maxnumber = saledatas[x];
         curidx = x;
       }
 
-     
+
     }
-  
-  
+
+
 
     saledatas[curidx] = saledatas[y];
     saledatas[y] = maxnumber;
 
-    
+
   }
 
   return saledatas;
@@ -338,7 +347,7 @@ function showsaledatas(sortdata){
 
   progress += `</div>`;
 
-  // 
+  //
 
   getsalecontainer.innerHTML = progress;
 
