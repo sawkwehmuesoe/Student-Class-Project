@@ -9,10 +9,13 @@ class PackagesController extends Controller
 {
     public function index(){
 
-        if(request()->ajax()){
-            $packages = Package::all();
+        // if(request()->ajax()){
+        //     $packages = Package::all();
+        //     return view('packages.index',compact('packages'))->render();
+        // }
+
+        $packages = Package::all();
             return view('packages.index',compact('packages'))->render();
-        }
 
         return view('packages.index');
     }

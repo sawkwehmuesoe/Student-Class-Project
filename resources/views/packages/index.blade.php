@@ -72,25 +72,30 @@
                     <form id="formaction">
 
                         <div class="row align-items-end px-3">
-                            <div class="col-md-7">
+                            <div class="col-md-12 form-group mb-3">
                                 <label for="name">Name <span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name"
                                     class="form-control form-control-sm rounded-0" placeholder="Enter Application Name"
                                     value="{{ old('name') }}" />
                             </div>
 
-                            <div class="col-md-3">
-                                <label for="status_id">Status</label>
-                                <select name="status_id" id="status_id" class="form-control form-control-sm rounded-0">
-                                    @foreach ($statuses as $status)
-                                        <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="col-md-6 form-group mb-3">
+                                <label for="price">Price <span class="text-danger">*</span></label>
+                                <input type="number" name="price" id="price"
+                                    class="form-control form-control-sm rounded-0" placeholder="Enter Price"
+                                    value="{{ old('price') }}" />
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label for="duration">Duration <span class="text-danger">*</span></label>
+                                <input type="number" name="duration" id="duration"
+                                    class="form-control form-control-sm rounded-0" placeholder="Enter Total Day"
+                                    value="{{ old('duration') }}" />
                             </div>
 
                             <input type="hidden" name="id" id="id">
 
-                            <div class='col-md-2 mt-3'>
+                            <div class='col-md-12 text-end'>
                                 <button type="submit" id="action-btn" class="btn btn-primary btn-sm rounded-0" value="action-type">Submit</button>
                             </div>
 
@@ -127,15 +132,6 @@
                                 <input type="text" name="name" id="editname"
                                     class="form-control form-control-sm rounded-0" placeholder="Enter Name"
                                     value="{{ old('name') }}" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="editstatus_id">Status</label>
-                                <select name="status_id" id="editstatus_id" class="form-control form-control-sm rounded-0">
-                                    @foreach ($statuses as $status)
-                                        <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
-                                    @endforeach
-                                </select>
                             </div>
 
                             <div class='col-md-2 mt-3'>

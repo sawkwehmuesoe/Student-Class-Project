@@ -43,6 +43,7 @@ use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\PostLiveViewersController;
 use App\Http\Controllers\PostViewDurationsController;
+use App\Http\Controllers\SubscriptionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +143,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('students',StudentsController::class);
     Route::post('compose/mailbox',[StudentsController::class,'mailbox'])->name('students.mailbox');
     Route::post('/students/quicksearch',[StudentsController::class,'quicksearch'])->name('students.quicksearch');
+
+    Route::get('/subscribesexpired',[SubscriptionsController::class,'expired'])->name('subscriptions.expired');
 
     Route::resource('tags',TagsController::class);
 

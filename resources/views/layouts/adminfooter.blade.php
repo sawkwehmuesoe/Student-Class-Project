@@ -69,9 +69,6 @@
             </div>
         </div>
 
-
-
-
         {{-- End Right Navbar --}}
 
         {{-- START MODAL AREA --}}
@@ -202,6 +199,51 @@
             }
 
             // End Quick Search
+
+            // Start Onoffuser Search
+            var getusersearch = document.getElementById('usersearch');
+            var getonoffusers = document.getElementById('onoffusers');
+            var getonoffuserlis = getonoffusers.getElementsByTagName("li");
+            // console.log(getonoffuserlis); //HTML Collection
+
+            getusersearch.addEventListener('keyup',filter);
+
+            //_________________________________________________________________________________________________
+
+            function filter(){
+                // console.log(this.value);
+
+                var getlink;
+
+                var filter = this.value.toLowerCase();
+                // console.log(filter);
+
+                for(var x= 0 ; x < getonoffuserlis.length ; x++){
+
+                    var getlink = getonoffuserlis[x].getElementsByTagName("div")[1];
+
+                    // console.log(getlink);
+
+                    var getdivtext = getlink.textContent || getlink.innerText;
+                    // console.log(getdivtext);
+                    // console.log(getdivtext.toLowerCase());
+
+                    if(getdivtext.toLowerCase().indexOf(filter) > -1){
+                        getonoffuserlis[x].classList.remove('d-none');
+                    }else{
+                        getonoffuserlis[x].classList.add('d-none');
+                    }
+                }
+
+            }
+
+
+            //_________________________________________________________________________________________________
+
+
+
+
+            // End OnoffuserSearch
 
         </script>
 

@@ -265,6 +265,9 @@
                             <li class="nav-item">
                                 <button type="button" class="tablinks" onclick="gettab(event,'remark')">Remark</button>
                             </li>
+                            <li class="nav-item">
+                                <button type="button" class="tablinks" onclick="gettab(event,'duration')">Duration</button>
+                            </li>
                         </ul>
 
                         <div class="tab-content">
@@ -286,6 +289,28 @@
 
                             <div id="remark" class="tab-panel">
                                 <p></p>
+                            </div>
+
+                            <div id="duration" class="tab-panel">
+                                <h6>This is frequently viewer's duration</h6>
+                                <table class="table table-sm table-hover border">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Duration</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($postviewdurations as $postviewduration)
+                                            <tr>
+                                                <td>{{$postviewduration->user_id}}</td>
+                                                <td>{{$postviewduration->duration}}</td>
+                                                <td>{{$postviewduration->created_at->format('d M Y h:m A')}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
 
                         </div>

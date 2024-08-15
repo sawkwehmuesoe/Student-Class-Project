@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_online')->default(false)->after('password');
-            $table->timestamp('last_active')->nullable()->after('is_online');
+            $table->foreignId('package_id')->nullable()->after('last_active')->constrained()->onDelete('set null');
+            $table->timestamp('subscription_expires_at')->nullable()->after('package_id');
         });
     }
 
@@ -23,13 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_online');
-            $table->dropColumn('last_active');
+            $table->dropForeign(['package_id']);
+            $table->dropColumn('package_id');
+            $table->dropColumn('subscription_expires_at');
         });
     }
 };
-
-// php artisan make:migration add_is_online_and_last_active_to_users_table --table=users
-
-
-// php artisan make:migration add_package_id_and_add_subscription_expires_at_to_users_table --table=users
