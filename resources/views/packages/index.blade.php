@@ -7,48 +7,42 @@
 
         <div class="col-md-12">
 
-            <a href="javascript:void(0);" id="modal-btn" class="btn btn-primary btn-sm rounded-0">Create</a>
+            <a href="javascript:void(0);" id="createmodal-btn" class="btn btn-primary btn-sm rounded-0 me-3">Create</a>
+            <a href="javascript:void(0);" id="setmodal-btn" class="btn btn-info btn-sm rounded-0">Set to User</a>
 
         </div>
 
         <hr />
 
-        <div class="col-md-12">
+        <div class="col-md-12 loader-container">
 
             <table id="mytable" class="table table-sm table-hover border">
                 <thead>
                     <tr>
+                        <th>
+                            <input type="checkbox" name="selectalls" id="selectalls" class="form-check-input selectalls" >
+                        </th>
                         <th>No</th>
                         <th>Name</th>
-                        <th>Status</th>
-                        <th>By</th>
+                        <th>Price</th>
+                        <th>Duration/Day</th>
                         <th>Created At</th>
                         <th>Update At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {{-- @foreach ($socialapplications as $idx => $socialapplication)
-                        <tr id="delete_{{$socialapplication->id}}">
-                            <td>{{ ++$idx }}</td>
-                            <td>{{ $socialapplication->name }}</td>
-                            <td>
-                                <div class="form-checkbox form-switch">
-                                    <input type="checkbox" class="form-check-input change-btn" {{$socialapplication->status_id === 3 ? 'checked' : ''}} data-id="{{$socialapplication->id}}" />
-                                </div>
-                            </td>
-                            <td>{{ $socialapplication['user']['name'] }}</td>
-                            <td>{{ $socialapplication->created_at->format('d M Y') }}</td>
-                            <td>{{ $socialapplication->updated_at->format('d M Y') }}</td>
-                            <td>
-                                <a href="javascript:void(0);" class="text-info edit-btns" data-id="{{ $socialapplication->id }}"><i class="fas fa-pen"></i></a>
-                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="{{$idx}}" data-id="{{ $socialapplication->id }}"><i class="fas fa-trash-alt"></i></a>
-                            </td>
+                <tbody id="tabledata">
 
-                        </tr>
-                    @endforeach --}}
                 </tbody>
             </table>
+
+            <div class="loader">
+
+                <div class="loader-item"></div>
+                <div class="loader-item"></div>
+                <div class="loader-item"></div>
+
+            </div>
 
         </div>
 
@@ -58,7 +52,7 @@
 
     {{-- Start Model Area  --}}
 
-     {{-- start create model --}}
+    {{-- start create model --}}
      <div id="createmodal" class="modal fade">
         <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content rounded-0">
@@ -69,9 +63,9 @@
                 </div>
 
                 <div class="modal-body">
-                    <form id="formaction">
+                    <form id="createform">
 
-                        <div class="row align-items-end px-3">
+                        <div class="row">
                             <div class="col-md-12 form-group mb-3">
                                 <label for="name">Name <span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name"
@@ -93,10 +87,10 @@
                                     value="{{ old('duration') }}" />
                             </div>
 
-                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="packageid" id="packageid">
 
                             <div class='col-md-12 text-end'>
-                                <button type="submit" id="action-btn" class="btn btn-primary btn-sm rounded-0" value="action-type">Submit</button>
+                                <button type="submit" id="create-btn" class="btn btn-primary btn-sm rounded-0" value="action-type">Submit</button>
                             </div>
 
                         </div>
@@ -113,29 +107,36 @@
     </div>
     {{-- end create model --}}
 
-    {{-- start edit model --}}
-    <div id="editmodal" class="modal fade">
+     {{-- start set model --}}
+     <div id="setmodal" class="modal fade">
         <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content rounded-0">
 
                 <div class="modal-header">
-                    <h6 class="modal-title">Edit Form</h6>
+                    <h6 class="modal-title">Title</h6>
                     <button type="socialapplication" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
-                    <form id="formaction" action="" method="">
+                    <form id="setform">
 
-                        <div class="row align-items-end">
-                            <div class="col-md-7">
-                                <label for="editname">Name <span class="text-danger">*</span></label>
-                                <input type="text" name="name" id="editname"
-                                    class="form-control form-control-sm rounded-0" placeholder="Enter Name"
-                                    value="{{ old('name') }}" />
+                        <div class="row">
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="setuser_id">User ID <span class="text-danger">*</span></label>
+                                <input type="text" name="setuser_id" id="setuser_id"
+                                    class="form-control form-control-sm rounded-0" placeholder="Enter User ID"
+                                    value="{{ old('setuser_id') }}" />
                             </div>
 
-                            <div class='col-md-2 mt-3'>
-                                <button type="submit" class="btn btn-primary btn-sm rounded-0">Update</button>
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="package_id">Package ID <span class="text-danger">*</span></label>
+                                <input type="number" name="package_id" id="package_id"
+                                    class="form-control form-control-sm rounded-0" placeholder="Enter Price"
+                                    value="{{ old('package_id') }}" />
+                            </div>
+
+                            <div class='col-md-12 text-end'>
+                                <button type="submit" id="set-btn" class="btn btn-primary btn-sm rounded-0">Submit</button>
                             </div>
 
                         </div>
@@ -150,19 +151,19 @@
             </div>
         </div>
     </div>
-    {{-- end edit model --}}
+    {{-- end set model --}}
+
     {{-- End Model Area  --}}
 
 
 @endsection
 
 @section('css')
-    <link href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{asset('assets/dist/css/loader.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('scripts')
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js" type="text/javascript"></script>
     <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -183,43 +184,19 @@
             function fetchalldatas(){
 
                 $.ajax({
-                    url:"{{route('socialapplications.fetchalldatas')}}",
+                    url:"{{route('packages.index')}}",
                     method:"GET",
-                    type:"JSON",
+                    beforeSend:function(){
+                        // console.log('before');
+                        $('.loader').addClass('show');
+                    },
                     success:function(response){
                         // console.log(response);
-
-                        const datas = response.data;
-
-                        // console.log(datas);
-
-                        let html;
-
-                        datas.forEach(function(data,idx){
-                            // console.log(data);
-
-                            html += `
-                                        <tr id="${data.id}">
-                                            <td>${++idx}</td>
-                                            <td>${data.name}</td>
-                                            <td>
-                                                <div class="form-checkbox form-switch">
-                                                    <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
-                                                </div>
-                                            </td>
-                                            <td>${data.user_id}</td>
-                                            <td>${data.created_at}</td>
-                                            <td>${data.updated_at}</td>
-                                            <td>
-                                                <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
-                                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${idx}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
-                                    `;
-
-                        });
-
-                        $("#mytable tbody").prepend(html);
+                        $("#tabledata").html(response);
+                    },
+                    complete:function(){
+                        // console.log('complete');
+                        $('.loader').removeClass('show');
                     }
                 })
 
@@ -229,150 +206,24 @@
 
             // End Fetch All Datas
 
-            // Start Create Form
+            // Start Create Packages
 
-            $('#modal-btn').click(function(){
+            $('#createmodal-btn').click(function(){
 
                 // clear form data
-                // console.log($("#formaction"));
-                // console.log($("#formaction")[0]);
 
                 // method 1
-                // $("#formaction")[0].reset(); //if you use reset() ! that element can't be array.needed to convert element
+                // $("#createform")[0].reset(); //if you use reset() ! that element can't be array.needed to convert element
 
                 // method 2
-                $("#formaction").trigger("reset");
+                $("#createform").trigger("reset");
 
-                $("#createmodal .modal-title").text("Create Form");
-
-                $("#action-btn").val("create-btn");
+                $("#createmodal .modal-title").text("Create Package");
+                $("#create-btn").html("Add New Package");
+                $("#create-btn").val("action-type");
 
                 $('#createmodal').modal("show"); //toggle
-            })
-
-            $('#formaction').validate({
-
-                rules:{
-                    name:"required"
-                },
-
-                messages:{
-                    name:"Please enter the application name"
-                },
-
-                submitHandler:function(form){
-
-                    let actiontype = $("#action-btn").val();
-
-                    if(actiontype === "create-btn"){
-                        $("#action-btn").text("Sending...");
-
-                        // let formdata = $('#formaction').serialize();
-                        // let formdata = $(form).serialize();
-                        // let formdata = $('#formaction').serializeArray();
-                        let formdata = $(form).serializeArray();
-
-                        $.ajax({
-                            data:formdata,
-                            url:"{{route('socialapplications.store')}}",
-                            type:"POST",
-                            dataType:'json',
-                            success:function(response){
-
-                                // console.log(response);
-                                // console.log(response.status);
-
-                                if(response && response.status === 'success'){
-                                    $('#createmodal').modal("hide"); //toggle
-
-                                    const data = response.data;
-
-                                    let html = `
-                                        <tr id="${data.id}">
-                                            <td>${data.id}</td>
-                                            <td>${data.name}</td>
-                                            <td>
-                                                <div class="form-checkbox form-switch">
-                                                    <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
-                                                </div>
-                                            </td>
-                                            <td>${data.user_id}</td>
-                                            <td>${data.created_at}</td>
-                                            <td>${data.updated_at}</td>
-                                            <td>
-                                                <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
-                                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${data.id}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
-                                    `;
-
-                                    $("#mytable tbody").prepend(html);
-
-                                    $("#action-btn").text("Submit");
-
-                                }
-
-                            },
-                            error:function(response){
-                                console.log("Error : ",response);
-                            }
-                        })
-
-                    }else{
-
-                        $("#action-btn").text("Sending...");
-
-                        const getid = $('#id').val();
-
-                        $.ajax({
-                            url:`socialapplications/${getid}`,
-                            type:"PUT",
-                            dataType:"json",
-                            data:$("#formaction").serialize(),  //name=kpay&status_id=4
-                            success:function(response){
-                                // console.log(this.data);  //name=kpay&status_id=4
-                                // console.log(response);
-                                // console.log(response.status);
-
-                                const data = response.data;
-
-                                let html = `
-                                    <tr id="${data.id}">
-                                        <td>${data.id}</td>
-                                        <td>${data.name}</td>
-                                        <td>
-                                            <div class="form-checkbox form-switch">
-                                                <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
-                                            </div>
-                                        </td>
-                                        <td>${data.user_id}</td>
-                                        <td>${data.created_at}</td>
-                                        <td>${data.updated_at}</td>
-                                        <td>
-                                            <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
-                                            <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${data.id}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
-                                        </td>
-                                    </tr>
-                                `;
-
-                                $("#delete_"+data.id).replaceWith(html);
-
-                                $("#action-btn").text("Update");
-
-                                $('#createmodal').modal('hide');
-
-                            }
-                        });
-
-                    }
-
-
-
-                }
-
-            })
-
-            // End Create Form
+            });
 
             // Start Edit Form
 
@@ -381,17 +232,18 @@
                 const getid = $(this).data('id');
                 // console.log(getid);
 
-                $.get(`socialapplications/${getid}/edit`,function(response){
+                $.get(`/packages/${getid}`,function(response){
                     // console.log(response);
 
-                    $("#createmodal .modal-title").text("Edit Form");
-                    $('#action-btn').text("Update");
-                    $('#action-btn').val("edit-btn");
+                    $("#createmodal .modal-title").text("Edit Package");
+                    $('#create-btn').text("Update Package");
+                    $('#create-btn').val("edit-type");
                     $('#createmodal').modal("show"); //toggle
 
-                    $('#id').val(response.id);
+                    $('#packageid').val(response.id);
                     $('#name').val(response.name);
-                    $('#status_id').val(response.status_id);
+                    $('#price').val(response.price);
+                    $('#duration').val(response.duration);
 
                 });
 
@@ -400,17 +252,145 @@
 
             // End Edit Form
 
-            // Start Delete Item
+            // Start Create & Update Package
+
+            $('#create-btn').click(function(e){
+                e.preventDefault();
+
+                let actiontype = $('#create-btn').val();
+                $(this).html('Sending...');
+
+                if(actiontype === "action-type"){
+                    // Do Create
+
+                    $.ajax({
+                        url:"{{route('packages.store')}}",
+                        type:"POST",
+                        dataType:"JSON",
+                        data:$('#createform').serialize(),
+                        success:function(response){
+
+                            // $('#createform')[0].reset();
+                            $('#createform').trigger('reset');
+
+                            $("#createmodal").modal('hide'); //toggle
+                            $("#create-btn").html('Save Change');
+
+                            fetchalldatas();
+
+                            Swal.fire({
+                                title: "Added!",
+                                text: "Added Successfully.",
+                                icon: "success"
+                            });
+
+                        },
+                        error:function(response){
+                            console.log('Error : ',response)
+                            $("#create-btn").html('Save Change');
+                        }
+                    })
+
+                }else if(actiontype === "edit-type"){
+                    // Do Edit
+                    const getid = $("#packageid").val();
+
+                    $.ajax({
+                        url:`/packages/${getid}`,
+                        type:"PUT",
+                        dataType:"json",
+                        data:$('#createform').serialize(),
+                        success:function(response){
+
+                            // $('#createform')[0].reset();
+                            $('#createform').trigger('reset');
+
+                            $("#createmodal").modal('hide'); //toggle
+                            $("#create-btn").html('Save Change');
+
+                            fetchalldatas();
+
+                            Swal.fire({
+                                title: "Updated!",
+                                text: "Updated Successfully.",
+                                icon: "success"
+                            });
+
+                        },
+                        error:function(response){
+                            console.log('Error : ',response)
+                            $("#create-btn").html('Save Change');
+                        }
+                    })
+                }
+            });
+
+            // Start Create & Update Package
+
+
+            // Start Set Package
+
+            $('#setmodal-btn').click(function(){
+
+                $("#setform").trigger("reset");
+
+                $("#setmodal .modal-title").text("Create Package");
+                $("#set-btn").html("Add New Package");
+                $("#set-btn").val("action-type");
+
+                $('#setmodal').modal("show"); //toggle
+            });
+
+            $('#set-btn').click(function(e){
+                e.preventDefault();
+
+                    // Do Set
+
+                    $.ajax({
+                        url:"{{route('packages.setpackage')}}",
+                        type:"POST",
+                        dataType:"JSON",
+                        data:$('#setform').serialize(),
+                        success:function(response){
+
+                            console.log(response);
+
+                            // $('#createform')[0].reset();
+                            $('#setform').trigger('reset');
+
+                            $("#setmodal").modal('hide'); //toggle
+                            $("#set-btn").html('Save Change');
+
+                            Swal.fire({
+                                title: "Access!",
+                                text: "Package Set Successfully.",
+                                icon: "success"
+                            });
+
+                        },
+                        error:function(response){
+                            console.log('Error : ',response)
+                            $("#set-btn").html('Save Change');
+                        }
+                    })
+
+
+            });
+
+            // End Set Package
+
+            // Start Single Delete Item
 
             // By Ajax
             $(document).on('click','.delete-btns',function(){
-                const getidx = $(this).attr('data-idx');
+
                 var getid = $(this).data('id');
+                var getidx = $(this).data('idx');
                 // console.log(getid);
 
                     Swal.fire({
                             title: "Are you sure?",
-                            text: "You won't be able to revert this!",
+                            text: `You won't be able to revert this ${getidx}!`,
                             icon: "warning",
                             showCancelButton: true,
                             confirmButtonColor: "#3085d6",
@@ -426,18 +406,15 @@
                                 // data remove
 
                                 $.ajax({
-                                    url:`socialapplications/${getid}`,
+                                    url:`packages/${getid}`,
                                     type:"DELETE",
                                     dataType:"json",
                                     // data:{_token:"{{csrf_token()}}"},
                                     success:function(response){
-                                        // console.log(response);
 
                                         if(response){
 
-                                            // ui remove
-
-                                            $(`#delete_${getid}`).remove();
+                                            fetchalldatas();
 
                                             Swal.fire({
                                             title: "Deleted!",
@@ -453,44 +430,9 @@
                             }
                         });
 
-
-
-
-
             });
 
-
-            // End Delete Item
-
-            $('#mytable').DataTable();
-
-            // Start chage-btn
-            $(document).on('click','.change-btn',function(){
-
-                var getid = $(this).data('id');
-                // console.log(getid);
-                var setstatus = $(this).prop('checked') === true ? 3 : 4;
-                // console.log(setstatus);
-
-                $.ajax({
-                    url:"socialapplicationsstatus",
-                    method:"GET",
-                    type:"json",
-                    data:{"id":getid,"status_id":setstatus},
-                    success:function(response){
-                        console.log(response);
-
-                        Swal.fire({
-                            title:"Updated!",
-                            text:"Updated Successfully!",
-                            icon:"success"
-                        })
-
-                    }
-            })
-
-            });
-            // End chage-btn
+            // End Single Delete Item
 
 
         });

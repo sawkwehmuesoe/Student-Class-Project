@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PackagesController extends Controller
 {
     public function index(){
 
-        // if(request()->ajax()){
-        //     $packages = Package::all();
-        //     return view('packages.index',compact('packages'))->render();
-        // }
-
-        $packages = Package::all();
-            return view('packages.index',compact('packages'))->render();
+        if(request()->ajax()){
+            $packages = Package::all();
+            return view('packages.list',compact('packages'))->render();
+        }
 
         return view('packages.index');
+
     }
 
 
@@ -50,5 +49,26 @@ class PackagesController extends Controller
     public function destroy($id){
         Package::findOrFail($id)->delete();
         return response()->json(['message'=>'Delete Successfully'],201);
+    }
+
+    public function setpackage(Request $request){
+        $request->validate([
+            'setuser_id'=>'required|exists:users,id',
+            'package_id'=>'required|exists:packages,id'
+        ]);
+
+        $user = User::find($request->input('setuser_id'));
+        $package = Package::find($request->input('package_id'));
+
+        if($user && $package){
+
+            $user->package_id = $package->id;
+            $user->subscription_expires_at = now()->addDays($package->duration);
+            $user->save();
+
+            return response()->json(['message'=>"Updated"],201);
+        }
+
+        return response()->json(['message'=>"Failed"],405);
     }
 }

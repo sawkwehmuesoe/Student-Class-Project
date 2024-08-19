@@ -41,6 +41,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\PageViewMid::class,
             \App\Http\Middleware\PostViewDurationMid::class,
             \App\Http\Middleware\OnOffUserStatusMid::class,
+            // \App\Http\Middleware\ValidateScriptionMid::class,
         ],
 
         'api' => [
@@ -69,5 +70,8 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
+
+        'validate.subscriptions' => \App\Http\Middleware\ValidateScriptionMid::class,
     ];
 }

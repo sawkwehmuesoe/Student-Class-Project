@@ -76,8 +76,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('attcodegenerators',AttcodegeneratorsController::class);
     Route::get('/attcodegeneratorsstatus',[AttcodegeneratorsController::class,'typestatus']);
 
-    Route::resource('attendances',AttendancesController::class);
-
     Route::resource('categories',CategoriesController::class);
     Route::delete('/categoriesbulkdeletes',[CategoriesController::class,'bulkdeletes'])->name('categories.bulkdeletes');
 
@@ -110,6 +108,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/verifyotps',[OtpsController::class,'verify']);
 
     Route::resource('packages',PackagesController::class);
+    Route::post('/packages/setpackage',[PackagesController::class,'setpackage'])->name('packages.setpackage');
 
     Route::resource('paymentmethods',PaymentmethodsController::class);
     Route::get('/paymentmethodsstatus',[PaymentmethodsController::class,'typestatus']);
@@ -172,7 +171,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+Route::middleware(['auth','validate.subscriptions'])->group(function(){
+    Route::resource('attendances',AttendancesController::class);
+});
 
 
 require __DIR__.'/auth.php';
