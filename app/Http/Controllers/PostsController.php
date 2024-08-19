@@ -130,7 +130,11 @@ class PostsController extends Controller
         $dayables = $post->days()->get();
         // $comments = Comment::where('commentable_id',$post->id)->where('commentable_type','App\Models\Post')->orderBy('created_at','desc')->get();
         $comments = $post->comments()->orderBy('created_at','desc')->get();
-        return view('posts.show',["post"=>$post,'dayables'=>$dayables,'comments'=>$comments]);
+
+        $user_id = Auth::user()->id;
+        $postviewdurations = $post->postviewdurations()->whereNot('user_id',$user_id)->orderBy('id','desc')->take('10')->get();
+
+        return view('posts.show',["post"=>$post,'dayables'=>$dayables,'comments'=>$comments,'postviewdurations'=>$postviewdurations]);
     }
 
 

@@ -66,6 +66,7 @@
 
                 <div>
                     <a href="javascript:void(0);" id="bulkdelete-btn" class="btn btn-danger btn-sm rounded-0">Bulk Delete</a>
+                    <a href="javascript:void(0);" id="generateotp-btn" class="btn btn-success btn-sm rounded-0 ms-5">Generate OTP</a>
                 </div>
 
                 <div>
@@ -185,6 +186,40 @@
         </div>
     </div>
     {{-- end edit model --}}
+
+     {{-- start edit model --}}
+     <div id="otpmodal" class="modal fade">
+        <div class="modal-dialog modal-sm modal-dialog-centered ">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <form id="verifyform" action="" method="">
+
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-3">
+                                <label for="otpcode">OTP Code <span class="text-danger">*</span></label>
+                                <input type="text" name="otpcode" id="otpcode"
+                                    class="form-control form-control-sm rounded-0" placeholder="Enter Your OTP Code"/>
+                            </div>
+
+                            <input type="hidden" name="otpuser_id" id="otpuser_id" value="{{$userdata['id']}}">
+
+                            <div class='col-md-12 text-end mb-3'>
+                                <button type="submit" class="btn btn-primary btn-sm rounded-0">Submit</button>
+                            </div>
+
+                        </div>
+
+                        <p id="otpmessage"></p>
+                        <p>Expired in : <span id="otptimer"></span> seconds</p>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {{-- end edit model --}}
     {{-- End Model Area  --}}
 
 @endsection('content')
@@ -227,56 +262,106 @@
 
             // Start Fetch All Datas
 
-            function fetchalldatas(){
 
-                $.ajax({
 
-                    url:"{{'api/cities'}}",
+            const gettbody = document.querySelector('#mytable tbody');
+            const getloader = document.querySelector('.loader');
+            let page = 1;
 
-                    method:"GET",
-                    type:"JSON",
-                    success:function(response){
-                        // console.log(response);
+            async function fetchalldatasbypaginate(){
 
-                        const datas = response.data;
+                const url = `api/cities?page=${page}`;
 
-                        // console.log(datas);
+                let result;
 
-                        let html;
+                await fetch(url).then(response=>{
+                    console.log(response);
+                    return response.json();
+                }).then(data=>{
+                    console.log(data);
 
-                        datas.forEach(function(data,idx){
-                            // console.log(data);
+                    results = data.data;
+                    // console.log(results);
+                }).catch(err=>{
+                    console.log(err);
+                });
 
-                            html += `
-                                        <tr id="delete_${data.id}">
-                                            <td><input type="checkbox" name="singlechecks" class="form-check-input" value="${data.id}" /></td>
-                                            <td>${++idx}</td>
-                                            <td>${data.name}</td>
-                                            <td>${data.country["name"]}</td>
-                                            <td>
-                                                <div class="form-checkbox form-switch">
-                                                    <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
-                                                </div>
-                                            </td>
-                                            <td>${data.user.name}</td>
-                                            <td>${data.created_at}</td>
-                                            <td>${data.updated_at}</td>
-                                            <td>
-                                                <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
-                                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${idx}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
-                                    `;
-
-                        });
-
-                        $("#mytable tbody").prepend(html);
-                    }
-                })
+                return results;
 
             }
 
-            fetchalldatas();
+            // fetchalldatasbypaginate();
+
+            async function alldatastodom(){
+                const getresults = await fetchalldatasbypaginate();
+                // console.log(getresult);
+
+                getresults.forEach((data)=>{
+
+                    const newtr = document.createElement('tr');
+                    newtr.id = `delete_${data.id}`;
+
+                    // console.log(newtr);
+
+                    newtr.innerHTML = `
+                                        <td><input type="checkbox" name="singlechecks" class="form-check-input" value="${data.id}" /></td>
+                                        <td>${data.id}</td>
+                                        <td>${data.name}</td>
+                                         <td>${data.country["name"]}</td>
+                                        <td>
+                                            <div class="form-checkbox form-switch">
+                                                <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
+                                            </div>
+                                        </td>
+                                        <td>${data.user["name"]}</td>
+                                        <td>${data.created_at}</td>
+                                        <td>${data.updated_at}</td>
+                                        <td>
+                                            <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
+                                            <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${data.id}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+
+                                    `;
+
+
+                                    gettbody.appendChild(newtr);
+                });
+
+
+            }
+
+            alldatastodom();
+
+            document.addEventListener('scroll',()=>{
+                // console.log(document.documentElement.scrollTop);
+                // console.log(document.documentElement.scrollHeight);
+                // console.log(document.documentElement.clientHeight);
+
+                const {scrollTop,scrollHeight,clientHeight} = document.documentElement;
+
+                if(scrollTop + clientHeight >= scrollHeight - 5){
+                    showloader();
+                };
+            });
+
+            // Show loader & fetch more data
+            function showloader(){
+
+                getloader.classList.add('show');
+
+                setTimeout(()=>{
+
+                    getloader.classList.remove('show');
+
+                    setTimeout(()=>{
+                        page++;
+                        alldatastodom();
+                    },300);
+
+                },1000);
+
+            }
+            // Show loader & fetch more data
 
             // End Fetch All Datas
 
@@ -338,6 +423,12 @@
 
                                     $("#mytable tbody").prepend(html);
 
+                                    // clear form
+                                    // $("#createform")[0].reset();
+                                    $("#createform").trigger("reset");
+
+                                    $(this).text("Submit");
+
                                     $("#create-btn").text("Submit");
 
                                     Swal.fire({
@@ -354,11 +445,6 @@
                                 $("#create-btn").text("Try Again");
                             }
                         })
-
-
-
-
-
                 }
 
             })
@@ -465,11 +551,6 @@
                                 $("#edit-btn").text("Try Again");
                             }
                         })
-
-
-
-
-
                 }
 
                 })
@@ -508,7 +589,7 @@
                                 // data remove
 
                                 $.ajax({
-                                    url:`api/warehouses/${getid}`,
+                                    url:`api/cities/${getid}`,
                                     type:"DELETE",
                                     dataType:"json",
                                     // data:{_token:"{{csrf_token()}}"},
@@ -661,6 +742,57 @@
             });
 
             // End Bulk Delete
+
+            // Start OTP
+            $("#generateotp-btn").on('click',function(){
+
+                $.ajax({
+                    url:'/generateotps',
+                    type:'POST',
+                    success:function(response){
+                        console.log(response);
+
+                        $("#otpmessage").text('Your OTP code is ' + response.otp);
+                        $("#otpmodal").modal('show');
+
+                        startotptimer(300);
+
+                    },
+                    error:function(response){
+                        console.error("Error : ",response)
+                    }
+                });
+
+                function startotptimer(duration){
+
+                }
+
+                $("#verifyform").on('submit',function(e){
+
+                    e.preventDefault();
+
+                    $.ajax({
+                        url:"/verifyotps",
+                        type:"POST",
+                        data:$(this).serialize(),
+                        success:function(response){
+
+                            if(response.messages){
+                                console.log('Bulk Delete Successfully');
+                            }else{
+                                console.log('Invalid OTP');
+                            }
+
+                        },
+                        error:function(response){
+                            console.log('Error OTP : ', response);
+                        }
+                    })
+
+                });
+
+            });
+            // End OTP
 
         });
     </script>

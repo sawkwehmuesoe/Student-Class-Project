@@ -14,7 +14,7 @@
                 @csrf
 
                     <div class="row">
-                         <div class="col-md-4 mb-3">
+                         <div class="col-md-4 mb-6">
                             <label for="firstname">First Name <span class="text-danger">*</span></label>
                             @error('firstname')
                                         <span class="text-danger">{{ $message }}</span>
@@ -23,21 +23,13 @@
                         </div>
 
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-6">
                             <label for="lastname">Last Name <span class="text-danger">*</span></label>
                             @error('lastname')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                             <input type="text" name="lastname"  id="lastname" class="form-control form-control-sm rounded-0" placeholder="Enter Last Name" value="{{old('lastname')}}"  />
                         </div>
-
-                     <div class="col-md-4 mb-3">
-                         <label for="regnumber">Register Number</label>
-                         @error('regnumber')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                         <input type="text" name="regnumber"  id="regnumber" class="form-control form-control-sm rounded-0" placeholder="Enter Register Number" value="{{old('regnumber')}}" />
-                     </div>
 
                      <div calss="col-md-12 form-group mb-3">
                         <label for="remark">Remark</label>

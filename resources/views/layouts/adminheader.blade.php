@@ -15,13 +15,14 @@
 
 
 		<!--bootstrap css1 js1-->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+		{{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> --}}
+        @vite(['resources/css/app.css','resources/js/app.js'])
 
 		<!-- jquery ui css1  -->
 		<link href="{{asset('assets/libs/jquery-ui-1.13.2.custom/jquery-ui.min.css')}}" rel="stylesheet" type="text/css" />
 
 		<!--custom css1-->
-		<link href="{{asset('assets/dist/css/style.css')}}" rel="stylesheet" type="text/css" />
+		{{-- <link href="{{asset('assets/dist/css/style.css')}}" rel="stylesheet" type="text/css" /> --}}
 
         {{-- toastr css1 js1 --}}
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
@@ -29,6 +30,7 @@
         {{-- extra css --}}
         @yield('css')
 
-
+        {{-- pusher js1 --}}
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 	</head>
 <body>

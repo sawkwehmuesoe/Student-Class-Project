@@ -15,9 +15,34 @@
 
         <div class="col-md-12">
 
+            <div>
+                <a href="javascript:void(0);" id="bulkdelete-btn" class="btn btn-danger btn-sm rounded-0">Bulk Delete</a>
+            </div>
+
+            <div>
+                <form action="" method="">
+                    <div class="row justify-content-end">
+                        <div class="col-md-2 col-sm-6 mb-2">
+                            <div class="input-group">
+                                <input type="text" name="filtername" id="filtername"
+                                    class="form-control form-control-sm rounded-0" placeholder="Search...">
+                                <button type="submit" id="btn-search" class="btn btn-secondary btn-sm "><i
+                                        class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+
             <table id="mytable" class="table table-sm table-hover border">
                 <thead>
                     <tr>
+                        <th>
+                            <input type="checkbox" name="selectalls" id="selectalls" class="form-check-input selectalls" >
+                        </th>
                         <th>No</th>
                         <th>Name</th>
                         <th>Status</th>
@@ -31,6 +56,8 @@
 
                 </tbody>
             </table>
+
+            {{ $warehouses->links() }}
 
         </div>
 
@@ -102,7 +129,7 @@
 @section('scripts')
 
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js" type="text/javascript"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript">
@@ -121,53 +148,55 @@
 
             function fetchalldatas(){
 
-                $.ajax({
-                    // url:"{{url('api/warehouses')}}",
-                    // url:"{{'api/warehouses'}}",
-                    url:"{{route('api.warehouses.index')}}",
-                    method:"GET",
-                    type:"JSON",
-                    success:function(response){
-                        // console.log(response);
+            $.ajax({
+                // url:"{{url('api/warehouses')}}",
+                // url:"{{'api/warehouses'}}",
+                url:"{{route('api.warehouses.index')}}",
+                method:"GET",
+                type:"JSON",
+                success:function(response){
+                    // console.log(response);
 
-                        const datas = response.data;
+                    const datas = response.data;
 
-                        // console.log(datas);
+                    // console.log(datas);
 
-                        let html;
+                    let html;
 
-                        datas.forEach(function(data,idx){
-                            // console.log(data);
+                    datas.forEach(function(data,idx){
+                        // console.log(data);
 
-                            html += `
-                                        <tr id="${data.id}">
-                                            <td>${++idx}</td>
-                                            <td>${data.name}</td>
-                                            <td>
-                                                <div class="form-checkbox form-switch">
-                                                    <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
-                                                </div>
-                                            </td>
-                                            <!-- <td>${data.user["name"]}</td> -->
-                                            <td>${data.user.name}</td>
-                                            <td>${data.created_at}</td>
-                                            <td>${data.updated_at}</td>
-                                            <td>
-                                                <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
-                                                <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${idx}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
-                                    `;
+                        html += `
+                                    <tr id="${data.id}">
+                                        <td><input type="checkbox" name="singlechecks" class="form-check-input" value="${data.id}" /></td>
+                                        <td>${++idx}</td>
+                                        <td>${data.name}</td>
+                                        <td>
+                                            <div class="form-checkbox form-switch">
+                                                <input type="checkbox" class="form-check-input change-btn" ${data.status_id == 3 ? 'checked' : ''} data-id="${data.id}" />
+                                            </div>
+                                        </td>
+                                        <!-- <td>${data.user["name"]}</td> -->
+                                        <td>${data.user.name}</td>
+                                        <td>${data.created_at}</td>
+                                        <td>${data.updated_at}</td>
+                                        <td>
+                                            <a href="javascript:void(0);" class="text-info edit-btns" data-id="${data.id}"><i class="fas fa-pen"></i></a>
+                                            <a href="javascript:void(0);" class="text-danger delete-btns ms-2" data-idx="${idx}" data-id="${data.id}"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                `;
 
-                        });
+                    });
 
-                        $("#mytable tbody").prepend(html);
-                    }
-                })
+                    $("#mytable tbody").prepend(html);
+                }
+            })
 
             }
 
             fetchalldatas();
+
 
             // End Fetch All Datas
 
@@ -410,17 +439,10 @@
                                 });
                             }
                         });
-
-
-
-
-
             });
 
 
             // End Delete Item
-
-            $('#mytable').DataTable();
 
             // Start chage-btn
             $(document).on('click','.change-btn',function(){

@@ -21,8 +21,8 @@ class WarehousesController extends Controller
         // $warehouse = Warehouse::all();
         // return new WarehousesCollection($warehouse);
 
-        $warehouse = Warehouse::all();
-        return WarehousesResource::collection($warehouse);
+        $warehouses = Warehouse::paginate(5);
+        return WarehousesResource::collection($warehouses);
     }
 
     /**
