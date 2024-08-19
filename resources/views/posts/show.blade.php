@@ -161,9 +161,25 @@
 
                             <div class="row g-0 mb-2">
                                 <div class="col-auto me-2">
-                                    <i class="fas fa-info"></i>
+                                    <i class="fas fa-hand-pointer"></i>
                                 </div>
-                                <div class="col ">Sample Data</div>
+                                <div class="col ">
+                                    @php
+                                        $getpageurl = url()->current();
+                                            // dd($getpageurl);
+                                        $pageview = \App\Models\Pageview::where('pageurl',$getpageurl)->first()->counter;
+                                        @endphp
+                                        Click {{$pageview}} times
+                                </div>
+                            </div>
+
+                            <div class="row g-0 mb-2">
+                                <div class="col-auto me-2">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="col ">
+                                    <span id="liveviewer">0</span> Watching
+                                </div>
                             </div>
 
                             <div class="row g-0 mb-2">
@@ -249,6 +265,9 @@
                             <li class="nav-item">
                                 <button type="button" class="tablinks" onclick="gettab(event,'remark')">Remark</button>
                             </li>
+                            <li class="nav-item">
+                                <button type="button" class="tablinks" onclick="gettab(event,'duration')">Duration</button>
+                            </li>
                         </ul>
 
                         <div class="tab-content">
@@ -272,18 +291,35 @@
                                 <p></p>
                             </div>
 
+                            <div id="duration" class="tab-panel">
+                                <h6>This is frequently viewer's duration</h6>
+                                <table class="table table-sm table-hover border">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Duration</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($postviewdurations as $postviewduration)
+                                            <tr>
+                                                <td>{{$postviewduration->user_id}}</td>
+                                                <td>{{$postviewduration->duration}}</td>
+                                                <td>{{$postviewduration->created_at->format('d M Y h:m A')}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
 
                 </div>
 
-
-
-
             </div>
 
             </div>
-
-
 
         </div>
 
@@ -291,6 +327,10 @@
 
 
 	<!-- End Page Content Area -->
+
+    {{-- Start Hidden Area --}}
+    <input type="hidden" id="setpostid" data-id="{{$post->id}}">
+    {{-- End Hidden Area  --}}
 
 
     <!-- START MODAL AREA  -->
@@ -461,6 +501,98 @@
 
         document.getElementById('autoclick').click();
         // End Tab Box
+
+            // Start Post Duration
+            // $(document).ready(function(){
+                $(window).on('beforeunload',function(){
+
+                    const exittime = new Date().toISOString();
+                    // console.log(exittime); //hello 2024-08-05T13:28:32.220Z
+
+                    $.ajax({
+                        url:"/trackdurations",
+                        method:"POST",
+                        data:{
+                            exittime:exittime,
+                            // {{-- _token:'{{ csrf-token() }}' --}}
+                            _token:$('meta[name="csrf-token"]').attr('content')
+                        },
+                        success:function(response){
+                            console.log(response);
+                        }
+                    })
+                });
+            // End Post Duration
+
+        // Start Puser Post Live Viewer
+
+        // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('4d0e24d65929ff5f0893', {
+                cluster: 'ap1'
+            });
+
+            function mainchannel(postid){
+                var channel = pusher.subscribe('postliveviewer-channel_'+postid);
+                // console.log("happy",postid);
+
+                // global event binding
+                // postliveviewer-event
+                channel.bind('App\\Events\\PostLiveViewerEvent', function(data) {
+                    // console.log("hello"+data);
+                    document.getElementById('liveviewer').textContent = data.count;
+                });
+            }
+
+            function incrementviewer(postid){
+
+                $.ajax({
+                    url:`/postliveviewersinc/${postid}`,
+                    type:"POST",
+                    data:{
+                        _token:$('meta[name="csrf-token"]').attr('content')
+                    },
+                    success:function(response){
+                        console.log('Increment Status = ');
+                    }
+                })
+            }
+
+            function decrementviewer(postid){
+                $.ajax({
+                    url:`/postliveviewersdec/${postid}`,
+                    type:"POST",
+                    data:{
+                        _token:$('meta[name="csrf-token"]').attr('content')
+                    },
+                    success:function(response){
+                        console.log('Decrement Status = ');
+                    }
+                })
+            }
+
+            window.addEventListener('DOMContentLoaded',function(){
+                // console.log("i am loaded");
+
+                const getpostid = document.getElementById('setpostid').getAttribute('data-id');
+
+                incrementviewer(getpostid);
+                mainchannel(getpostid);
+            });
+
+            window.addEventListener('beforeunload',function(){
+                // console.log("i am unloaded");
+
+                const getpostid = document.getElementById('setpostid').getAttribute('data-id');
+
+                decrementviewer(getpostid);
+
+            });
+
+        // End Puser Post Live Viewer
+
+
 
     </script>
 @endsection

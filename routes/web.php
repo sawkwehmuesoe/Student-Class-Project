@@ -14,7 +14,9 @@ use App\Http\Controllers\EdulinksController;
 use App\Http\Controllers\EnrollsController;
 use App\Http\Controllers\GendersController;
 use App\Http\Controllers\LeavesController;
+use App\Http\Controllers\OtpsController;
 use App\Http\Controllers\PaymentmethodsController;
+use App\Http\Controllers\PaymenttypesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostsLikeController;
 use App\Http\Controllers\ProfileController;
@@ -31,8 +33,17 @@ use App\Http\Controllers\WarehousesController;
 use App\Models\Day;
 use App\Models\Enroll;
 use App\Models\Status;
+use App\Models\Student;
 use App\Models\Warehouse;
 use Illuminate\Support\Facades\Route;
+
+
+
+use App\Http\Controllers\ChatsController;
+use App\Http\Controllers\PackagesController;
+use App\Http\Controllers\PostLiveViewersController;
+use App\Http\Controllers\PostViewDurationsController;
+use App\Http\Controllers\SubscriptionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,8 +76,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('attcodegenerators',AttcodegeneratorsController::class);
     Route::get('/attcodegeneratorsstatus',[AttcodegeneratorsController::class,'typestatus']);
 
-    Route::resource('attendances',AttendancesController::class);
-
     Route::resource('categories',CategoriesController::class);
     Route::delete('/categoriesbulkdeletes',[CategoriesController::class,'bulkdeletes'])->name('categories.bulkdeletes');
 
@@ -79,12 +88,15 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('countries',CountriesController::class);
     Route::get('/countriesstatus',[CountriesController::class,'typestatus']);
+    Route::delete('/countriesbulkdeletes',[CountriesController::class,'bulkdeletes'])->name('countries.bulkdeletes');
 
     Route::resource('days',DaysController::class);
     Route::get('/daysstatus',[DaysController::class,'typestatus']);
     Route::delete('/daysbulkdeletes',[DaysController::class,'bulkdeletes'])->name('days.bulkdeletes');
 
     Route::resource('edulinks',EdulinksController::class);
+    Route::get('/edulinks/download/{id}',[EdulinksController::class,'download'])->name('edulinks.download');
+
     Route::resource('enrolls',EnrollsController::class);
 
     Route::resource('genders',GendersController::class);
@@ -92,12 +104,28 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('leaves',LeavesController::class);
 
+    Route::post('/generateotps',[OtpsController::class,'generate']);
+    Route::post('/verifyotps',[OtpsController::class,'verify']);
+
+    Route::resource('packages',PackagesController::class);
+    Route::post('/packages/setpackage',[PackagesController::class,'setpackage'])->name('packages.setpackage');
+
     Route::resource('paymentmethods',PaymentmethodsController::class);
     Route::get('/paymentmethodsstatus',[PaymentmethodsController::class,'typestatus']);
+    Route::delete('/paymentmethodsbulkdeletes',[PaymentmethodsController::class,'bulkdeletes'])->name('paymentmethods.bulkdeletes');
+
+    Route::resource('paymenttypes',PaymenttypesController::class);
+    Route::get('/paymenttypesstatus',[PaymenttypesController::class,'typestatus']);
+    Route::delete('/paymenttypesbulkdeletes',[PaymenttypesController::class,'bulkdeletes'])->name('paymenttypes.bulkdeletes');
 
     Route::resource('posts',PostsController::class);
     Route::post('posts/{post}/like',[PostsLikeController::class,'like'])->name('posts.like');
     Route::post('posts/{post}/unlike',[PostsLikeController::class,'unlike'])->name('posts.unlike');
+
+    Route::post('/postliveviewersinc/{post}',[PostLiveViewersController::class,'incrementviewer']);
+    Route::post('/postliveviewersdec/{post}',[PostLiveViewersController::class,'decrementviewer']);
+
+    Route::post('/trackdurations',[PostViewDurationsController::class,'trackduration']);
 
     Route::resource('relatives',RelativesCotroller::class);
     Route::resource('roles',RolesController::class);
@@ -113,6 +141,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('statuses',StatusesController::class);
     Route::resource('students',StudentsController::class);
     Route::post('compose/mailbox',[StudentsController::class,'mailbox'])->name('students.mailbox');
+    Route::post('/students/quicksearch',[StudentsController::class,'quicksearch'])->name('students.quicksearch');
+
+    Route::get('/subscribesexpired',[SubscriptionsController::class,'expired'])->name('subscriptions.expired');
 
     Route::resource('tags',TagsController::class);
 
@@ -125,8 +156,25 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('warehouses',WarehousesController::class);
 
+    // pusher test
+    Route::get('/pushers',function(){
+        return view('pusher');
+    });
+
+    // pusher test by chat box
+    Route::get('/chatboxs',function(){
+        return view('chatbox');
+    });
+
+    Route::post('/chatmessage',[ChatsController::class,'sendmessage']);
 
 });
+
+
+Route::middleware(['auth','validate.subscriptions'])->group(function(){
+    Route::resource('attendances',AttendancesController::class);
+});
+
 
 require __DIR__.'/auth.php';
 

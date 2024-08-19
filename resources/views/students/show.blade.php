@@ -123,7 +123,14 @@
                                     <div class="col-auto me-2">
                                         <i class="fas fa-info"></i>
                                     </div>
-                                    <div class="col">Sample Data</div>
+                                    <div class="col">
+                                        @php
+                                            $getpageurl = url()->current();
+                                            // dd($getpageurl);
+                                            $pageview = \App\Models\Pageview::where('pageurl',$getpageurl)->first()->counter;
+                                        @endphp
+                                        Viewed {{$pageview}} times
+                                    </div>
                                 </div>
 
                                 <div class="row g-0 mb-2">

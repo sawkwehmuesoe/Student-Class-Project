@@ -1,9 +1,9 @@
 @include('layouts.adminheader')
 
-    <div>
+    <div id="app">
         {{-- Start Site Setting  --}}
         <div id="sitesettings" class="sitesettings">
-            <div class="settings-item"><a href="javascript:void(0);" id="sitetoggle"></a></div>
+            <div class="sitesettings-item"><a href="javascript:void(0);" id="sitetoggle" class="sitetoggle"><i class="fas fa-cog ani-rotates"></i></a></div>
         </div>
         {{-- End Site Setting  --}}
 
@@ -39,6 +39,8 @@
             </div>
         </section>
         {{-- End Content Area  --}}
+
+
     </div>
 
 

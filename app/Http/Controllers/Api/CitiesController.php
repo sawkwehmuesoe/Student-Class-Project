@@ -20,7 +20,7 @@ class CitiesController extends Controller
         // $city = city::all();
         // return new citiesCollection($city);
 
-        $city = City::all();
+        $city = City::paginate(30);
         return CitiesResource::collection($city);
     }
 
